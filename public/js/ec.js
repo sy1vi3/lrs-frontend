@@ -1405,6 +1405,9 @@ function updateVolunteers(data) {
             if (u_role == "Livestream") {
                 streamcode = passcode;
             }
+            if (u_role == "Output") {
+                outputCode = passcode;
+            }
         }
         document.querySelector("#vol_table").innerHTML = html;
     }
@@ -1590,6 +1593,7 @@ function refreshTeams() {
 
 function make_stream() {
     html = "<b>These links grant access to meeting rooms:</b> <br><br> ";
+    html += '<a class="roomlink">https://console.liveremoteskills.org/output?token=' + outputCode + '</a> <br><br>';
     for (room in ALL_ROOMS) {
         num = ALL_ROOMS[room];
         html += '<a class="roomlink">https://console.liveremoteskills.org/stream?room=' + num + '&token=' + streamcode + '</a> <br><br>';
