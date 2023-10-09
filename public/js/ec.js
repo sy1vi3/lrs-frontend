@@ -14,6 +14,7 @@ const API_rankings = "Rankings"
 const API_stats = "Stats"
 const API_volunteers = "Volunteers"
 const API_sound = "Sound"
+const API_team_control = "Team Control"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -122,6 +123,8 @@ function connect(tokenLogin = false) {
                 playChatSound(data);
             case API_volunteers:
                 updateVolunteers(data);
+            case API_team_control:
+                team_control(data);
         }
     };
 
@@ -1154,6 +1157,9 @@ function save_user(user) {
     for (u in volunteers) {
         all_codes.push(Object.values(volunteers[u])[1]);
     }
+    for (u in teams) {
+        all_codes.push(Object.values(teams[u])[1]);
+    }
     if (passcode == "") {
         vol_code = "changeme";
     }
@@ -1173,4 +1179,74 @@ function save_user(user) {
 
     edit_vol = { Name: username, Passcode: passcode, Role: userrole, OldName: oldname };
     websocket.send(JSON.stringify({ api: API_volunteers, operation: "edit", user_info: edit_vol }));
+}
+
+function team_edit_code(user) {
+    all_current_team_edits = document.querySelectorAll(".editingteam");
+    for (i = 0; i < all_current_team_edits.length; i++) {
+        team_save_code(all_current_edits[i]);
+    }
+
+    user.classList.add("editingteam")
+
+    existing_code = user.querySelector("#passcode").innerHTML;
+    html = '<input type="text" id="edit_code" placeholder="' + existing_code + '">';
+    user.querySelector("#passcode").innerHTML = html;
+    user.querySelector("#edit_code").value = existing_code;
+
+    user.querySelector("#actions").innerHTML = '<button onclick=team_save_code(this.parentNode.parentNode)>Save</button><button onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button onclick=team_disable(this.parentNode.parentNode)>Disable</button>';
+}
+
+function team_save_code(user) {
+    user.classList.remove("editingteam");
+    username = user.querySelector("#name").innerHTML;
+    passcode = user.querySelector("#edit_code").value;
+    oldcode = teams[username].Passcode;
+    all_codes = []
+    for (u in volunteers) {
+        all_codes.push(Object.values(volunteers[u])[1]);
+    }
+    for (u in teams) {
+        all_codes.push(Object.values(teams[u])[1]);
+    }
+    if (passcode == "") {
+        passcode = "changeme";
+    }
+    else if (passcode.length < 10) {
+        showModal("Please enter a stronger access code");
+        return;
+    }
+    else if (all_codes.includes(passcode) && passcode != oldcode) {
+        showModal("Please enter a unique access code");
+        return;
+    }
+    teams[username] = { Role: "Team", Passcode: passcode };
+
+    edit_team = { Name: username, Passcode: passcode };
+    websocket.send(JSON.stringify({ api: API_team_control, operation: "edit", user_info: edit_team }));
+}
+
+function team_force_logout(user) {
+    teamnumber = user.querySelector("#name").innerHTML;
+    if (confirm("Really logout all clients for " + teamnumber + "?")) {
+        websocket.send(JSON.stringify({ api: API_tech_support, operation: "logoutUser", user: teamnumber }));
+    }
+}
+
+function team_disable(user) {
+
+}
+
+function team_control(data) {
+    if (data.operation == "update_teams") {
+        teams = data.teams;
+        keys = Object.keys(teams);
+        html = "";
+        for (u in keys) {
+            user_name = keys[u]
+            passcode = teams[user_name].Passcode;
+            html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button onclick=team_edit_code(this.parentNode.parentNode)>Change Code</button><button onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button onclick=team_disable(this.parentNode.parentNode)>Disable</button></td></tr>';
+        }
+        document.querySelector("#team_info_table_body").innerHTML = html;
+    }
 }

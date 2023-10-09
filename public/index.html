@@ -701,8 +701,26 @@
                                         </select>
                                     </th>
                                     <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
-                                    <th class ="bottom"><button onclick="volunteer_table_add_row()">Add Volunteer</button></th>
+                                    <th class="bottom"><button onclick="volunteer_table_add_row()">Add Volunteer</button></th>
                                 </tr>
+                            </table>
+                        </div>
+                        <div class="scrollBox stackedScrollBoxes">
+                            <table id="team_info_table" class="table sticky">
+                                <thead>
+                                    <tr>
+                                        <th>Team</th>
+                                        <th>Access Code</th>
+                                        <th id="minusSign">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="team_info_table_body">
+                                    <tr id="event_team">
+                                        <td id="name">5090X</td>
+                                        <td id="code">Passcode</td>
+                                        <td class="threebuttonrow"><button onclick='team_edit_code(this.parentNode.parentNode)'>Change Code</button><button onclick='team_force_logout(this.parentNode.parentNode)'>Log Out</button><button onclick='team_disable(this.parentNode.parentNode)'>Disable</button></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>

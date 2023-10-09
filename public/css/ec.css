@@ -1671,9 +1671,13 @@ textarea {
 }
 
 #volunteers_table tr {
-    max-height: 50px;
+    max-height: 30px;
 }
 
 td.smol button{
     width: 45%;
+}
+
+.threebuttonrow button{
+    width: 30%;
 }
