@@ -16,21 +16,11 @@ const API_stats = "Stats"
 const API_volunteers = "Volunteers"
 const API_sound = "Sound"
 const API_team_control = "Team Control"
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
+
+const urlParams = new URLSearchParams(window.location.search);
 const roomnum = urlParams.get('room');
 const token = urlParams.get('token');
-
-
-var jitsi
-
-function init() {
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-    script.src = "https://connect.liveremoteskills.org/external_api.js";
-    document.getElementsByTagName("head")[0].appendChild(script);
-    connect();
-}
+var jitsi;
 
 function load(roomcode) {
     domain = "connect.liveremoteskills.org";

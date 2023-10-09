@@ -5,17 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/stream.css">
-    <script type="text/javascript" src="js/stream.js"></script>
     <link rel="icon" type="image/svg+xml" href="/img/recf_circle.svg">
+    <script type="text/javascript" src="https://connect.liveremoteskills.org/external_api.js"></script>
+    <script type="text/javascript" src="js/stream.js"></script>
 </head>
 
-<body onload="init()">
+<body onload="connect()">
     <div id="jitsiBox"></div>
 
     <div id="info">
-        <div id="teamNum">Team Number</div>
-        <div id="teamName">Team Name</div>
-        <div id="teamLoc">Team Location</div>
+        <div id="teamNum"></div>
+        <div id="teamName"></div>
+        <div id="teamLoc"></div>
     </div>
 </body>
 
