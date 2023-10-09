@@ -71,12 +71,6 @@ function init() {s
             document.querySelector("#Login button").click();
         }
     });
-    var textBox = document.getElementById("typeHere");
-    textBox.addEventListener("keydown", function (event) {
-        if (event.keyCode == 13) {
-            document.querySelector("#chatSendButton").click();
-        }
-    });
 }
 
 function connect(tokenLogin = false) {
@@ -141,6 +135,12 @@ function connect(tokenLogin = false) {
             websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: accessCode }));
             websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
         }
+        var textBox = document.getElementById("typeHere");
+        textBox.addEventListener("keydown", function (event) {
+            if (event.keyCode == 13) {
+                document.querySelector("#chatSendButton").click();
+            }
+        });
     };
 
     websocket.onclose = function (event) {
