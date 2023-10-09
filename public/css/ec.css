@@ -2103,3 +2103,9 @@ input:checked + .slider:before {
 #helpBox *{
     position: initial !important;
 }
+
+#rankingsiframe{
+    width: 100%;
+    height: 100%;
+    border-width: 0px !important;
+}

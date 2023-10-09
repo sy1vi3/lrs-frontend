@@ -1271,41 +1271,43 @@ function handleRankings(data) {
         if (document.querySelector("#divsDropdown").value == null) {
             document.querySelector("#divsDropdown").value = "Science";
         }
-        for (var property in div_ranks) {
-            ranks = div_ranks[property]; 
-            ranks_len = Object.keys(ranks).length;
-            if (document.querySelector("#divsDropdown").value == property) {
-                program_type = ranks[1].comp;
+        //for (var property in div_ranks) {
+        //    ranks = div_ranks[property]; 
+        //    ranks_len = Object.keys(ranks).length;
+        //    if (document.querySelector("#divsDropdown").value == property) {
+        //        program_type = ranks[1].comp;
 
-                if (program_type != "VRC" && program_type != "VIQC") {
-                    program_type = comp_preset;
-                }
+        //        if (program_type != "VRC" && program_type != "VIQC") {
+        //            program_type = comp_preset;
+        //        }
                 
-                if (program_type == "VRC") {
-                    html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
-                    for (i = 0; i < ranks_len; i++) {
-                        teaminfo = ranks[i + 1];
-                        driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-                        driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team +'</button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
-                    }
-                }
-                else if (program_type == "VIQC") {
-                    html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Driver</th><th>Prog</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
-                    for (i = 0; i < ranks_len; i++) {
-                        teaminfo = ranks[i + 1];
-                        driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-                        driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
-                    }
-                }
-                html += "</tbody>";
-                document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
-                bg_color = shadeColor("#" + intToRGB(hashCode(property)), -50);
-                document.getElementById("skillsScoreTable").style.backgroundColor = bg_color;
-                teamSort(document.querySelector("#Rankings #skillsScoreTable"), document.querySelector("#Rankings #rankingsTeamSort"));
-            }
-        }
+        //        if (program_type == "VRC") {
+        //            html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
+        //            for (i = 0; i < ranks_len; i++) {
+        //                teaminfo = ranks[i + 1];
+        //                driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+        //                driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+        //                html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team +'</button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+        //            }
+        //        }
+        //        else if (program_type == "VIQC") {
+        //            html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Driver</th><th>Prog</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
+        //            for (i = 0; i < ranks_len; i++) {
+        //                teaminfo = ranks[i + 1];
+        //                driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+        //                driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+        //                html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+        //            }
+        //        }
+        //        html += "</tbody>";
+        //        document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
+        //        bg_color = shadeColor("#" + intToRGB(hashCode(property)), -50);
+        //        document.getElementById("skillsScoreTable").style.backgroundColor = bg_color;
+        //        teamSort(document.querySelector("#Rankings #skillsScoreTable"), document.querySelector("#Rankings #rankingsTeamSort"));
+        //    }
+        //}
+        html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value+'" id="rankingsiframe"></iframe>'
+        document.querySelector("#Rankings #skillsScores").innerHTML = html;
 
     }
     else if (data.operation == "div_fill") {
