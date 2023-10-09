@@ -1308,7 +1308,6 @@ function volunteer_table_add_row() {
     vol_name = document.querySelector("#volunteerName").value;
     vol_role = document.querySelector("#volunteerRole").value;
     vol_code = document.querySelector("#volunteerCode").value;
-    vol_event = document.querySelector("#volunteerEvent").value;
 
     all_codes = []
     for (u in volunteers) {
@@ -1336,12 +1335,11 @@ function volunteer_table_add_row() {
         return;
     }
     volunteers[vol_name] = { Role: vol_role, Passcode: vol_code }
-    volunteer_to_add = { Role: vol_role, Passcode: vol_code, Name: vol_name, Event: vol_event}
+    volunteer_to_add = { Role: vol_role, Passcode: vol_code, Name: vol_name}
     websocket.send(JSON.stringify({ api: API_volunteers, operation: "add", user_info: volunteer_to_add }));
     document.querySelector("#volunteerName").value = ""
     document.querySelector("#volunteerRole").value = "Staff"
     document.querySelector("#volunteerCode").value = ""
-    document.querySelector("#volunteerEvent").value = "ALL";
 }
 
 function updateVolunteers(data) {
