@@ -1269,6 +1269,7 @@ function handleRankings(data) {
         div_ranks_len = Object.keys(div_ranks).length;
 
         if (document.querySelector("#divsDropdown").value != "") {
+            console.log(document.querySelector("#divsDropdown").value);
             html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value + '" id="rankingsiframe"></iframe>';
             document.querySelector("#Rankings #skillsScores").innerHTML = html;
         }
