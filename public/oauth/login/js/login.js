@@ -3,7 +3,7 @@ const urlParams = new URLSearchParams(queryString);
 const API_OAuth = "OAuth"
 
 function init() {
-    websocket = new WebSocket("wss://ecsrv.liveremoteskills.org:443");
+    websocket = new WebSocket("wss://oauth.liveremoteskills.com:443");
     websocket.onmessage = function (event) {
         data = JSON.parse(event.data);
         switch (data.api) {
