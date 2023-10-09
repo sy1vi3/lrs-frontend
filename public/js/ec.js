@@ -12,6 +12,8 @@ const API_event_ctrl = "Event Control"
 const API_tech_support = "Tech Support"
 const API_rankings = "Rankings"
 const API_stats = "Stats"
+const API_volunteers = "Volunteers"
+const API_sound = "Sound"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -116,9 +118,9 @@ function connect(tokenLogin = false) {
                 break;
             case API_stats:
                 fillStatsTable(data);
-            case "Sound":
+            case API_sound:
                 playChatSound(data);
-            case "Volunteers":
+            case API_volunteers:
                 updateVolunteers(data);
         }
     };
@@ -1040,7 +1042,7 @@ function volunteer_table_add_row() {
     vol_role = document.querySelector("#volunteerRole").value;
     vol_code = "changeme"
     volunteers[vol_name] = { Role: vol_role, Passcode: vol_code }
-    websocket.send(JSON.stringify({ api: "Volunteers", operation: "add_del", user_info: volunteers }));
+    websocket.send(JSON.stringify({ api: API_volunteers, operation: "add_del", user_info: volunteers }));
     document.querySelector("#volunteerName").value = ""
     document.querySelector("#volunteerRole").value = "Staff"
 }
@@ -1069,6 +1071,6 @@ function remove_volunteer(user) {
     if (confirm("Are you sure? Remove " + user.innerHTML + " as a volunteer?") == true) {
         delete volunteers[user.innerHTML];
         user.parentNode.remove();
-        websocket.send(JSON.stringify({ api: "Volunteers", operation: "add_del", user_info: volunteers }));
+        websocket.send(JSON.stringify({ api: API_volunteers, operation: "add_del", user_info: volunteers }));
     }
 }

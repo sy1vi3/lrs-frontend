@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,600;1,300;1,600&family=Oxygen:wght@700&family=Roboto+Slab:wght@300;600&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
 
+* {
+    user-select: none;
+}
+
 body {
     font-family: "Open Sans",sans-serif;
     font-weight: 300;
@@ -124,7 +128,7 @@ table:not(.framed) {
     border-collapse: collapse
 }
 
-    table:not(.framed, .sticky) th, table:not(.framed) td {
+    table:not(.framed):not(.sticky) th, table:not(.framed) td {
         border: 1px solid #808080;
         padding: 10px 16px;
         text-align: center;
@@ -143,7 +147,7 @@ table:not(.framed) {
         background: #000
     }
 
-    table:not(.framed, .sticky) th {
+    table:not(.framed):not(.sticky) th {
         border-bottom-width: 4px;
     }
 
@@ -463,6 +467,10 @@ ul {
     width: fit-content;
     max-height: calc(100vh - 82px);
     box-sizing: content-box
+}
+
+#messageBoard * {
+    user-select: text;
 }
 
     #messageBoard #messageWindow {
@@ -1351,6 +1359,10 @@ label:hover, label:active {
     padding: 12px
 }
 
+#EventControl #volunteers_table #passcode {
+    user-select: all;
+}
+
 #TechSupport {
     padding: 20px;
     width: 256px
@@ -1505,10 +1517,6 @@ label:hover, label:active {
         text-align: center;
         margin-left: 50%;
     }
-
-    #Stats #teamsTableStats{
-        
-    }
 #teamsTableStats{
     width: 100%;
 }
@@ -1534,8 +1542,5 @@ label:hover, label:active {
 #sponsors{
    margin-left: 0px;
    margin-right: 50px;
-}
-
-* {
-    user-select: none;
+   height: 95%;
 }
