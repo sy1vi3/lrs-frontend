@@ -62,7 +62,8 @@ function tab(tab) {
 }
 
 function init() {
-    if (urlParams('token') != null) {
+    if (urlParams.get('token') != null) {
+        console.log("loggin in")
         connect(true);
     }
     
@@ -130,7 +131,8 @@ function connect(tokenLogin = false) {
     websocket.onopen = function (event) {
         if (tokenLogin == true) {
             console.log("Connected to server");
-            loginToken = urlParams('token');
+            loginToken = urlParams.get('token');
+            window.history.replaceState(null, null, window.location.pathname);
             websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: loginToken }));
             websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
         }
