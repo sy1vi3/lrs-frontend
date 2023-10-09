@@ -57,7 +57,7 @@
                 <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(0)"></textarea>
                 <span>
                     <button id="chatSendButton" class="btn gray" onclick="chatSend(0)">Send Message to Everyone</button>
-                    <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()">:)</button>
+                    <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()"><img src="img/emoji.png" width="30" style=" margin-top: -10px; margin-bottom: -10px;"></button>
                 </span>
             </div>
         </div> <!-- End of desktop chat -->
@@ -690,6 +690,10 @@
                                     <td><button class="btn yellow" onclick="refreshTeams()">Update Team List</button></td>
                                     <td><button class="btn grey" onclick="clearChat()">Wipe Chat History</button></td>
                                 </tr>
+                                <tr>
+                               
+                                    <td><button class="btn red" id="RE_BTN" onclick="post_to_re()">RobotEvents Link</button></td>
+                                </tr>
                                 <tfoot id="room_code_footer">
 
                                 </tfoot>
@@ -810,7 +814,7 @@
                         <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(1)"></textarea>
                         <span>
                             <button id="chatSendButton" class="btn gray" onclick="chatSend(1)">Send Message to Everyone</button>
-                            <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()">:)</button>
+                            <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()"><img src="img/emoji.png" width="30" style=" margin-top: -10px; margin-bottom: -10px;"></button>
                         </span>
                     </div>
                 </div>

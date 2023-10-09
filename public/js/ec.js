@@ -409,7 +409,10 @@ function emotePopup() {
 }
 
 function emoteInsert(emote) {
-    document.querySelector("#typeHere").value += ' :' + emote + ': ';
+    for (i in document.querySelectorAll("#typeHere")) {
+        document.querySelectorAll("#typeHere")[i].value += ' :' + emote + ': ';
+    }
+    
 }
 
 function playChatSound(data) {
@@ -1194,6 +1197,16 @@ function eventAnnouncement() {
     }
 }
 
+function post_to_re() {
+    if (document.querySelector("#RE_BTN").classList.contains("green")) {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "setToggle", "flag": "robotevents", "setting": false }));
+    }
+    else {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "setToggle", "flag": "robotevents", "setting": true }));
+    }
+    
+}
+
 // API: Tech Support
 
 
@@ -1600,7 +1613,7 @@ function handleEventData(data) {
             if (!all_events.includes(team_div)) {
                 all_events.push(team_div);
             }
-            
+
         }
         html = '<option value="ALL">ALL</option>';
         for (i in all_events) {
@@ -1621,6 +1634,16 @@ function handleEventControl(data) {
         }
         document.querySelector("#room_code_footer").innerHTML = html;
         initMeetings();
+    }
+    else if (data.operation == "set_re_button") {
+        if (data.linked == true) {
+            document.querySelector("#RE_BTN").classList.add("green");
+            document.querySelector("#RE_BTN").classList.remove("red");
+        }
+        else {
+            document.querySelector("#RE_BTN").classList.add("red");
+            document.querySelector("#RE_BTN").classList.remove("green");
+        }
     }
 }
 
