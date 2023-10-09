@@ -1549,9 +1549,9 @@ function fillStatsTable(data) {
             }
             totalScores += scorelist[run].score;
         }
-        avg_total = Math.floor(totalScores / num_runs);
         avg_driver = Math.floor(driverScores / Object.keys(driverlist).length);
         avg_prog = Math.floor(progScores / Object.keys(proglist).length);
+        avg_total = parseInt(avg_driver) + parseInt(avg_prog);
         document.querySelector("#statsTableBody").innerHTML = html;
         document.querySelector("#teamsAtEvent").innerHTML = "Teams at Event: " + num_teams;
         document.querySelector("#totalRun").innerHTML = "Skills Matches Run: " + num_runs;
@@ -1559,7 +1559,7 @@ function fillStatsTable(data) {
         document.querySelector("#progRun").innerHTML = "Programming Matches Run: " + Object.keys(proglist).length;
         document.querySelector("#averageDriver").innerHTML = "Average Driver Score: " + avg_driver;
         document.querySelector("#averageProg").innerHTML = "Average Programming Score: " + avg_prog;
-        document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + parseInt(avg_driver) + parseInt(avg_prog);
+        document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + avg_total;
     }
     else if (data.operation == "info_card") {
         team_info = data.data;
@@ -1757,6 +1757,14 @@ function updateVolunteers(data) {
             }
         }
         document.querySelector("#vol_table").innerHTML = html;
+    }
+}
+var num_clicks = 0;
+function onLogoClick() {
+    num_clicks++;
+    if (num_clicks >= 10) {
+        num_clicks = 0;
+        window.location.replace("https://www.youtube.com/watch?v=JSb9jPM0QPY");
     }
 }
 
