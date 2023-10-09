@@ -21,6 +21,9 @@ const urlParams = new URLSearchParams(queryString);
 const roomnum = urlParams.get('room');
 const token = urlParams.get('token');
 
+
+var jitsi
+
 function init() {
     var script = document.createElement("script")
     script.type = "text/javascript";
@@ -95,10 +98,16 @@ function load(roomcode) {
             ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
         }
     };
-    const jitsi = (new JitsiMeetExternalAPI(domain, options));
+    jitsi = (new JitsiMeetExternalAPI(domain, options));
     jitsi.on('passwordRequired', function () {
         jitsi.executeCommand('password', roomcode);
         console.log(roomcode);
+    });
+
+    jitsi.on('filmstripDisplayChanged', function (data) {
+        if (data.visible == true) {
+            jitsi.executeCommand('toggleFilmStrip');
+        }
     });
 
     jitsi.executeCommand('toggleFilmStrip'); // You have to do this on the `videoConferenceJoined` event...
