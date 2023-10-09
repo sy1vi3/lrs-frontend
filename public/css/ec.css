@@ -561,13 +561,22 @@ ul {
         }
 
 
-        #messageBoard #messageWindow .score::before {
-            content: "\f0e7";
-            color: #11d625
+        #messageBoard #messageWindow .driverscore::before {
+            content: "\f11b";
+            color: #fa4c3c
         }
 
-        #messageBoard #messageWindow .score > .messageAuthor {
-            color: #11d625
+        #messageBoard #messageWindow .driverscore > .messageAuthor {
+            color: #fa4c3c
+        }
+
+        #messageBoard #messageWindow .progscore::before {
+            content: "\f121";
+            color: #387af5
+        }
+
+        #messageBoard #messageWindow .progscore > .messageAuthor {
+            color: #387af5
         }
 
 
@@ -614,7 +623,10 @@ ul {
         }
 
 
-        #messageBoard #messageWindow .score > .messageAuthor {
+        #messageBoard #messageWindow .driverscore > .messageAuthor {
+            display: none
+        }
+        #messageBoard #messageWindow .progscore > .messageAuthor {
             display: none
         }
 
@@ -627,8 +639,13 @@ ul {
             font-weight: bold;
             font-size: 13pt
         }
-        #messageBoard #messageWindow .score > .messageText {
-            color: #11d625;
+        #messageBoard #messageWindow .driverscore > .messageText {
+            color: #fa4c3c;
+            font-weight: bold;
+            font-size: 13pt
+        }
+        #messageBoard #messageWindow .progscore > .messageText {
+            color: #387af5;
             font-weight: bold;
             font-size: 13pt
         }
