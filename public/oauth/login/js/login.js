@@ -30,7 +30,7 @@ function init() {
 
 function handleLogin(data) {
     if (data['operation'] == 'teams_codes') {
-        html = '';
+        html = 'Log in as: ';
         codes = data['codes'];
         teams = Object.keys(codes);
         for (num in Object.keys(codes)) {
@@ -38,7 +38,7 @@ function handleLogin(data) {
             passcode = codes[team_number]
             html += '<button value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
         }
-        if (html == "") {
+        if (html == "Log in as: ") {
             html = 'No registered teams are associated with this RobotEvents account.'
         }
         if (Object.keys(codes).length == 1) {
