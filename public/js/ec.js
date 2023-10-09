@@ -90,7 +90,7 @@ function init() {
         document.querySelector("#meetingCheckSetting").checked = true;
     }
     else {
-        document.querySelector("#meetingCheckSetting").checked = true;
+        document.querySelector("#meetingCheckSetting").checked = false;
     }
 
 }
