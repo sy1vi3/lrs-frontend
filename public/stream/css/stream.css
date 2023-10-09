@@ -1,12 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:ital@0;1&display=swap');
 
 * {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     overflow: hidden;
     color: #f0f0f0;
+    font-size: initial;
 }
-
+:root {
+    font-size: 0.15vmin;
+}
 body {
     display: flex;
     width: 100vw;
@@ -16,31 +19,24 @@ body {
     align-items: stretch;
 }
 
+.hide {
+    display: none;
+}
+
 #jitsiBox {
     flex-grow: 1;
 }
 
 #info {
-    display: flex;
-    justify-content: space-between;
-}
-
-#current {
     width: 25%;
     min-width: 400px;
+    margin: 0 auto;
     text-align: center;
     background: #8a8b8e;
-    border-radius: 5px;
+    border-radius: 8px;
+    color: #fff;
+    padding: 1vmin;
 }
 #teamNum { font-size: 22rem; }
 #teamName { font-size: 16rem; }
 #teamLoc { font-size: 13rem; font-style: italic; }
-
-#queue {
-    float: right;
-    text-align: right;
-}
-
-.hide {
-    display: none;
-}
