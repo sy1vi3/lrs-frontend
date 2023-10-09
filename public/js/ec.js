@@ -148,6 +148,7 @@ function connect(tokenLogin = false) {
                 document.querySelector("#chatSendButton").click();
             }
         });
+        document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVIQC").innerHTML;
     };
 
     websocket.onclose = function (event) {
@@ -830,6 +831,7 @@ function handleMeetingCtrl(data) {
             domain = "connect.liveremoteskills.org";
             options = [];
             jitsi = [];
+            console.log(data.rooms);
             for (i = 1; i <= data.rooms; i++) {
                 options.push({
                     roomName: "room" + i.toString(),
