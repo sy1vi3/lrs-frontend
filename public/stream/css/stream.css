@@ -27,7 +27,7 @@ body {
 }
 
 #info {
-    width: 25%;
+    width: 60vmin;
     min-width: 400px;
     margin: 0 auto;
     text-align: center;
