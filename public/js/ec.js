@@ -88,7 +88,7 @@ function init() {
     }
     else {
         console.log("ELSE");
-        console.log(mmeetCookie);
+        console.log(meetCookie);
     }
     console.log(meetCookie);
 
