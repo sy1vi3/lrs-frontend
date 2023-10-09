@@ -139,7 +139,7 @@ function connect() {
 
     websocket.onclose = function (event) {
         console.log("Lost connection to server");
-        connect();
+        setTimeout(function () { connect(); }, 1500);
     };
 }
 

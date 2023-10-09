@@ -617,7 +617,7 @@ function queueInvite(team, purpose) {
             document.getElementById("driving").checked = true;
         else
             document.getElementById("programming").checked = true;
-        setTimeout(function () { showModal("<span color='yellow'>" + team + " has been invited to " + purpose + ". Don't let the team start running skills until the Recorder for this team shows up in the meeting room, or after two minutes from this point, whichever comes first.</span>"); }, 1500);
+        setTimeout(function () { showModal("<span background='yellow'>" + team + " has been invited to " + purpose + ". Don't let the team start running skills until the Recorder for this team shows up in the meeting room, or after two minutes from this point, whichever comes first.</span>"); }, 1500);
     }
 }
 
