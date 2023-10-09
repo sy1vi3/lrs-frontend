@@ -1,0 +1,33 @@
+body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #1b365d;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.jitsi_box {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 5%;
+    left: 0;
+    flex-grow: 1;
+}
+
+#current * {
+    text-align: center;
+}
+
+#queue{
+    float: right;
+}
+
+
+.hide{
+    display: none;
+}

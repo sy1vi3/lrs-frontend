@@ -17,6 +17,7 @@ const API_sound = "Sound"
 const API_team_control = "Team Control"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+const API_livestream = "API_livestream"
 
 var websocket;
 var plannedClose = false;
@@ -170,7 +171,6 @@ function login() {
     } else {
         connect();
     }
-    console.log("button2")
 }
 
 function logout() {
