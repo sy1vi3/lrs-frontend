@@ -101,35 +101,39 @@ function rankingsHandler(data) {
         div_ranks_len = Object.keys(div_ranks).length;
         document.querySelector("#rankingsParent").innerHTML = "";
         for (var property in div_ranks) {
-            div_obj = document.createElement("div");
-            div_obj.setAttribute("id", property);
-            document.querySelector("#rankingsParent").appendChild(div_obj);
+            if (Object.keys(div_ranks[property]).length != 0) {
+                div_obj = document.createElement("div");
+                div_obj.setAttribute("id", property);
+                document.querySelector("#rankingsParent").appendChild(div_obj);
 
-            div_header = document.createElement("h1");
-            div_header.setAttribute("id", "skillsHeader" + property);
-            document.querySelector("#" + property).appendChild(div_header);
-            document.querySelector("#skillsHeader" + property).innerHTML = property;
-            div_table = document.createElement("table");
-            div_table.setAttribute("id", "skillsScoreTable" + property);
-            document.querySelector("#" + property).appendChild(div_table);
+                div_header = document.createElement("h1");
+                div_header.setAttribute("id", "skillsHeader" + property);
+                document.querySelector("#" + property).appendChild(div_header);
+                document.querySelector("#skillsHeader" + property).innerHTML = property;
+                div_table = document.createElement("table");
+                div_table.setAttribute("id", "skillsScoreTable" + property);
+                document.querySelector("#" + property).appendChild(div_table);
+            }
         }
 
         for (var property in div_ranks) {
-            ranks = div_ranks[property];
-            ranks_len = Object.keys(ranks).length;
+            if (Object.keys(div_ranks[property]).length != 0) {
+                ranks = div_ranks[property];
+                ranks_len = Object.keys(ranks).length;
 
-            html = '';
-            for (i = 0; i < ranks_len; i++) {
-                teaminfo = ranks[i + 1];
-                driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-                driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td></tr>');
+                html = '';
+                for (i = 0; i < ranks_len; i++) {
+                    teaminfo = ranks[i + 1];
+                    driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+                    driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+                    html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td></tr>');
+                }
+
+                html += "</tbody>";
+                document.querySelector("#skillsScoreTable" + property).innerHTML = html;
+                color = shadeColor("#" + intToRGB(hashCode(property)), -50);
+                document.getElementById("skillsScoreTable" + property).style.backgroundColor = color;
             }
-
-            html += "</tbody>";
-            document.querySelector("#skillsScoreTable" + property).innerHTML = html;
-            color = shadeColor("#" + intToRGB(hashCode(property), -50));
-            document.getElementById("skillsScoreTable" + property).style.backgroundColor = "#" + intToRGB(hashCode(property));
         }
         if (document.querySelector("#rankingsParent").offsetHeight > (window.innerHeight - document.querySelector("#rankingsHeader").offsetHeight)) {  
             node = document.querySelector("#rankingsParent");

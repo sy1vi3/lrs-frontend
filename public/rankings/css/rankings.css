@@ -1754,7 +1754,10 @@ td.smol button {
 }
 
 
-
+td {
+    padding: 0px !important;
+    font-size: 30px;
+}
 
 .switch {
     position: relative;
