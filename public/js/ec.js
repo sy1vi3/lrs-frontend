@@ -371,6 +371,9 @@ function handleChat(data) {
                 if (emote_name in emotes) {
                     return emotes[emote_name];
                 }
+                else {
+                    return x;
+                }
             })
             console.log(msg.message);
             html += '<div class="messageLine ' + msg.authorType + '" oncontextmenu="chatDelete(' + msg.rowid + ')"><span class="messageAuthor">' + msg.author + ': </span><span class="messageText">' + msg.message + '</span></div>';
