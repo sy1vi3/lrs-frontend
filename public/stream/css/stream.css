@@ -13,7 +13,7 @@ body {
     display: flex;
     width: 100vw;
     height: 100vh;
-    background: rgba(27,54,93,0);
+    background: #1b365d;
     flex-direction: column;
     align-items: stretch;
 }
