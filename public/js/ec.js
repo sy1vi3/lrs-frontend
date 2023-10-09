@@ -38,6 +38,7 @@ var ALL_ROOMS = [];
 var event_teams = {};
 var team_program_type;
 var newTabMeets = false;
+var refJitsi;
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
@@ -1036,7 +1037,7 @@ function handleMeetingCtrl(data) {
                     parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
                     width: "100%",
                     height: "100%",
-                    userInfo: { email: "admin", displayName: name+" - EP" },
+                    jwt: data.jwt,
                     configOverwrite: {
                         disableAudioLevels: true,
                         enableNoAudioDetection: false,
@@ -1611,13 +1612,12 @@ function handleRefSetup(data) {
             document.querySelector("#RefjitsiBox").innerHTML = "";
             domain = "connect.liveremoteskills.org";
             var refOptions;
-            var refJitsi;
             refOptions = {
                 roomName: "room" + ref_room_number,
                 parentNode: document.querySelector("#RefjitsiBox"),
                 //width: "100%",
                 //height: "500%",
-                userInfo: { email: "team", displayName: name + " - Ref" },
+                jwt: data.jwt,
                 configOverwrite: {
                     //disableAudioLevels: true,
                     //enableNoAudioDetection: false,
@@ -1685,9 +1685,12 @@ function handleRefSetup(data) {
             });
             refJitsi.executeCommand('toggleFilmStrip');
         }
-        };
         script.src = "https://connect.liveremoteskills.org/external_api.js";
         document.getElementsByTagName("head")[0].appendChild(script);
-        
+    }
+    else if (data.operation == "room_code_update") {
+        console.log("setting code to" + data.password);
+        refJitsi.executeCommand('password', data.password);
+    }
 
 }
