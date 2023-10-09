@@ -97,39 +97,20 @@ function rankingsHandler(data) {
         for (var property in div_ranks) {
             ranks = div_ranks[property];
             ranks_len = Object.keys(ranks).length;
-            program_type = ranks[1].comp;
 
-            if (program_type != "VRC" && program_type != "VIQC") {
-                program_type = comp_preset;
-            }
-
-            if (program_type == "VRC") {
-                html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
-                for (i = 0; i < ranks_len; i++) {
-                    teaminfo = ranks[i + 1];
-                    driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-                    driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                    html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
-                }
-            }
-            else if (program_type == "VIQC") {
-                html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Driver</th><th>Prog</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
-                for (i = 0; i < ranks_len; i++) {
-                    teaminfo = ranks[i + 1];
-                    driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-                    driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                    html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
-                }
-            }
-            else {
-                console.log("Neither Format");
+            html = '';
+            for (i = 0; i < ranks_len; i++) {
+                teaminfo = ranks[i + 1];
+                driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+                driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+                html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td></tr>');
             }
 
             html += "</tbody>";
             document.querySelector("#skillsScoreTable" + property).innerHTML = html;
             document.getElementById("skillsScoreTable" + property).style.backgroundColor = "#" + intToRGB(hashCode(property));
         }
-        if (document.querySelector("#rankingsParent").offsetHeight > window.innerHeight) {  
+        if (document.querySelector("#rankingsParent").offsetHeight > (window.innerHeight - document.querySelector("#rankingsHeader").offsetHeight)) {  
             node = document.querySelector("#rankingsParent");
             toMatch = window.innerHeight;
             heightSum = 0;
@@ -154,12 +135,12 @@ function rankingsHandler(data) {
             }
             startScroll()
         }
-
-    }
-    if (!init) {
+        if (!init) {
+            websocket.send(JSON.stringify({ api: API_livestream, operation: "get_ranks"}));
+        }
         init = true;
-        rankingsHandler(saved_data);
     }
+    
     
 }
 

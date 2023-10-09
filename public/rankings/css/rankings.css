@@ -1842,10 +1842,21 @@ input:checked + .slider:before {
 }
 
 
-table{
-    width: 100% !important;
-}
-
 #rankingsParent {
     text-align: center !important;
+}
+
+#rankingsHeader{
+    position: sticky;
+    top: 0;
+}
+
+td, th {
+    width: 14.2857143% !important;
+}
+
+tr, table {
+    color: white;
+    width: 100%;
+    font-weight: 900;
 }
