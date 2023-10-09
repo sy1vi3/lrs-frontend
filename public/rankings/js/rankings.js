@@ -126,7 +126,7 @@ function rankingsHandler(data) {
                     teaminfo = ranks[i + 1];
                     driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
                     driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                    html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td></tr>');
+                    html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td></tr>');
                 }
 
                 html += "</tbody>";

@@ -2,8 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\public\\js"
+    "\\public\\js",
+    "\\public\\oauth",
+    "\\public\\oauth\\login",
+    "\\public\\oauth\\login\\js",
+    "\\public\\output",
+    "\\public\\output\\js",
+    "\\public\\rankings"
   ],
-  "SelectedNode": "\\public\\js\\ec.js",
+  "SelectedNode": "\\public\\js\\emotes.js",
   "PreviewInSolutionExplorer": false
 }
