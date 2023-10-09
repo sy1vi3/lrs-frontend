@@ -1825,4 +1825,11 @@ input:checked + .slider:before {
 
 #configBox{
     margin: 60px;
+    text-align: center;
+}
+
+#eventConfigTable{
+    width: 100%;
+    position: relative !important;
+    margin: auto;
 }
