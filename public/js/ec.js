@@ -175,7 +175,6 @@ function connect(tokenLogin = false) {
             }
         });
 
-        initMeetings();
         //oldProgram = "VIQC";
         //document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVIQC").innerHTML;
     };
@@ -212,12 +211,15 @@ function logout() {
 }
 
 // API: Main
-
+var setupJitsi = false;
 function handleMain(data) {
-    console.log(data);
     if ("name" in data && "role" in data && "tablist" in data) {
         name = data.name;
         role = data.role;
+        if (role == "Team" && setupJitsi == false) {
+            teamInitMeetings();
+            setupJitsi = true;
+        }
         document.querySelector("#username").innerHTML = "Welcome, " + name + "!";
         document.querySelector("#mobileUser").innerHTML = name;
         if (role == "Observer") {
@@ -319,6 +321,9 @@ function handleMain(data) {
             document.querySelector("#jitsiPopupNode").firstChild.width = "80vw";
             teamJitsi.executeCommand('toggleFilmStrip');
         }
+    }
+    else if("modal" in data){
+        showModal(data.modal);
     }
 }
 
@@ -1124,6 +1129,14 @@ function initMeetings() {
     script.onload = function () {
         websocket.send(JSON.stringify({ api: API_meeting_ctrl, operation: "init" }));
     };
+    script.src = "https://connect.liveremoteskills.org/external_api.js";
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+function teamInitMeetings(){
+    document.querySelector("#MeetingControl #init").classList.add("hide");
+    var script = document.createElement("script")
+    script.type = "text/javascript";
     script.src = "https://connect.liveremoteskills.org/external_api.js";
     document.getElementsByTagName("head")[0].appendChild(script);
 }
