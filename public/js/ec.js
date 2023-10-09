@@ -65,7 +65,7 @@ function tab(tab) {
     }
 }
 
-function init() {s    
+function init() {    
     document.querySelector("#Login #accessCode").addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
             document.querySelector("#Login button").click();
