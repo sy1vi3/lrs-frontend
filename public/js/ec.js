@@ -996,6 +996,7 @@ function skillsCalc(action) {
                 if (skillsRowid > -1)
                     msg.rowid = skillsRowid;
                 websocket.send(JSON.stringify(msg));
+                console.log(msg)
                 skillsRowid = -1;
                 document.querySelector("#teams.teamDropdown").value = "";
                 skillsGetAttempts();

@@ -984,7 +984,8 @@
                             <img src="https://cdn.discordapp.com/avatars/428334191118385172/25a3844f0d4c054c12a384f0e45f1fcb.png?size=128" width="75" />
                         </div>
                         <div id="stickerActions">
-                            <input type="file" id="StickerFile" onchange="stickerImageUpload()">
+                            <label for="StickerFile"><button class="btn lavender" onclick="document.querySelector('#StickerFile').click();">Upload Sticker</button></label>
+                            <input type="file" id="StickerFile" onchange="stickerImageUpload()" style="display: none">
                         </div>
                     </div>
                 </div>
@@ -1067,7 +1068,6 @@
                     <h1><u>LRS Console</u></h1> <br /><br />
                     <span>Read the instructions for how to use the LRS Console here</span><br />
                     <span>If you are having any issues with the system, you can ask for assitance in the Team Chat</span><br />
-                    <span></span>
                 </div>
             </div> <!-- End of Help tab -->
 
