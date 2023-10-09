@@ -249,9 +249,13 @@ body {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1350px) {
     #header #rightSplit > h1 {
         font-size: 16pt
+    }
+
+    #header #eventConsole{
+        display: none;
     }
 
     #header #rightSplit {
@@ -1519,4 +1523,12 @@ label:hover, label:active {
 
 ::-webkit-scrollbar-thumb {
     background: #888;
+}
+
+#leftSplit{
+    text-align: left;
+}
+#sponsors{
+   margin-left: 0px;
+   margin-right: 50px;
 }
