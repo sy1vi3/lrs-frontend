@@ -44,7 +44,7 @@ var all_events = [];
 var ALL_ROOMS = [];
 var event_teams = {};
 var team_program_type;
-var newTabMeets = false;
+var newTabMeets = true;
 var refJitsi;
 
 const comp_preset = "VIQC";
