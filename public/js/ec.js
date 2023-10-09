@@ -296,7 +296,7 @@ function handleMain(data) {
                 parentNode: document.querySelector("#jitsiPopupNode"),
                 //width: "500px",
                 //height: "500px",
-                userInfo: { email: "team", displayName: name },
+                jwt: data.jwt,
                 configOverwrite: {
                     //disableAudioLevels: true,
                     //enableNoAudioDetection: false,
@@ -352,11 +352,6 @@ function handleMain(data) {
                 }
             }
             teamJitsi = new JitsiMeetExternalAPI(domain, teamOptions);
-
-            teamJitsi.on('passwordRequired', function () {
-                console.log("Adding Passcode to team room");
-                teamJitsi.executeCommand('password', data.password);
-            });
 
             teamJitsi.on('filmstripDisplayChanged', function (data) {
                 if (data.visible == true) {
@@ -1075,11 +1070,6 @@ function handleMeetingCtrl(data) {
         if ("rooms" in data) {
             jwt = data.jwt;
             num_rooms_ep = data.rooms;
-        } else if ("room" in data && "password" in data) {
-            if (jitsiInited) {
-                i = data.room - 1;
-                jitsi[i].executeCommand('password', data.password);
-            }
         }
     }
     else if (data.operation == "all_rooms") {
@@ -1158,26 +1148,15 @@ function epLaunchMeetings() {
         });
         console.log("i = " + i);
         jitsi_room = new JitsiMeetExternalAPI(domain, options[i - 1]);
-
         jitsi.push(jitsi_room);
     }
     for (a in jitsi) {
         let room_index = a
-        let b = parseInt(room_index) + 1;
-        jitsi[room_index].on('passwordRequired', function () {
-            console.log("passreq");
-            let room_number = b;
-            let room_passcode = rooms_codes[room_number];
-            console.log("Adding Passcode to room" + room_number + "  " + room_passcode);
-            jitsi[room_index].executeCommand('password', room_passcode);
-        });
-
         jitsi[room_index].on('filmstripDisplayChanged', function (data) {
             if (data.visible == true) {
                 jitsi[room_index].executeCommand('toggleFilmStrip');
             }
         });
-
         jitsi[room_index].executeCommand('toggleFilmStrip');
     }
     jitsiInited = true;
@@ -1273,7 +1252,7 @@ function handleRankings(data) {
                         teaminfo = ranks[i + 1];
                         driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
                         driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                        html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;"><i>' + teaminfo.team + '</i></button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
                     }
                 }
                 else if (program_type == "VIQC") {
@@ -1282,7 +1261,7 @@ function handleRankings(data) {
                         teaminfo = ranks[i + 1];
                         driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
                         driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                        html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;"><i>' + teaminfo.team + '</i></button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
                     }
                 }
                 else {
@@ -1353,6 +1332,15 @@ function stickerBanUser(team) {
 
 function stickerUnbanUser(team) {
     websocket.send(JSON.stringify({ api: "Moderation", operation: "sticker_unban_user", target: team }));
+}
+
+function removeFromProfile(user, target) {
+    if (role == "Event Partner" || role == "Staff" || role == "Producer") {
+        websocket.send(JSON.stringify({ api: "Moderation", operation: "sticker_remove_specific", target: target, team: user }));
+    }
+    else {
+        websocket.send(JSON.stringify({ api: API_settings, operation: "remove_team_from_profile", target: target}));
+    }
 }
 
 function fillStatsTable(data) {
@@ -1450,18 +1438,29 @@ function fillStatsTable(data) {
         html = '';
         document.querySelector("#teamSharedStickers").innerHTML = html;
         stickers = team_info.stickers;
+        sticker_urls = [];
         for (i in stickers) {
             sticker = stickers[i];
             let image = document.createElement("img");
-            image.src = sticker;
+            image.src = sticker.url;
+            image.alt = sticker.teamnum;
             image.width = 75;
             image.draggable = false;
             let div = document.createElement("div");
+            
             div.appendChild(image);
+            if ((role == "Event Partner" || role == "Staff" || role == "Producer" || team_info.num == name) && sticker.teamnum != team_info.num) {
+                let delete_icon = document.createElement("span");
+                delete_icon.setAttribute('class', 'close');
+                delete_icon.setAttribute('onclick', "removeFromProfile('" + team_info.num + "', '" + sticker.teamnum + "')");
+                delete_icon.innerHTML = '<i class="fas fa-times-circle">';
+                div.appendChild(delete_icon);
+            }
             document.querySelector("#teamSharedStickers").appendChild(div);
+            sticker_urls.push(sticker.url);
         }
         
-        if (!html.includes(myStickerURL)) {
+        if (!sticker_urls.includes(myStickerURL) && role=="Team") {
             document.querySelector("#teamInfoActions").innerHTML = '<img onclick="giftSticker(`' + team_info.num + '`)"class="teamSticker" src="img/random/plus_icon.png" width="50" draggable="false"/>';
         }
         else {
@@ -1910,10 +1909,6 @@ function handleRefSetup(data) {
             }
             refJitsi = new JitsiMeetExternalAPI(domain, refOptions);
 
-            refJitsi.on('passwordRequired', function () {
-                refJitsi.executeCommand('password', ref_pass);
-            });
-
             refJitsi.on('filmstripDisplayChanged', function (data) {
                 if (data.visible == true) {
                     refJitsi.executeCommand('toggleFilmStrip');
@@ -1923,9 +1918,6 @@ function handleRefSetup(data) {
         }
         script.src = "https://connect.liveremoteskills.org/external_api.js";
         document.getElementsByTagName("head")[0].appendChild(script);
-    }
-    else if (data.operation == "ref_room_code_update") {
-        refJitsi.executeCommand('password', data.password);
     }
 
 }

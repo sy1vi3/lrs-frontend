@@ -10,7 +10,7 @@
     font-size: 0.15vmin;
 }
 body {
-    display: flex;
+    /*display: flex;*/
     width: 100vw;
     height: 100vh;
     background: #1b365d;
@@ -24,21 +24,40 @@ body {
 
 #jitsiBox {
     flex-grow: 1;
+    height: 100vh;
+    width: 100vw;
 }
 
 #info {
     width: 60vmin;
     min-width: 400px;
-    margin: 0 auto;
+    margin: auto;
     text-align: center;
-    background: #8a8b8e;
+    background: rgba(48, 48, 48, 0.5);
     border-radius: 2vmin;
-    color: #fff;
+    color: #292929;
     padding: 1vmin;
+    position: absolute;
+    bottom: 0;
+    left: calc(50vw - 30vmin);
 }
-#teamNum { font-size: 22rem; }
-#teamName { font-size: 16rem; }
-#teamLoc { font-size: 13rem; font-style: italic; }
+
+#teamNum {
+    font-size: 22rem;
+    opacity: 1;
+    color: #F0F0F0;
+}
+#teamName {
+    font-size: 16rem;
+    opacity: 1;
+    color: #F0F0F0;
+}
+#teamLoc {
+    font-size: 13rem;
+    font-style: italic;
+    opacity: 1;
+    color: #F0F0F0;
+}
 
 
 
