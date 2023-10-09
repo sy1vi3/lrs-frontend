@@ -108,6 +108,8 @@ function connect() {
             case API_tech_support:
                 handleTechSupport(data);
                 break;
+            case API_stats:
+                fillStatsTable(data);
         }
     };
 
@@ -951,3 +953,42 @@ function refreshRanks() {
 }
 
 
+function fillStatsTable() {
+    teams_data = data.data;
+    html = ''
+    for (key in teams_data) {
+        value = teams_data[key];
+        html += "<tr><td>" + key + "</td><td>" + value.program + "</td><td>" + value.div + "</td><td>" + value.inspection + "</td><td>" + value.driver + "</td><td>" + value.prog + "</td></tr>"
+    }
+    num_teams = Object.keys(teams_data).length;
+    num_runs = scorelist.length;
+    proglist = {};
+    driverlist = {};
+    totalScores = 0;
+    progScores = 0;
+    driverScores = 0;
+    for (run in scorelist) {
+        if (scorelist[run].type == "Programming") {
+            proglist[run] = scorelist[run];
+            progScores += scorelist[run].score;
+        }
+        else if (scorelist[run].type == "Driving") {
+            driverlist[run] = scorelist[run];
+            driverScores += scorelist[run].score;
+        }
+        console.log(scorelist[run].type);
+        totalScores += scorelist[run].score;
+    }
+    avg_total = Math.floor(totalScores / num_runs);
+    avg_driver = Math.floor(driverScores / Object.keys(driverlist).length);
+    avg_prog = Math.floor(progScores / Object.keys(proglist).length);
+    document.querySelector("#statsTableBody").innerHTML = html;
+    document.querySelector("#teamsAtEvent").innerHTML = "Teams at Event: " + num_teams;
+    document.querySelector("#totalRun").innerHTML = "Skills Matches Run: " + num_runs;
+    document.querySelector("#driverRun").innerHTML = "Driver Matches Run: " + Object.keys(driverlist).length;
+    document.querySelector("#progRun").innerHTML = "Programming Matches Run: " + Object.keys(proglist).length;
+    document.querySelector("#averageDriver").innerHTML = "Average Driver Score: " + avg_driver;
+    document.querySelector("#averageProg").innerHTML = "Average Programming Score: " + avg_prog;
+    document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + avg_total;
+
+}
