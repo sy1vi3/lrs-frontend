@@ -596,6 +596,7 @@ function inspectionUnqueue() {
 function handleInspectionCtrl(data) {
     if (data.operation == "post") {
         inspHtml = "<tbody><tr><th>Team</th><th>Inspection Status</th><th>Actions</th></tr>";
+
         for (i = 0; i < data.inspections.length; i++) {
             row = data.inspections[i];
             inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
@@ -1796,6 +1797,7 @@ function team_control(data) {
         }
 
         document.querySelector("#team_info_table_body").innerHTML = html;
+        teamSort(document.querySelector("#team_info_table"), document.querySelector("#eventCtrlUserSort"), 0)
     }
 }
 
