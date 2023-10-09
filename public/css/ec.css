@@ -800,11 +800,11 @@ th, td {
     .container.v.tc {
         padding: 0 20px;
         width: 50%;
-        box-sizing: border-box
+        box-sizing: border-box;
     }
 
         .container.v.tc:not(:last-child) {
-            border-right: 2px dotted #808080
+            border-right: 2px dotted #808080;
         }
 
 @media (max-width: 1200px) {
@@ -832,13 +832,13 @@ th, td {
     background: #26272A;
     position: relative;
     overflow-y: auto;
-    flex-grow: 1
+    flex-grow: 1;
 }
 
 @media (max-width: 1000px) {
     .scrollBox {
         max-height: 100vh;
-        overflow-y: auto
+        overflow-y: auto;
     }
 }
 
@@ -848,35 +848,35 @@ th, td {
 
 @media (max-width: 1000px) {
     .scrollBox > * {
-        position: relative
+        position: relative;
     }
 }
 
 .scoring {
     margin: 15pt auto;
     border-spacing: 20px;
-    border-collapse: separate !important
+    border-collapse: separate !important;
 }
 
     .scoring td {
         font-size: 16pt;
-        font-weight: bold
+        font-weight: bold;
     }
 
     .scoring :hover {
-        background: inherit
+        background: inherit;
     }
 
     .scoring .red {
-        background: red
+        background: red;
     }
 
     .scoring .blue {
-        background: blue
+        background: blue;
     }
 
     .scoring .none {
-        background: #363639
+        background: #363639;
     }
 
 .stackedScrollBoxes {
