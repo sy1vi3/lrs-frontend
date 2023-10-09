@@ -572,7 +572,7 @@ function handleQueue(data) {
                 start = 0;
                 stop = 99999999999999999;
             }
-            var now = Math.floor(Date.now() / 1000);
+            var now = Math.floor(Date.now() / 1000) + 7200;
             if (data.queue[i].teamNum in timeslots) {
                 if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
                     queueHtml += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
@@ -616,7 +616,7 @@ function handleQueue(data) {
                 start = 0;
                 stop = 99999999999999999;
             }
-            var now = Math.floor(Date.now() / 1000);
+            var now = Math.floor(Date.now() / 1000) + 7200;
             if (data.queue[i].teamNum in timeslots) {
                 if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
                     inspectQueue += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
