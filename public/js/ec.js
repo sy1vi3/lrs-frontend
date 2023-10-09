@@ -1268,8 +1268,9 @@ function handleRankings(data) {
         div_ranks = data.list;
         div_ranks_len = Object.keys(div_ranks).length;
 
-        if (document.querySelector("#divsDropdown").value == null) {
-            document.querySelector("#divsDropdown").value = "Science";
+        if (document.querySelector("#divsDropdown").value != "") {
+            html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value + '" id="rankingsiframe"></iframe>';
+            document.querySelector("#Rankings #skillsScores").innerHTML = html;
         }
         //for (var property in div_ranks) {
         //    ranks = div_ranks[property]; 
@@ -1306,8 +1307,7 @@ function handleRankings(data) {
         //        teamSort(document.querySelector("#Rankings #skillsScoreTable"), document.querySelector("#Rankings #rankingsTeamSort"));
         //    }
         //}
-        html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value+'" id="rankingsiframe"></iframe>'
-        document.querySelector("#Rankings #skillsScores").innerHTML = html;
+        
 
     }
     else if (data.operation == "div_fill") {
