@@ -939,7 +939,7 @@ th, td {
 
 #login {
     padding: 0 20px;
-    float: right;
+    position: center;
     flex-grow: 1
 }
 
@@ -973,7 +973,8 @@ th, td {
         max-width: 256px;
         background: #26272A;
         padding: 20px;
-        margin: 16px auto 0
+        margin: 16px auto 0;
+        text-align: center;
     }
 
         #login #form > * {

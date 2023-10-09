@@ -30,13 +30,22 @@ function init() {
 
 function handleLogin(data) {
     if (data['operation'] == 'teams_codes') {
-        html = 'Log in as: ';
+        html = '<span>Choose a Team:</span>';
         codes = data['codes'];
         teams = Object.keys(codes);
         for (num in Object.keys(codes)) {
             team_number = teams[num]
             passcode = codes[team_number]
-            html += '<button value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
+            if ((num % 3) == 0) {
+                button_type = 'btn lavender'
+            }
+            else if ((num % 2) == 0) {
+                button_type = 'btn red'
+            }
+            else {
+                button_type = 'btn yellow'
+            }
+            html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
         }
         if (html == "Log in as: ") {
             html = 'No registered teams are associated with this RobotEvents account.'
@@ -45,7 +54,7 @@ function handleLogin(data) {
             teamLogin(passcode)
         }
         else {
-            document.querySelector("#teamButtons").innerHTML = html;
+            document.querySelector("#form").innerHTML = html;
         }
     }
 }
