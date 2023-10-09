@@ -82,6 +82,16 @@ function init() {
             document.querySelector("#Login button").click();
         }
     });
+    meetCookie = getCookie("tabMeets");
+    if (meetCookie == "") {
+        document.querySelector("#meetingCheckSetting").checked = false;
+    }
+    else {
+        console.log("ELSE");
+        console.log(mmeetCookie);
+    }
+    console.log(meetCookie);
+
 }
 
 function connect(tokenLogin = false) {
@@ -310,15 +320,7 @@ function settingChange() {
     console.log("set")
 }
 function settingsLoad() {
-    meetCookie = getCookie("tabMeets");
-    if (meetCookie == "") {
-        document.querySelector("#meetingCheckSetting").checked = false;
-    }
-    else {
-        console.log("ELSE");
-        console.log(mmeetCookie);
-    }
-    console.log(meetCookie);
+    
 
 }
 function handleQueue(data) {
