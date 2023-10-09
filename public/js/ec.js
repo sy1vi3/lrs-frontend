@@ -37,7 +37,6 @@ var ALL_ROOMS = [];
 var event_teams = {};
 var team_program_type;
 
-var jitsiAdminPass;
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
@@ -1444,7 +1443,6 @@ function handleEventControl(data) {
             room_code = rooms_codes[Object.keys(rooms_codes)[i]];
             html += "<tr><td>" + room + "</td><td>" + room_code + "</td></tr>";
         }
-        jitsiAdminPass = data.admin_pass
         document.querySelector("#room_code_footer").innerHTML = html;
     }
 }
