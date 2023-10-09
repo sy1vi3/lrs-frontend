@@ -1559,7 +1559,7 @@ function fillStatsTable(data) {
         document.querySelector("#progRun").innerHTML = "Programming Matches Run: " + Object.keys(proglist).length;
         document.querySelector("#averageDriver").innerHTML = "Average Driver Score: " + avg_driver;
         document.querySelector("#averageProg").innerHTML = "Average Programming Score: " + avg_prog;
-        document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + avg_driver + avg_prog;
+        document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + parseInt(avg_driver) + parseInt(avg_prog);
     }
     else if (data.operation == "info_card") {
         team_info = data.data;
