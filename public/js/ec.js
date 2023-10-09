@@ -86,8 +86,11 @@ function init() {
     if (meetCookie == "") {
         document.querySelector("#meetingCheckSetting").checked = false;
     }
+    else if (meetCookie == "true") {
+        document.querySelector("#meetingCheckSetting").checked = true;
+    }
     else {
-        document.querySelector("#meetingCheckSetting").checked = meetCookie;
+        document.querySelector("#meetingCheckSetting").checked = true;
     }
 
 }
