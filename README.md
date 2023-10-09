@@ -1,3 +1,7 @@
+[![Event Console Overview Video](https://www.18x18az.org/img/event-console-video.png)](https://youtu.be/-hYVw1OZM5o)
+
+<br>
+
 **Event Console server:** https://gitlab.com/18x18az/event-console/-/tree/server
 - Python 3.8
 - Set up `venv` and run `pip install -r requirements.txt`
