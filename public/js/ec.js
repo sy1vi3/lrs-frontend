@@ -31,6 +31,8 @@ var saveAttempts;
 var saveTeam;
 var oldProgram;
 
+var ALL_ROOMS =[]
+
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
 if (urlParams.get('token') != null) {
@@ -823,23 +825,28 @@ function skillsScoreView(rowid) {
 // API: Meeting Control
 
 function handleMeetingCtrl(data) {
-    if ("rooms" in data) {
-        domain = "connect.liveremoteskills.org";
-        options = [];
-        jitsi = [];
-        for (i = 1; i <= data.rooms; i++) {
-            options.push({
-                roomName: "room" + i.toString(),
-                parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
-                userInfo: { email: "", displayName: "Event Bot" }
-            });
-            jitsi.push(new JitsiMeetExternalAPI(domain, options[i - 1]));
+    if (data.operation == "set_code") {
+        if ("rooms" in data) {
+            domain = "connect.liveremoteskills.org";
+            options = [];
+            jitsi = [];
+            for (i = 1; i <= data.rooms; i++) {
+                options.push({
+                    roomName: "room" + i.toString(),
+                    parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
+                    userInfo: { email: "", displayName: "Event Bot" }
+                });
+                jitsi.push(new JitsiMeetExternalAPI(domain, options[i - 1]));
+            }
+            console.log(options);
+            console.log(jitsi);
+        } else if ("room" in data && "password" in data) {
+            i = data.room - 1;
+            jitsi[i].executeCommand('password', data.password);
         }
-        console.log(options);
-        console.log(jitsi);
-    } else if ("room" in data && "password" in data) {
-        i = data.room - 1;
-        jitsi[i].executeCommand('password', data.password);
+    }
+    else if (data.operation == "all_rooms") {
+        ALL_ROOMS = data.rooms;
     }
 }
 
@@ -1055,8 +1062,11 @@ function updateVolunteers(data) {
             if (role == "Head Referee") {
                 role = "Referee";
             }
-            if (user_name != name && user_name != "Livestream" && user_name != "Guest") {
+            if (user_name != name && user_name != "Guest") {
                 html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+            }
+            if (role == "Livestream") {
+                streamcode = passcode;
             }
         }
         document.querySelector("#vol_table").innerHTML = html;
@@ -1239,4 +1249,13 @@ function refreshTeams() {
     if (confirm("Are you sure? Really refresh team list?")) {
         websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "refresh_teams" }));
     }
+}
+
+function make_stream() {
+    html = "<b>DO NOT LEAK</b> <br><br> ";
+    for (room in ALL_ROOMS) {
+        num = ALL_ROOMS[room];
+        html += '<a href=https://console.liveremoteskills.org/stream?room=' + num + '&token=' + streamcode + '>Field ' + num + '</a> <br><br>';
+    }
+    showModal(html);
 }

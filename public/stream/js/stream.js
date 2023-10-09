@@ -1,4 +1,4 @@
-const API_livestream = "API_livestream"
+const API_livestream = "Livestream"
 const API_login = "Login"
 const API_main = "Main"
 const API_chat = "Chat"
@@ -18,19 +18,21 @@ const API_sound = "Sound"
 const API_team_control = "Team Control"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+const roomnum = urlParams.get('room');
+const token = urlParams.get('token');
 
 function init() {
     var script = document.createElement("script")
     script.type = "text/javascript";
     script.src = "https://connect.liveremoteskills.org/external_api.js";
     document.getElementsByTagName("head")[0].appendChild(script);
+    connect();
 }
 
-function load() {
-    document.querySelector("#loadbutton").classList.add("hide");
+function load(roomcode) {
     domain = "connect.liveremoteskills.org";
     const options = {
-        roomName: "room1",
+        roomName: "room" + roomnum,
         userInfo: {
             email: '',
             displayName: 'Livestream'
@@ -94,6 +96,11 @@ function load() {
         }
     };
     const jitsi = (new JitsiMeetExternalAPI(domain, options));
+    jitsi.on('passwordRequired', function () {
+        jitsi.executeCommand('password', roomcode);
+        console.log(roomcode);
+    });
+
     jitsi.executeCommand('toggleFilmStrip'); // You have to do this on the `videoConferenceJoined` event...
     console.log(options);
     console.log(jitsi);
@@ -107,15 +114,7 @@ function connect() {
         switch (data.api) {
             case API_login:
                 if ("failure" in data) {
-                    showModal("Invalid access code");
-                    document.querySelector("#accessCode").classList.remove("hide");
-                    document.querySelector("#loginbutton").classList.remove("hide");
-                    document.querySelector("#loadbutton").classList.add("hide");
-                }
-                else {
-                    document.querySelector("#accessCode").classList.add("hide");
-                    document.querySelector("#loginbutton").classList.add("hide");
-                    document.querySelector("#loadbutton").classList.remove("hide");
+                    console.log("Login fail")
                 }
             case API_livestream:
                 livestream(data);
@@ -124,11 +123,7 @@ function connect() {
 
     websocket.onopen = function (event) {
         console.log("Connected to server");
-        accessCode = document.querySelector("#accessCode").value;
-        websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: accessCode }));
-        document.querySelector("#accessCode").classList.add("hide");
-        document.querySelector("#loginbutton").classList.add("hide");
-        document.querySelector("#loadbutton").classList.remove("hide");
+        websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: token, room_num: roomnum }));
     };
 
     websocket.onclose = function (event) {
@@ -136,6 +131,24 @@ function connect() {
     };
 }
 
+
+function livestream(data) {
+    if (data.operation == "update") {
+        if (data.room == roomnum) {
+            team_info = data.data;
+            document.querySelector("#teamNum").innerHTML = team_info.team;
+            document.querySelector("#teamName").innerHTML = team_info.name;
+            document.querySelector("#teamLoc").innerHTML = team_info.location;
+        }
+        else {
+            console.log("fail match");
+        }
+    }
+    else if (data.operation == "code") {
+        code = data.passcode;
+        load(code);
+    }
+}
 
 
 
