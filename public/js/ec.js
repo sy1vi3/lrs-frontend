@@ -531,11 +531,16 @@ function handleQueue(data) {
                 stop = 99999999999999999;
             }
             let now = Math.floor(Date.now() / 1000);
-            if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
-                queueHtml += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
-            }
-            else if (start < now  && now < stop) {
-                queueHtml += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            if (data.queue[i].teamNum in timeslots) {
+                if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
+                    queueHtml += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+                }
+                else if (start < now && now < stop) {
+                    queueHtml += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+                }
+                else {
+                    queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+                }
             }
             else {
                 queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
