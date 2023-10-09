@@ -11,7 +11,7 @@
 
 <br>
 
-**Merge requests and feature requests:** Message Barin on VEX&nbsp;Forum or Discord
+**Issues, merge requests, and feature requests:** Message Barin on VEX&nbsp;Forum or Discord
 
 <br>
 
