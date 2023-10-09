@@ -114,6 +114,17 @@ a[href] {
             background: #FDF1C2
         }
 
+    .btn.green {
+        background: #429943;
+    }
+        .btn.green:hover, .btn.green:focus {
+            background: #5db35e;
+        }
+
+        .btn.green:active {
+            background: #8ad48a;
+        }
+
 hr {
     border-color: #808080;
     margin: 32px 0
@@ -1392,6 +1403,9 @@ label:hover, label:active {
 #EventControl #volunteers_table #passcode {
     user-select: all;
 }
+#EventControl #team_info_table #passcode {
+    user-select: all;
+}
 
 #TechSupport {
     padding: 20px;
@@ -1637,6 +1651,8 @@ textarea {
 
 #EventControl h3{
     text-align:center;
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
 
 #buttonPanel {
@@ -1661,13 +1677,13 @@ textarea {
     width: 100%;
 }
 #edit_name {
-    width: 100%;
+    width: 90%;
 }
 #edit_role {
     width: 100%;
 }
 #edit_code{
-    width:100%;
+    width: 90%;
 }
 
 #volunteers_table tr {
@@ -1680,4 +1696,8 @@ td.smol button{
 
 .threebuttonrow button{
     width: 30%;
+}
+
+.onebuttonrow button {
+    width: 90%;
 }

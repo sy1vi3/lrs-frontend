@@ -672,7 +672,7 @@
                         </div>
                     </div>
                     <div id="right" class="container v tc">
-                        <h3>Volunteer Roles</h3>
+                        <h3>Volunteers</h3>
                         <div class="scrollBox stackedScrollBoxes">
                             <table id="volunteers_table" class="table sticky">
                                 <thead>
@@ -701,10 +701,11 @@
                                         </select>
                                     </th>
                                     <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
-                                    <th class="bottom"><button onclick="volunteer_table_add_row()">Add Volunteer</button></th>
+                                    <th class="bottom"><button class="btn green" onclick="volunteer_table_add_row()">Add Volunteer</button></th>
                                 </tr>
                             </table>
                         </div>
+                        <h3>Teams</h3>
                         <div class="scrollBox stackedScrollBoxes">
                             <table id="team_info_table" class="table sticky">
                                 <thead>
@@ -727,21 +728,6 @@
                 </div>
             </div> <!-- End of Event Control tab -->
 
-            <div id="TechSupport" class="tabContent v">
-                <h2>Tech Support</h2>
-                <div class="container h">
-                    <h3>
-                        User: <span id="inspTeamNum">
-                            <select class="teamDropdown">
-                                <option value=""></option>
-                            </select>
-                        </span>
-                    </h3>
-                </div>
-                <button class="btn red" onclick="techLogoutAll()">Logout All Clients</button><br><br>
-                <input type="text" id="passcode" placeholder="Enter new access code&hellip;" maxlength="13">
-                <button class="btn lavender" onclick="techChangePasscode()">Change Access Code</button>
-            </div> <!-- End of Tech Support tab -->
             <!-- TODO -->
             <div id="Chat" class="container tabContent">
                 <div id="messageBoard" class="container v">

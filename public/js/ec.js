@@ -1089,7 +1089,7 @@ function updateVolunteers(data) {
                 role = "Referee";
             }
             if (user_name != name && user_name != "Livestream" && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name">' + user_name + '</td><td id="role">' + role + '</td><td id="passcode">' + passcode + '</td><td class="smol" id="actions"><button onclick=edit_code(this.parentNode.parentNode)>Edit</button><button onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name">' + user_name + '</td><td id="role">' + role + '</td><td id="passcode">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
         }
         document.querySelector("#vol_table").innerHTML = html;
@@ -1135,7 +1135,7 @@ function edit_code(user) {
     user.querySelector("#name").value = existing_name;
     user.querySelector("#edit_name").value = existing_name;
 
-    user.querySelector("#actions").innerHTML = '<button onclick=save_user(this.parentNode.parentNode)>Save</button><button onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button>';
+    user.querySelector("#actions").innerHTML = '<button class="btn lavender" onclick=save_user(this.parentNode.parentNode)>Save</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button>';
 }
 
 function save_user(user) {
@@ -1194,7 +1194,9 @@ function team_edit_code(user) {
     user.querySelector("#passcode").innerHTML = html;
     user.querySelector("#edit_code").value = existing_code;
 
-    user.querySelector("#actions").innerHTML = '<button onclick=team_save_code(this.parentNode.parentNode)>Save</button><button onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button onclick=team_disable(this.parentNode.parentNode)>Disable</button>';
+    user.querySelector("#actions").innerHTML = '<button class="btn lavender" onclick=team_save_code(this.parentNode.parentNode)>Save</button>';
+    user.querySelector("#actions").classList.remove("threebuttonrow");
+    user.querySelector("#actions").classList.add("onebuttonrow");
 }
 
 function team_save_code(user) {
@@ -1234,7 +1236,10 @@ function team_force_logout(user) {
 }
 
 function team_disable(user) {
-
+    teamnumber = user.querySelector("#name").innerHTML;
+    if (confirm("Really disable " + teamnumber + "'s account?")) {
+        websocket.send(JSON.stringify({ api: API_tech_support, operation: "disableUser", user: teamnumber }));
+    }
 }
 
 function team_control(data) {
@@ -1245,8 +1250,20 @@ function team_control(data) {
         for (u in keys) {
             user_name = keys[u]
             passcode = teams[user_name].Passcode;
-            html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button onclick=team_edit_code(this.parentNode.parentNode)>Change Code</button><button onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button onclick=team_disable(this.parentNode.parentNode)>Disable</button></td></tr>';
+            enabled = teams[user_name].Enabled;
+            if (enabled == 0) {
+                html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button class="btn gray" onclick=team_edit_code(this.parentNode.parentNode)>Change Code</button><button class="btn yellow" onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button class="btn green" onclick=team_enable(this.parentNode.parentNode)>Enable</button></td></tr>';
+            }
+            else {
+                html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button class="btn gray" onclick=team_edit_code(this.parentNode.parentNode)>Change Code</button><button class="btn yellow" onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button class="btn red" onclick=team_disable(this.parentNode.parentNode)>Disable</button></td></tr>';
+            }
         }
+
         document.querySelector("#team_info_table_body").innerHTML = html;
     }
+}
+
+function team_enable(user) {
+    teamnumber = user.querySelector("#name").innerHTML;
+    websocket.send(JSON.stringify({ api: API_tech_support, operation: "enableUser", user: teamnumber }));
 }
