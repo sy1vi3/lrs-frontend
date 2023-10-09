@@ -240,6 +240,7 @@ function handleMain(data) {
         }
         else {
             console.log("popping UP")
+            document.querySelector("#jitsiPopupNode").innerHTML = ""
             document.querySelector("#jitsiModal").classList.add("show");
             document.querySelector("#jitsiModal").classList.remove("hide");
             domain = "connect.liveremoteskills.org";
