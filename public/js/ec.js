@@ -143,7 +143,6 @@ function connect(tokenLogin = false) {
                 document.querySelector("#chatSendButton").click();
             }
         });
-        websocket.send(JSON.stringify({ api: "Volunteers", operation: "get_volunteers" }));
     };
 
     websocket.onclose = function (event) {
