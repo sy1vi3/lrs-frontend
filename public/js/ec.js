@@ -1011,7 +1011,7 @@ function fillStatsTable() {
 
 
 function RE_login() {
-    window.location.replace("https://test.robotevents.com/oauth/authorize?client_id=8&redirect_uri=https%3A%2F%2Fconsole.liveremoteskills.org%2Foauth%2Flogin%2F&response_type=code");
+    window.location.replace("https://robotevents.com/oauth/authorize?client_id=8&redirect_uri=https%3A%2F%2Fconsole.liveremoteskills.org%2Foauth%2Flogin%2F&response_type=code");
 }
 
 
