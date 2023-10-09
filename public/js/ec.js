@@ -53,7 +53,6 @@ var chat_sound = new Audio('sounds/messagesound.mp3');
 
 
 if (urlParams.get('token') != null) {
-    console.log("loggin in")
     connect(true);
 }
 
@@ -309,7 +308,6 @@ function handleMain(data) {
             showModal(data.modal);
         }
         else {
-            console.log("popping UP")
             document.querySelector("#jitsiPopupNode").innerHTML = ""
             document.querySelector("#jitsiModal").classList.add("show");
             document.querySelector("#jitsiModal").classList.remove("hide");
@@ -454,10 +452,6 @@ function playChatSound(data) {
         content = data.new_msg_content;
         if (author != name && content.includes("@" + name)) {
             playMessageSound();
-            console.log("Play Sound");
-        }
-        else {
-            console.log("Same User");
         }
     }
 }
@@ -519,7 +513,6 @@ function getCookie(cname) {
 function settingChange() {
     newTabMeets = document.querySelector("#meetingCheckSetting").checked;
     setCookie("tabMeets", newTabMeets, 365)
-    console.log("set")
 }
 function settingsLoad() {
     
@@ -567,7 +560,6 @@ function queueInvite(team, purpose) {
     else {
         websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get_comp", teamNum: team}));
         websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "invite", teamNum: team, intent: purpose }));
-        console.log("")
         document.querySelector("#teams.teamDropdown").value = team;
         if (purpose == "Driving Skills")
             document.getElementById("driving").checked = true;
@@ -708,7 +700,6 @@ function handleSkills(data) {
 
     }
     else {
-        console.log("show");
         if (data.scoresheet.comp == "viqc") {
             iqHandleSkills(data);
         }
@@ -811,7 +802,6 @@ function handleSkillsCtrl(data) {
         for (i in Object.keys(teams_info)) {
             event_teams[teams_info[i].teamNum] = teams_info[i];
         }
-        console.log(event_teams);
     }
     else if (data.operation == "editableScore" && data.data.comp == "vrc") {
         scoresheet = data.data;
@@ -995,7 +985,6 @@ function skillsCalc(action) {
                 if (skillsRowid > -1)
                     msg.rowid = skillsRowid;
                 websocket.send(JSON.stringify(msg));
-                console.log(msg)
                 skillsRowid = -1;
                 document.querySelector("#teams.teamDropdown").value = "";
                 skillsGetAttempts();
@@ -1286,7 +1275,6 @@ function handleRankings(data) {
             ranks_len = Object.keys(ranks).length;
             if (document.querySelector("#divsDropdown").value == property) {
                 program_type = ranks[1].comp;
-                console.log(ranks[1]);
 
                 if (program_type != "VRC" && program_type != "VIQC") {
                     program_type = comp_preset;
@@ -1309,9 +1297,6 @@ function handleRankings(data) {
                         driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
                         html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
                     }
-                }
-                else {
-                    console.log("Neither Format");
                 }
                 html += "</tbody>";
                 document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
@@ -1864,7 +1849,6 @@ function handleEventControl(data) {
     if (data.operation == "room_code_update") {
         rooms_codes = data.rooms;
         html = '';
-        console.log(data);
         for (i in Object.keys(rooms_codes)) {
             room = "Room" + (Object.keys(rooms_codes)[i]);
             room_code = rooms_codes[Object.keys(rooms_codes)[i]];
@@ -2086,7 +2070,6 @@ function handleOutput(data) {
 
 
 function producerOverride(room) {
-    console.log(room);
     if (confirm("Are you sure? Change Livestream output to room: " + room + "?")) {
         if (room == "Rankings") {
             room = 0;

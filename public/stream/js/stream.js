@@ -22,11 +22,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const roomnum = urlParams.get('room');
 const token = urlParams.get('token');
 const silent = urlParams.get('silent');
+const recorderName = urlParams.get('name');
 var jitsi;
-
+console.log(recorderName);
 function load(roomcode, data) {
     domain = "connect.liveremoteskills.org";
-    console.log("silent: " + silent);
     var options = {
             roomName: "room" + roomnum,
             jwt: data.jwt,
@@ -132,7 +132,7 @@ function connect() {
 
     websocket.onopen = function (event) {
         console.log("Connected to server");
-        websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: token, room_num: roomnum }));
+        websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: token, room_num: roomnum}));
     };
 
     websocket.onclose = function (event) {
@@ -157,7 +157,13 @@ function livestream(data) {
     else if (data.operation == "code") {
         code = data.info.passcode;
         team_info = data.info.info;
-        websocket.send(JSON.stringify({ api: API_jwt, operation: "get_jwt_from_livestream", room: "room" + roomnum}));
+        if (recorderName == null) {
+            myName = "Recorder";
+        }
+        else {
+            myName = recorderName;
+        }
+        websocket.send(JSON.stringify({ api: API_jwt, operation: "get_jwt_from_livestream", room: "room" + roomnum, name: myName }));
         document.querySelector("#teamNum").innerHTML = team_info.team;
         document.querySelector("#teamName").innerHTML = team_info.name;
         document.querySelector("#teamLoc").innerHTML = team_info.location;
