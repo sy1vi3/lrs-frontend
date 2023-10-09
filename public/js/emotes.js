@@ -36,5 +36,5 @@ const emotes = {
     dababy: '<img src="https://emoji.gg/assets/emoji/9925-dababy.png" draggable="false" class="emoji">',
     will: '<img src="https://cdn.discordapp.com/emojis/736436063580717127.png?v=1" draggable="false" class="emoji">',
     matthew: '<img src="https://console.liveremoteskills.org/img/random/unknown-36.png" draggable="false" class="emoji">',
-    stephanie: '<img src="https://console.liveremoteskills.org/img/random/stephanie.png" draggable="false" class="emoji">',
+    stephanie: '<img src="https://console.liveremoteskills.org/img/random/stephanie.png" draggable="false" class="emoji">'
 }

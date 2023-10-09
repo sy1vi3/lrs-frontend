@@ -416,6 +416,45 @@ function handleChat(data) {
         e[1].lastChild.scrollIntoView(false);
         if (data.badge && data.chat[data.chat.length - 1].author != name)
             document.querySelector("#mobileHeader #messagesbutton .badge").classList.remove("hide");
+        var userPings = document.querySelectorAll(".ping");
+        var teamPings = document.querySelectorAll(".ping.Team");
+        for (var i = 0; i < userPings.length; i++) {
+            let ping = userPings[i];
+            ping.onclick = function () {
+                if (ping.classList.contains("Partner")) {
+                    var u_role = "Administrator";
+                }
+                else if (ping.classList.contains("Referee")) {
+                    var u_role = "Head Referee";
+                }
+                else if (ping.classList.contains("Staff")) {
+                    var u_role = "Event Staff";
+                }
+                else if (ping.classList.contains("Producer")) {
+                    var u_role = "Production Crew";
+                }
+                else if (ping.classList.contains("Observer")) {
+                    var u_role = "Guest Account";
+                }
+                else if (ping.classList.contains("Livestream")) {
+                    var u_role = "Livestream Recorder/Archiver Bot";
+                }
+                else if (ping.classList.contains("Output")) {
+                    var u_role = "Stream Synthesis Bot";
+                }
+                else {
+                    var u_role = "User Account";
+                }
+                showModal("<h2><u>User Info</u></h2><b>Username:</b> " + ping.innerHTML.substring(1) + "<br><b>Role:</b> " + u_role);
+
+            }
+        }
+        for (var i = 0; i < teamPings.length; i++) {
+            let ping = teamPings[i];
+            ping.onclick = function () {
+                teamCardView(ping.innerHTML.substring(1));
+            }
+        }
     }
 }
 
