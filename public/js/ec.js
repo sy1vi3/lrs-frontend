@@ -12,6 +12,8 @@ const API_event_ctrl = "Event Control"
 const API_tech_support = "Tech Support"
 const API_rankings = "Rankings"
 const API_stats = "Stats"
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
 var websocket;
 var plannedClose = false;
@@ -60,6 +62,10 @@ function tab(tab) {
 }
 
 function init() {
+    if (urlParams('token') != null) {
+        connect(true);
+    }
+    
     document.querySelector("#Login #accessCode").addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
             document.querySelector("#Login button").click();
@@ -73,7 +79,7 @@ function init() {
     });
 }
 
-function connect() {
+function connect(tokenLogin = false) {
     websocket = new WebSocket("wss://ecsrv.liveremoteskills.org:443");
     websocket.onmessage = function (event) {
         data = JSON.parse(event.data);
@@ -122,10 +128,18 @@ function connect() {
     };
 
     websocket.onopen = function (event) {
-        console.log("Connected to server");
-        accessCode = document.querySelector("#Login #accessCode").value;
-        websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: accessCode }));
-        websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
+        if (tokenLogin == true) {
+            console.log("Connected to server");
+            loginToken = urlParams('token');
+            websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: loginToken }));
+            websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
+        }
+        else {
+            console.log("Connected to server");
+            accessCode = document.querySelector("#Login #accessCode").value;
+            websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: accessCode }));
+            websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
+        }
     };
 
     websocket.onclose = function (event) {
