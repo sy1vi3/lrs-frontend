@@ -276,6 +276,7 @@ function handleMain(data) {
         document.querySelector("#event-console").classList.remove("hide");
         if (role == "Team") {
             document.querySelector("#tabHome").click();
+            document.querySelector("#settingsTeamNum").innerHTML = name;
         }
     } else if ("modal" in data && "room" in data) {
         if (newTabMeets == true) {
