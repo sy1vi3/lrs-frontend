@@ -110,7 +110,7 @@ function load(roomcode) {
         }
     });
 
-    jitsi.executeCommand('toggleFilmStrip'); // You have to do this on the `videoConferenceJoined` event...
+    jitsi.executeCommand('toggleFilmStrip');
     console.log(options);
     console.log(jitsi);
 }
