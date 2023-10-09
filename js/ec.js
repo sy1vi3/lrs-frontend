@@ -68,7 +68,6 @@ function init() {
 
 function connect() {
     websocket = new WebSocket("wss://ecsrv.liveremoteskills.org:443");
-
     websocket.onmessage = function (event) {
         data = JSON.parse(event.data);
         switch (data.api) {
@@ -115,6 +114,7 @@ function connect() {
         console.log("Connected to server");
         accessCode = document.querySelector("#Login #accessCode").value;
         websocket.send(JSON.stringify({ api: API_login, operation: "login", accessCode: accessCode }));
+        websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
     };
 
     websocket.onclose = function (event) {
@@ -266,7 +266,7 @@ function queueInvite(team, purpose) {
     else {
         websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get_comp", teamNum: team }));
         websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "invite", teamNum: team }));
-        console.log("Inviting")
+        console.log("")
         document.querySelector("#teams.teamDropdown").value = team;
         if (purpose == "Driving Skills")
             document.getElementById("driving").checked = true;
@@ -919,13 +919,27 @@ function handleRankings(data) {
             document.querySelector("#divsDropdown").value = "Science";
         }
         for (var property in div_ranks) {
-            ranks = div_ranks[property];
+            ranks = div_ranks[property]; 
             ranks_len = Object.keys(ranks).length;
             if (document.querySelector("#divsDropdown").value == property) {
-                html = '<tbody><tr><th>Rank</th><th>Team</th><th>Score</th><th>Stop Time</th></tr>';
-                for (i = 0; i < ranks_len; i++) {
-                    teaminfo = ranks[i + 1];
-                    html += '<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td></tr>';
+                program_type = ranks[1].comp;
+                if (program_type == "VRC") {
+                    html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
+                    for (i = 0; i < ranks_len; i++) {
+                        teaminfo = ranks[i + 1];
+                        driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+                        driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+                        html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                    }
+                }
+                else if (program_type == "VIQC") {
+                    html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Driver</th><th>Prog</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
+                    for (i = 0; i < ranks_len; i++) {
+                        teaminfo = ranks[i + 1];
+                        driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+                        driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+                        html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                    }
                 }
                 html += "</tbody>";
                 document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
