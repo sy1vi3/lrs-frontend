@@ -2159,19 +2159,20 @@ input:checked + .slider:before {
     transition: background-color 50ms ease-out,color 50ms ease-out;
     cursor: pointer;
     font-weight: 900;
+    background: #b5b5b5aa;
 }
     .ping.Team {
-        background: #da7272aa;
+        background: #da7272aa !important;
     }
     .ping.Partner {
-        background: #8772daaa;
+        background: #8772daaa !important;
     }
     .ping.Referee {
-        background: #7bda72aa;
+        background: #7bda72aa !important;
     }
     .ping.Producer {
-        background: #72d8daaa;
+        background: #72d8daaa !important;
     }
     .ping.Staff {
-        background: #dab672aa;
+        background: #dab672aa !important;
     }
