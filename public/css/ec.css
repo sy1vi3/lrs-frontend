@@ -1833,3 +1833,45 @@ input:checked + .slider:before {
     position: relative !important;
     margin: auto;
 }
+
+#stream_choices{
+    width: 100%;
+    float: left;
+}
+
+#productionTable{
+    width: 100%;
+    margin-top: 10px;
+}
+
+#streamOutput{
+    float: left;
+}
+
+#producerStreamView {
+    display: block;
+    width: 1920px !important;
+    height: 1080px !important;
+    -webkit-transform: scale(0.35);
+    -webkit-transform-origin: 0 0;
+    top: 0;
+}
+
+#Production #left{
+    height: 100%;
+    float: left;
+}
+
+#Production #stream_choices{
+    height: 100%;
+}
+
+#Production #right {
+    height: 100%;
+    float: right;
+    margin-left: 50%;
+}
+
+#Production{
+    margin: 20px;
+}

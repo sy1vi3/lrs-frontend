@@ -94,7 +94,9 @@ function outputHandler(data) {
         }
     }
     else if (data.operation == "setActiveRoom") {
+
         new_active_room = data.room;
+        console.log(new_active_room);
         createNewRoom(new_active_room);
     }
     else if (data.operation == "setStreamCode") {

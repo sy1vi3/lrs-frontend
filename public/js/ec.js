@@ -19,6 +19,8 @@ const API_livestream = "API_livestream"
 const API_event_data = "Event Data"
 const API_event_room = "Event Room"
 const API_event_config = "Event Config"
+const API_production = "Production"
+const API_output = "Output"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -167,6 +169,9 @@ function connect(tokenLogin = false) {
                 break;
             case API_event_config:
                 handleEventConfig(data);
+                break;
+            case API_output:
+                handleOutput(data);
                 break;
         }
     };
@@ -477,10 +482,10 @@ function handleQueue(data) {
 
 function queueInvite(team, purpose) {
     if (purpose == "Inspection")
-        websocket.send(JSON.stringify({ api: API_inspection_ctrl, operation: "invite", teamNum: team }));
+        websocket.send(JSON.stringify({ api: API_inspection_ctrl, operation: "invite", teamNum: team, intent: purpose }));
     else {
-        websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get_comp", teamNum: team }));
-        websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "invite", teamNum: team }));
+        websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get_comp", teamNum: team}));
+        websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "invite", teamNum: team, intent: purpose }));
         console.log("")
         document.querySelector("#teams.teamDropdown").value = team;
         if (purpose == "Driving Skills")
@@ -1000,111 +1005,120 @@ function skillsScoreView(rowid) {
 
 // API: Meeting Control
 var meetingRooms = {}
+var jwt = "";
+var num_rooms_ep;
+var jitsiInited = false;
 function handleMeetingCtrl(data) {
     if (data.operation == "set_code") {
         if ("rooms" in data) {
-            domain = "connect.liveremoteskills.org";
-            options = [];
-            jitsi = [];
-            console.log(data.rooms);
-            document.querySelector("#jitsiMeetEPBox").innerHTML = "";
-            for (i = 1; i <= data.rooms; i++) {
-                document.querySelector("#jitsiMeetEPBox").innerHTML += '<div id="room' + i + '"></div>';
-                options.push({
-                    roomName: "room" + i.toString(),
-                    parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
-                    width: "100%",
-                    height: "100%",
-                    jwt: data.jwt,
-                    configOverwrite: {
-                        disableAudioLevels: true,
-                        enableNoAudioDetection: false,
-                        enableNoisyMicDetection: false,
-                        startAudioOnly: false,
-                        startWithAudioMuted: true,
-                        startWithVideoMuted: true,
-                        startSilent: true,
-                        maxFullResolutionParticipants: -1,
-                        startWithVideoMuted: true,
-                        startScreenSharing: false,
-                        hideLobbyButton: true,
-                        //disableProfile: true,
-                        prejoinPageEnabled: false,
-                        enableAutomaticUrlCopy: false,
-                        disableDeepLinking: true,
-                        disableInviteFunctions: true,
-                        remoteVideoMenu: { disableKick: false },
-                        disableRemoteMute: false,
-                        disableTileView: false,
-                        hideConferenceSubject: false,
-                        hideConferenceTimer: true,
-                        hideParticipantsStats: true                      
-                    },
-                    interfaceConfigOverwrite: {
-                        AUTO_PIN_LATEST_SCREEN_SHARE: false,
-                        CONNECTION_INDICATOR_DISABLED: true,
-                        DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
-                        DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
-                        DISABLE_FOCUS_INDICATOR: false,
-                        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                        DISABLE_PRESENCE_STATUS: true,
-                        DISABLE_RINGING: true,
-                        DISABLE_TRANSCRIPTION_SUBTITLES: true,
-                        DISABLE_VIDEO_BACKGROUND: true,
-                        ENABLE_DIAL_OUT: false,
-                        ENABLE_FEEDBACK_ANIMATION: false,
-                        HIDE_INVITE_MORE_HEADER: true,
-                        INITIAL_TOOLBAR_TIMEOUT: 1,
-                        JITSI_WATERMARK_LINK: '',
-                        LANG_DETECTION: false,
-                        LOCAL_THUMBNAIL_RATIO: 16 / 9,
-                        MAXIMUM_ZOOMING_COEFFICIENT: 1,
-                        MOBILE_APP_PROMO: false,
-                        //SETTINGS_SECTIONS: ['profile'],
-                        SHOW_CHROME_EXTENSION_BANNER: false,
-                        SHOW_POWERED_BY: false,
-                        SHOW_PROMOTIONAL_CLOSE_PAGE: false,
-                        TOOLBAR_ALWAYS_VISIBLE: true,
-                        //TOOLBAR_BUTTONS: ['settings'],
-                        //TOOLBAR_TIMEOUT: 1,
-                        VIDEO_QUALITY_LABEL_DISABLED: true,
-                        ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
-                    }
-                });
-                console.log("i = " + i);
-                jitsi_room = new JitsiMeetExternalAPI(domain, options[i - 1]);
-              
-                jitsi.push(jitsi_room);
-            }
-            for (a in jitsi) {
-                let room_index = a
-                let b = parseInt(room_index) + 1;
-                jitsi[room_index].on('passwordRequired', function () {
-                    console.log("passreq");
-                    let room_number = b;
-                    let room_passcode = rooms_codes[room_number];
-                    console.log("Adding Passcode to room" + room_number + "  " + room_passcode);
-                    jitsi[room_index].executeCommand('password', room_passcode);
-                });
-
-                jitsi[room_index].on('filmstripDisplayChanged', function (data) {
-                    if (data.visible == true) {
-                        jitsi[room_index].executeCommand('toggleFilmStrip');
-                    }
-                });
-
-                jitsi[room_index].executeCommand('toggleFilmStrip');
-            }
-            console.log(options);
-            console.log(jitsi);
+            jwt = data.jwt;
+            num_rooms_ep = data.rooms;
         } else if ("room" in data && "password" in data) {
-            i = data.room - 1;
-            jitsi[i].executeCommand('password', data.password);
+            if (jitsiInited) {
+                i = data.room - 1;
+                jitsi[i].executeCommand('password', data.password);
+            }
         }
     }
     else if (data.operation == "all_rooms") {
         ALL_ROOMS = data.rooms;
     }
+}
+
+function epLaunchMeetings() {
+    document.querySelector("#init_meeting_rooms").classList.add("hide");
+    domain = "connect.liveremoteskills.org";
+    options = [];
+    jitsi = [];
+    document.querySelector("#jitsiMeetEPBox").innerHTML = "";
+    for (i = 1; i <= num_rooms_ep; i++) {
+        document.querySelector("#jitsiMeetEPBox").innerHTML += '<div id="room' + i + '"></div>';
+        options.push({
+            roomName: "room" + i.toString(),
+            parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
+            width: "100%",
+            height: "100%",
+            jwt: jwt,
+            configOverwrite: {
+                disableAudioLevels: true,
+                enableNoAudioDetection: false,
+                enableNoisyMicDetection: false,
+                startAudioOnly: false,
+                startWithAudioMuted: true,
+                startWithVideoMuted: true,
+                startSilent: true,
+                maxFullResolutionParticipants: -1,
+                startWithVideoMuted: true,
+                startScreenSharing: false,
+                hideLobbyButton: true,
+                //disableProfile: true,
+                prejoinPageEnabled: false,
+                enableAutomaticUrlCopy: false,
+                disableDeepLinking: true,
+                disableInviteFunctions: true,
+                remoteVideoMenu: { disableKick: false },
+                disableRemoteMute: false,
+                disableTileView: false,
+                hideConferenceSubject: false,
+                hideConferenceTimer: true,
+                hideParticipantsStats: true
+            },
+            interfaceConfigOverwrite: {
+                AUTO_PIN_LATEST_SCREEN_SHARE: false,
+                CONNECTION_INDICATOR_DISABLED: true,
+                DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
+                DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
+                DISABLE_FOCUS_INDICATOR: false,
+                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                DISABLE_PRESENCE_STATUS: true,
+                DISABLE_RINGING: true,
+                DISABLE_TRANSCRIPTION_SUBTITLES: true,
+                DISABLE_VIDEO_BACKGROUND: true,
+                ENABLE_DIAL_OUT: false,
+                ENABLE_FEEDBACK_ANIMATION: false,
+                HIDE_INVITE_MORE_HEADER: true,
+                INITIAL_TOOLBAR_TIMEOUT: 1,
+                JITSI_WATERMARK_LINK: '',
+                LANG_DETECTION: false,
+                LOCAL_THUMBNAIL_RATIO: 16 / 9,
+                MAXIMUM_ZOOMING_COEFFICIENT: 1,
+                MOBILE_APP_PROMO: false,
+                //SETTINGS_SECTIONS: ['profile'],
+                SHOW_CHROME_EXTENSION_BANNER: false,
+                SHOW_POWERED_BY: false,
+                SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+                TOOLBAR_ALWAYS_VISIBLE: true,
+                //TOOLBAR_BUTTONS: ['settings'],
+                //TOOLBAR_TIMEOUT: 1,
+                VIDEO_QUALITY_LABEL_DISABLED: true,
+                ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
+            }
+        });
+        console.log("i = " + i);
+        jitsi_room = new JitsiMeetExternalAPI(domain, options[i - 1]);
+
+        jitsi.push(jitsi_room);
+    }
+    for (a in jitsi) {
+        let room_index = a
+        let b = parseInt(room_index) + 1;
+        jitsi[room_index].on('passwordRequired', function () {
+            console.log("passreq");
+            let room_number = b;
+            let room_passcode = rooms_codes[room_number];
+            console.log("Adding Passcode to room" + room_number + "  " + room_passcode);
+            jitsi[room_index].executeCommand('password', room_passcode);
+        });
+
+        jitsi[room_index].on('filmstripDisplayChanged', function (data) {
+            if (data.visible == true) {
+                jitsi[room_index].executeCommand('toggleFilmStrip');
+            }
+        });
+
+        jitsi[room_index].executeCommand('toggleFilmStrip');
+    }
+    jitsiInited = true;
 }
 
 function initMeetings() {
@@ -1251,7 +1265,6 @@ function fillStatsTable() {
             driverlist[run] = scorelist[run];
             driverScores += scorelist[run].score;
         }
-        console.log(scorelist[run].type);
         totalScores += scorelist[run].score;
     }
     avg_total = Math.floor(totalScores / num_runs);
@@ -1325,7 +1338,7 @@ function updateVolunteers(data) {
             if (u_role == "Head Referee") {
                 u_role = "Referee";
             }
-            if (u_role == "Livestream") {
+            if (u_role == "Livestream" || u_role == "Output") {
                 html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
             else if (user_name != name && user_name != "Guest") {
@@ -1365,7 +1378,7 @@ function edit_code(user) {
     user.querySelector("#edit_code").value = existing_code;
 
     existing_role = user.querySelector("#role").innerHTML;
-    html = '<select id="edit_role"><option value="Staff">Staff</option><option value="Head Referee">Referee</option><option value="Event Partner">Event Partner</option></select>';
+    html = '<select id="edit_role"><option value="Staff">Staff</option><option value="Head Referee">Referee</option><option value="Event Partner">Event Partner</option><option value="Producer">Producer</option></select>';
     user.querySelector("#role").innerHTML = html;
     if (existing_role == "Referee") {
         existing_role = "Head Referee";
@@ -1707,4 +1720,74 @@ function ECT_new_event() {
 
     document.querySelector("#ECT_new_code").value = "";
     document.querySelector("#ECT_new_auth").value = "";
+}
+var liveroom = "";
+var outputCode = "";
+
+function handleOutput(data) {
+    if (data.operation == "setAliveRooms") {
+        let rooms = data.data;
+        const rankings = "Rankings"
+        if (liveroom == "Rankings") {
+            document.querySelector("#activeRooms").innerHTML = '<tr style="background-color: green !important;" onclick="producerOverride(`Rankings`)"><td id="producer_roomnum">Rankings</td><td id="activeteam">N/A</td><td id="intent">Rankings</td><td id="lifespan">N/A</td></tr>';
+        }
+        else {
+
+            document.querySelector("#activeRooms").innerHTML = '<tr onclick="producerOverride(`Rankings`)"><td id="producer_roomnum">Rankings</td><td id="activeteam">N/A</td><td id="intent">Rankings</td><td id="lifespan">N/A</td></tr>';
+        }
+        for (i in rooms) {
+            if (rooms[i].active) {
+                let room_number = i;
+                let active_team = rooms[i].info.team;
+                let intent = rooms[i].intent;
+                let lifespan = new Date((Math.round(Date.now() / 1000 - rooms[i].time)) * 1000).toISOString().substr(11, 8);
+
+                if (liveroom == room_number) {
+                    html = '<tr style="background-color: green !important;" onclick="producerOverride(' + room_number + ')"><td id="producer_roomnum">' + room_number + '</td><td id="activeteam">' + active_team + '</td><td id="intent">' + intent + '</td><td id="lifespan">' + lifespan + '</td></tr>';
+                }
+                else {
+                    html = '<tr onclick="producerOverride(' + room_number + ')"><td id="producer_roomnum">' + room_number + '</td><td id="activeteam">' + active_team + '</td><td id="intent">' + intent + '</td><td id="lifespan">' + lifespan + '</td></tr>';
+                }
+                document.querySelector("#activeRooms").innerHTML += html;
+            }
+        }
+    }
+    else if (data.operation == "setActiveRoom") {
+        let newroom = data.room;
+        if (newroom == 0) {
+            newroom = "Rankings";
+        }
+        room_boxes = document.querySelectorAll("#producer_roomnum");
+        for (r in room_boxes) {
+            if (room_boxes[r].innerHTML == newroom) {
+                room_boxes[r].parentNode.style.setProperty('background-color', 'green', 'important');
+            }
+        }
+        liveroom = newroom;
+    }
+    else if (data.operation == "setOutputCode") {
+        outputCode = data.auth;
+        stream_obj = document.createElement("iframe");
+        stream_obj.setAttribute("src", "https://console.liveremoteskills.org/output/?token=" + outputCode);
+        stream_obj.setAttribute("id", "producerStreamView");
+       
+        document.querySelector("#streamOutput").appendChild(stream_obj);
+    }
+}
+
+
+function producerOverride(room) {
+    console.log(room);
+    if (confirm("Are you sure? Change Livestream output to room: " + room + "?")) {
+        if (room == "Rankings") {
+            room = 0;
+        }
+        websocket.send(JSON.stringify({ api: API_production, operation: "override_stream", room: room}));
+    }
+}
+
+function clearChat() {
+    if (confirm("Really delete ALL messages in the chat history?") && confirm("Are you absolutely sure?")) {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "wipe_chat" }));
+    }
 }

@@ -644,7 +644,7 @@
             </div> <!-- End of Stats tab -->
 
             <div id="MeetingControl" class="tabContent v">
-                <!--<a id="init" class="btn dark" onload="initMeetings()">Initialize</a>-->
+                <button id="init_meeting_rooms" class="btn dark" onclick="epLaunchMeetings()">Open Meeting Rooms</button>
                 <div id="jitsiMeetEPBox" class="wrapperJitsi"></div>
 
 
@@ -684,6 +684,7 @@
                                 <tr>
                                     <td><button colspan="2" class="btn green" onclick="make_stream()">Stream Capture URLs, DO NOT LEAK</button></td>
                                     <td><button class="btn yellow" onclick="refreshTeams()">Update Team List</button></td>
+                                    <td><button class="btn grey" onclick="clearChat()">Wipe Chat History</button></td>
                                 </tr>
                                 <tfoot id="room_code_footer">
 
@@ -800,12 +801,32 @@
                 </div>
             </div> <!-- End of (mobile) Chat tab -->
             <div id="Production" class="tabContent v">
-                 <div id="room1">
-                     <iframe src="https://console.liveremoteskills.org/stream?room=1&token=G7FkrRmhsyskM&silent=true" width="300" height="200"> </iframe>
-                 </div>
+                <div id="producerBox" class="scrollBox">
+                    <div id="left" class="container v tc">
+                        <div id="stream_choices" class="scrollBox">
+                            <table id="productionTable">
+                                <thead>
+                                    <tr>
+                                        <th>Event Room</th>
+                                        <th>Active Team</th>
+                                        <th>Room Intent</th>
+                                        <th>Room Lifespan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activeRooms">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="right" class="container v tc">
+                        <div id="streamOutput" class="scrollBox">
+                            
+                        </div>
+                    </div>
+                </div>
             </div> <!-- End of Production tab -->
 
-        </div>
+            </div>
     </div>
 
     <div id="Login" class="container h">
