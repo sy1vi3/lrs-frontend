@@ -440,11 +440,7 @@ function handleQueue(data) {
     if (data.operation == "post") {
         queueHtml = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Status</th></tr>";
         for (i = 0; i < data.queue.length; i++) {
-            team_event = event_teams[data.queue[i].teamNum].div;
-
-            if (team_event == user_event || user_event == "ALL") {
-                queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
-            }
+            queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
         }
         queueHtml += "</tbody>";
         e = document.querySelectorAll("#skillsQueue");
@@ -455,25 +451,19 @@ function handleQueue(data) {
         inspectQueue = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Queued since</th><th>Actions</th></tr>";
         skillsQueue = inspectQueue;
         for (i = 0; i < data.queue.length; i++) {
-            if (Object.keys(event_teams).length != 0) {
-                team_event = event_teams[data.queue[i].teamNum].div;
-            }
-            else {
-                team_event = "NO_DATA";
-            }
-            if (team_event == user_event || user_event == "ALL") {
-                row = data.queue[i];
-                if (role == "Event Partner")
-                    actions = row.referee + '<button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
-                else if (row.referee == name)
-                    actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Re-Invite</button><button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
-                else if (row.referee)
-                    actions = row.referee;
-                else
-                    actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Invite</button>';
-                inspectQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
-                skillsQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
-            }
+
+            row = data.queue[i];
+            if (role == "Event Partner")
+                actions = row.referee + '<button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
+            else if (row.referee == name)
+                actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Re-Invite</button><button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
+            else if (row.referee)
+                actions = row.referee;
+            else
+                actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Invite</button>';
+            inspectQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
+            skillsQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
+
         }
         inspectQueue += "</tbody>";
         skillsQueue += "</tbody>";
@@ -527,30 +517,15 @@ function handleInspectionCtrl(data) {
         inspHtml = "<tbody><tr><th>Team</th><th>Inspection Status</th><th>Actions</th></tr>";
         for (i = 0; i < data.inspections.length; i++) {
             row = data.inspections[i];
-            if (Object.keys(event_teams).length != 0) {
-                team_event = event_teams[row.teamNum].div;
-            }
-            else {
-                team_event = "NO_DATA";
-            }
-            if (team_event == user_event || user_event == "ALL") {
-                inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
-            }
+            inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
+
         }
         inspHtml += "</tbody>";
         document.querySelector("#InspectionControl #allTeams").innerHTML = inspHtml;
 
         passedTeams = '<option value=""></option>';
         for (i = 0; i < data.passedTeams.length; i++) {
-            if (Object.keys(event_teams).length != 0) {
-                team_event = event_teams[data.passedTeams[i]].div;
-            }
-            else {
-                team_event = "NO_DATA";
-            }
-            if (team_event == user_event || user_event == "ALL") {
-                passedTeams += '<option value="' + data.passedTeams[i] + '">' + data.passedTeams[i] + '</option>';
-            }
+             passedTeams += '<option value="' + data.passedTeams[i] + '">' + data.passedTeams[i] + '</option>';
         }
         old_content_box = document.querySelector("#skillsContentBox").innerHTML;
         skillsTeam = document.querySelector("#teams.teamDropdown").value;
@@ -734,15 +709,7 @@ function handleSkillsCtrl(data) {
         scorelist = data.scores;
         html = "<tbody><tr><th>Time Scored</th><th>Team</th><th>Type</th><th>Score</th><th>Actions</th></tr>";
         for (i = 0; i < scorelist.length; i++) {
-            if (Object.keys(event_teams).length != 0) {
-                team_event = event_teams[scorelist[i].teamNum].div;
-            }
-            else {
-                team_event = "NO_DATA";
-            }
-            if (team_event == user_event || user_event == "ALL") {
-                html += "<tr><td>" + scorelist[i].timestamp + "</td><td>" + scorelist[i].teamNum + "</td><td>" + scorelist[i].type + "</td><td>" + scorelist[i].score + "</td><td>" + "<button onclick='skillsScoreEdit(" + scorelist[i].rowid + ")' class='btn lavender'>Edit</button>" + "<button onclick='skillsScoreDelete(" + scorelist[i].rowid + ")' class='btn red'>Delete</button>" + "</td></tr>";
-            }
+             html += "<tr><td>" + scorelist[i].timestamp + "</td><td>" + scorelist[i].teamNum + "</td><td>" + scorelist[i].type + "</td><td>" + scorelist[i].score + "</td><td>" + "<button onclick='skillsScoreEdit(" + scorelist[i].rowid + ")' class='btn lavender'>Edit</button>" + "<button onclick='skillsScoreDelete(" + scorelist[i].rowid + ")' class='btn red'>Delete</button>" + "</td></tr>";
         }
         html += "</tbody>";
         document.querySelector("#SkillsControl #allTeams").innerHTML = html;
@@ -1578,7 +1545,6 @@ function handleEventData(data) {
         for (i in all_events) {
             html += "<option value=" + all_events[i] + ">" + all_events[i] + "</option>";
         }
-        document.querySelector("#volunteerEvent").innerHTML = html;
     }
 }
 
@@ -1692,8 +1658,50 @@ function handleRefSetup(data) {
 
 function handleEventConfig(data) {
     if (data.operation == "push_config") {
+        document.querySelector("#ECT_body").innerHTML = "";
+        html = '';
         for (i in data.config) {
-            console.log(data.config[i]['event-code']);
+            html += '<tr id="config_row"><td id="config_code">' + data.config[i]['event-code'] + '</td><td id="config_auth">' + data.config[i]['auth-code'] + '</td><td id="config_actions" class=""><button class="btn yellow" onclick="ECT_edit(this.parentNode.parentNode)">Edit</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button></td></tr>';
         }
+        document.querySelector("#ECT_body").innerHTML = html;
     }
+}
+
+function ECT_edit(node) {
+    let sku = node.querySelector("#config_code").innerHTML;
+    let auth_code = node.querySelector("#config_auth").innerHTML;
+
+    node.querySelector("#config_auth").innerHTML = '<input type="text" id="ECT_edit_auth" placeholder=' + auth_code + '>';
+    node.querySelector("#ECT_edit_auth").value = auth_code;
+
+
+    node.querySelector("#config_actions").innerHTML = '<button class="btn lavender" onclick="ECT_save(this.parentNode.parentNode)">Save</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button>';
+}
+
+function ECT_save(node) {
+    let sku = node.querySelector("#config_code").innerHTML;
+    let auth_code = node.querySelector("#ECT_edit_auth").value;
+    node.querySelector("#config_auth").innerHTML = auth_code;
+    node.querySelector("#config_actions").innerHTML = '<button class="btn yellow" onclick="ECT_edit(this.parentNode.parentNode)">Edit</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button>';
+
+    websocket.send(JSON.stringify({ api: API_event_config, operation: "edit", sku: sku, auth: auth_code }));
+}
+
+function ECT_delete(node) {
+    let sku = node.querySelector("#config_code").innerHTML;
+
+    if (confirm("Are you you sure you want to remove " + sku + " from the Event Console? This will remove any scores associated with teams at this event.") && prompt("Enter the Event SKU to confirm") == sku) {
+        websocket.send(JSON.stringify({ api: API_event_config, operation: "delete", sku: sku}));
+
+    }
+}
+
+function ECT_new_event() {
+    let sku = document.querySelector("#ECT_new_code").value;
+    let auth_code = document.querySelector("#ECT_new_auth").value;
+
+    websocket.send(JSON.stringify({ api: API_event_config, operation: "add", sku: sku, auth: auth_code }));
+
+    document.querySelector("#ECT_new_code").value = "";
+    document.querySelector("#ECT_new_auth").value = "";
 }
