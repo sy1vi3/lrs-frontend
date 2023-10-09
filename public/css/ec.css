@@ -1083,6 +1083,7 @@ th, td {
     float: right;
     flex-grow: 1;
     text-align: center;
+    align-content: center;
 }
 
     #login #logo {
