@@ -665,8 +665,37 @@
                             <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
                         </tr>
                     </table>
+                    <table id="volunteers_table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Access Code</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vol_table">
+                            <tr id="volunteer">
+                                <td id="name">Taran</td>
+                                <td>Admin</td>
+                                <td>Passcode</td>
+                                <td><button onclick='remove_volunteer(this.parentNode.parentNode.querySelector("#name"))'>-</button></td>
+                            </tr>
+                        </tbody>
+                        <tr id="volunteer_1">
+                            <td><input type="text" id="volunteerName" placeholder="Volunteer Name"></td>
+                            <td>
+                                <select id="volunteerRole">
+                                    <option value="Staff">Staff</option>
+                                    <option value="Head Referee">Referee</option>
+                                    <option value="Event Partner">Event Partner</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr id="deleteme"><td colspan="3"><button onclick="volunteer_table_add_row()">Add Volunteer</button></td></tr>
+                    </table>
+                   
                 </div>
-                <button onclick="email()">Email Address</button>
             </div> <!-- End of Event Control tab -->
 
             <div id="TechSupport" class="tabContent v">

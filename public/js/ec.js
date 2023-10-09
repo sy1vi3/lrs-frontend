@@ -118,6 +118,8 @@ function connect(tokenLogin = false) {
                 fillStatsTable(data);
             case "Sound":
                 playChatSound(data);
+            case "Volunteers":
+                updateVolunteers(data);
         }
     };
 
@@ -141,6 +143,7 @@ function connect(tokenLogin = false) {
                 document.querySelector("#chatSendButton").click();
             }
         });
+        websocket.send(JSON.stringify({ api: "Volunteers", operation: "get_volunteers" }));
     };
 
     websocket.onclose = function (event) {
@@ -1030,6 +1033,43 @@ function fillStatsTable() {
 
 function RE_login() {
     window.location.replace("https://test.robotevents.com/oauth/authorize?client_id=8&redirect_uri=https%3A%2F%2Fconsole.liveremoteskills.org%2Foauth%2Flogin%2F&response_type=code");
-    // Sanity Check
 }
 
+
+function volunteer_table_add_row() {
+    vol_name = document.querySelector("#volunteerName").value;
+    vol_role = document.querySelector("#volunteerRole").value;
+    vol_code = "changeme"
+    volunteers[vol_name] = { Role: vol_role, Passcode: vol_code }
+    websocket.send(JSON.stringify({ api: "Volunteers", operation: "add_del", user_info: volunteers }));
+    document.querySelector("#volunteerName").value = ""
+    document.querySelector("#volunteerRole").value = "Staff"
+}
+
+function updateVolunteers(data) {
+    if (data.operation == "update") {
+        volunteers = data.volunteers;
+        keys = Object.keys(volunteers);
+        html = ""
+        for (u in keys) {
+            user_name = keys[u]
+            passcode = volunteers[user_name].Passcode;
+            role = volunteers[user_name].Role;
+            if (role == "Head Referee") {
+                role = "Referee";
+            }
+            if (user_name != name && user_name != "Livestream" && user_name != "Guest") {
+                html += '<tr id="volunteer"><td id="name">' + user_name + '</td><td id="role">' + role + '</td><td id="passcode">' + passcode + '</td><td><button onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>-</button></td></tr>'
+            }
+        }
+        document.querySelector("#vol_table").innerHTML = html;
+    }
+}
+
+function remove_volunteer(user) {
+    if (confirm("Are you sure? Remove " + user.innerHTML + " as a volunteer?") == true) {
+        delete volunteers[user.innerHTML];
+        user.parentNode.remove();
+        websocket.send(JSON.stringify({ api: "Volunteers", operation: "add_del", user_info: volunteers }));
+    }
+}

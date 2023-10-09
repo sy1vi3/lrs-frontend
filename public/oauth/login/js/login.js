@@ -64,3 +64,5 @@ function teamLogin(code) {
     console.log(code)
     window.location.replace("https://console.liveremoteskills.org?token=" + code + "");
 }
+
+
