@@ -2195,7 +2195,7 @@ function jwtHandler(data) {
         document.querySelector("#inviteLink").innerHTML = data.link;
     }
     else if (data.operation == "return_join_link") {
-        window.open(data.link, '_blank').focus();
+        document.querySelector("#modLink").href = data.link;
     }
 }
 
