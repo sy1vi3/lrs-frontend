@@ -615,17 +615,17 @@ function handleInspectionCtrl(data) {
         if (form) {
             form = JSON.parse(form);
             if (form.system == "V5") {
-                for (i = 1; i <= 27; i++) {
+                for (i = 1; i <= 39; i++) {
                     document.getElementById("v5-" + i).checked = form.checklist[i - 1];
                 }
             } else if (form.system == "Cortex") {
                 document.getElementById("cortexToggle").checked = true;
-                for (i = 1; i <= 25; i++) {
+                for (i = 1; i <= 37; i++) {
                     document.getElementById("cortex-" + i).checked = form.checklist[i - 1];
                 } 
             } else if (form.system == "IQ") {
                 document.getElementById("iqToggle").checked = true;
-                for (i = 1; i <= 25; i++) {
+                for (i = 1; i <= 22; i++) {
                     document.getElementById("iq-" + i).checked = form.checklist[i - 1];
                 }
             } 
@@ -640,15 +640,15 @@ function inspect(team) {
 function inspectionClear() {
     document.querySelector("#inspTeamNum").innerHTML = inspectionTeam;
     document.getElementById("V5Toggle").checked = true;
-    for (i = 1; i <= 25; i++) {
+    for (i = 1; i <= 37; i++) {
         document.getElementById("v5-" + i).checked = false;
         document.getElementById("cortex-" + i).checked = false;
     }
-    document.getElementById("v5-26").checked = false;
-    document.getElementById("v5-27").checked = false;
+    document.getElementById("v5-38").checked = false;
+    document.getElementById("v5-39").checked = false;
     document.getElementById("not-started").checked = true;
 
-    for (i = 1; i <= 12; i++) {
+    for (i = 1; i <= 22; i++) {
         document.getElementById("iq-" + i).checked = false;
     }
 }
@@ -659,17 +659,17 @@ function inspectionSave() {
         form = { system: "", checklist: [] };
         if (document.getElementById("cortexToggle").checked) {
             form.system = "Cortex";
-            for (i = 1; i <= 25; i++) {
+            for (i = 1; i <= 37; i++) {
                 form.checklist[i - 1] = document.getElementById("cortex-" + i).checked;
             }
         } else if (document.getElementById("V5Toggle").checked) {
             form.system = "V5";
-            for (i = 1; i <= 27; i++) {
+            for (i = 1; i <= 39; i++) {
                 form.checklist[i - 1] = document.getElementById("v5-" + i).checked;
             }
         } else {
             form.system = "IQ";
-            for (i = 1; i <= 12; i++) {
+            for (i = 1; i <= 22; i++) {
                 form.checklist[i - 1] = document.getElementById("iq-" + i).checked;
             }
         }
