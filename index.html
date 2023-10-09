@@ -595,6 +595,20 @@
                 </div>
             </div> <!-- End of Skills Rankings tab -->
 
+
+            <div id="Stats" class="tabContent v">
+                <div id="statsBox" class="scrollBox">
+                    <table id="skillsScoreTable">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Score</th>
+                            <th>Stop Time</th>
+                        </tr>
+                    </table>
+                </div>
+            </div> <!-- End of Skills Rankings tab -->
+
             <div id="MeetingControl" class="tabContent v">
                 <input type="radio" id="mcTab1" name="mcTabs" checked>
                 <label for="mcTab1">Room 1</label>
@@ -732,7 +746,6 @@
                 <span>Risers scored:&nbsp;&nbsp;<span id="iqSkillsRisers" class="boxed"></span></span><br>
                 <span>Completed Rows:&nbsp;&nbsp;<span id="iqSkillsRows" class="boxed"></span></span><br><br>
                 <span>Completed Stacks:&nbsp;&nbsp;<span id="iqSkillsStacks" class="boxed"></span></span><br><br>
-                <span>Skills Stop Time:&nbsp;&nbsp;<span id="iqSkillsStopTime" class="boxed"></span></span>
                 <br>
                 <h3>Final Score:&nbsp;&nbsp;<span id="iqSkillsFinalScore"></span></h3>
             </div>
@@ -808,8 +821,6 @@
             <p>Risers Scored: <input type="number" onchange="iqSkillsCalc('none')" id="iqRisers" value="0" min="0" max="27"></p>
             <p>Completed Rows: <input type="number" onchange="iqSkillsCalc('none')" id="iqRows" value="0" min="0" max="8"></p>
             <p>Completed Stacks: <input type="number" onchange="iqSkillsCalc('none')" id="iqStacks" value="0" min="0" max="9"></p>
-            <p>_________________________</p>
-            Skills Stop Time: <input type="number" onchange="iqSkillsCalc('none')" id="skillsStopTime" value="0" min="0" max="60">
             <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
         </div>
         <div class="buttonRow">

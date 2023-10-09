@@ -11,6 +11,7 @@ const API_meeting_ctrl = "Meeting Control"
 const API_event_ctrl = "Event Control"
 const API_tech_support = "Tech Support"
 const API_rankings = "Rankings"
+const API_stats = "Stats"
 
 var websocket;
 var plannedClose = false;
@@ -137,6 +138,8 @@ function login() {
     accessCode = document.querySelector("#Login #accessCode").value;
     if (accessCode.length == 13) {
         connect();
+    } else if (accessCode == "UUDDLRLRBA") {
+        window.location.replace("https://discord.com/invite/vrc");
     } else {
         showModal("Invalid access code");
     }
@@ -430,7 +433,6 @@ function iqHandleSkills(data) {
         document.querySelector("#iqScoreModal #iqSkillsRisers").innerHTML = scoresheet.redBalls;
         document.querySelector("#iqScoreModal #iqSkillsRows").innerHTML = scoresheet.blueBalls;
         document.querySelector("#iqScoreModal #iqSkillsStacks").innerHTML = scoresheet.ownedGoals;
-        document.querySelector("#iqScoreModal #iqSkillsStopTime").innerHTML = scoresheet.stopTime;
         document.querySelector("#iqScoreModal #iqSkillsFinalScore").innerHTML = scoresheet.score;
         document.querySelector("#iqScoreModal").classList.add("show");
     }
@@ -705,30 +707,7 @@ function iqSkillsCalc(action) {
     risersRaw = document.getElementById("iqRisers").value;
     rowsRaw = document.getElementById("iqRows").value;
     stacksRaw = document.getElementById("iqStacks").value;
-    stopTimeRaw = document.getElementById("skillsStopTime").value;
-    goalList = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-    redOwned = {};
-    blueOwned = {};
-    for (i = 0; i < goalList.length; i++) {
-        redOwned[goalList[i]] = document.getElementById("og" + goalList[i]).classList.contains("red");
-        blueOwned[goalList[i]] = document.getElementById("og" + goalList[i]).classList.contains("blue");
-    }
-    redRows = (redOwned.A && redOwned.B && redOwned.C)    // ABC
-        + (redOwned.D && redOwned.E && redOwned.F)  // DEF
-        + (redOwned.G && redOwned.H && redOwned.I)  // GHI
-        + (redOwned.A && redOwned.D && redOwned.G)  // ADG
-        + (redOwned.B && redOwned.E && redOwned.H)  // BEH
-        + (redOwned.C && redOwned.F && redOwned.I)  // CFI
-        + (redOwned.A && redOwned.E && redOwned.I)  // AEI
-        + (redOwned.C && redOwned.E && redOwned.G); // CEG
-    blueRows = (blueOwned.A && blueOwned.B && blueOwned.C)    // ABC
-        + (blueOwned.D && blueOwned.E && blueOwned.F)  // DEF
-        + (blueOwned.G && blueOwned.H && blueOwned.I)  // GHI
-        + (blueOwned.A && blueOwned.D && blueOwned.G)  // ADG
-        + (blueOwned.B && blueOwned.E && blueOwned.H)  // BEH
-        + (blueOwned.C && blueOwned.F && blueOwned.I)  // CFI
-        + (blueOwned.A && blueOwned.E && blueOwned.I)  // AEI
-        + (blueOwned.C && blueOwned.E && blueOwned.G); // CEG
+    stopTimeRaw = 0;
     if ((type != 1 && type != 2) || parseInt(risersRaw) != parseFloat(risersRaw) || parseFloat(risersRaw) < 0 || parseInt(risersRaw) > 27 || parseInt(stacksRaw) != parseFloat(stacksRaw) || parseFloat(stacksRaw) < 0 || parseInt(stacksRaw) > 9 || parseInt(rowsRaw) != parseFloat(rowsRaw) || parseFloat(rowsRaw) < 0 || parseInt(rowsRaw) > 8 || parseInt(stopTimeRaw) != parseFloat(stopTimeRaw) || parseFloat(stopTimeRaw) < 0 || parseInt(stopTimeRaw) > 60) {
         document.getElementById("skillsFinalScore").innerHTML = "--";
     } else {
@@ -922,7 +901,12 @@ function handleRankings(data) {
             ranks = div_ranks[property]; 
             ranks_len = Object.keys(ranks).length;
             if (document.querySelector("#divsDropdown").value == property) {
-                program_type = ranks[1].comp;
+                try {
+                    program_type = ranks[1].comp;
+                }
+                catch {
+                    continue;
+                }
                 if (program_type == "VRC") {
                     html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
                     for (i = 0; i < ranks_len; i++) {
@@ -965,4 +949,5 @@ function handleRankings(data) {
 function refreshRanks() {
     websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
 }
+
 
