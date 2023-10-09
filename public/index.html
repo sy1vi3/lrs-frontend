@@ -693,18 +693,20 @@
                                         <td class="smol"><button onclick='edit_code(this.parentNode.parentNode.querySelector("#code"))'>Change Code</button><button onclick='remove_volunteer(this.parentNode.parentNode.querySelector("#name"))'>Revoke Access</button></td>
                                     </tr>
                                 </tbody>
-                                <tr id="volunteer_1">
-                                    <th class="bottom"><input type="text" id="volunteerName" placeholder="Volunteer Name"></th>
-                                    <th class="bottom">
-                                        <select id="volunteerRole">
-                                            <option value="Staff">Staff</option>
-                                            <option value="Head Referee">Referee</option>
-                                            <option value="Event Partner">Event Partner</option>
-                                        </select>
-                                    </th>
-                                    <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
-                                    <th class="bottom"><button class="btn green" onclick="volunteer_table_add_row()">Add Volunteer</button></th>
-                                </tr>
+                                <tfoot>
+                                    <tr id="volunteer_1">
+                                        <th class="bottom"><input type="text" id="volunteerName" placeholder="Volunteer Name"></th>
+                                        <th class="bottom">
+                                            <select id="volunteerRole">
+                                                <option value="Staff">Staff</option>
+                                                <option value="Head Referee">Referee</option>
+                                                <option value="Event Partner">Event Partner</option>
+                                            </select>
+                                        </th>
+                                        <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
+                                        <th class="bottom"><button class="btn green" onclick="volunteer_table_add_row()">Add Volunteer</button></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <h3>Teams</h3>
