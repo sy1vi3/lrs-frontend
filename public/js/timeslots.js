@@ -1154,11 +1154,6 @@ const timeslots = {
         "stop": 1621555200,
         "program": "VRC HS"
     },
-    "5090X": {
-        "start": 1621551600,
-        "stop": 1621555200,
-        "program": "VRC HS"
-    },
     "3118A": {
         "start": 1621551600,
         "stop": 1621555200,

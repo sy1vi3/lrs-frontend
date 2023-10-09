@@ -551,9 +551,14 @@ function handleQueue(data) {
                 actions = row.referee;
             else
                 actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Invite</button>';
-
-            start = timeslots[data.queue[i].teamNum].start;
-            stop = timeslots[data.queue[i].teamNum].stop;
+            if (data.queue[i].teamNum in timeslots) {
+                start = timeslots[data.queue[i].teamNum].start;
+                stop = timeslots[data.queue[i].teamNum].stop;
+            }
+            else {
+                start = 0;
+                stop = 99999999999999999;
+            }
             let now = Math.floor(Date.now() / 1000);
             if (start < now && now < stop) {
                 inspectQueue += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
