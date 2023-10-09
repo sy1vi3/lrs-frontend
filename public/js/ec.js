@@ -184,10 +184,10 @@ function handleMain(data) {
         name = data.name;
         role = data.role;
         document.querySelector("#username").innerHTML = "Welcome, " + name + "!";
-        if (name == "Guest") {
-            document.querySelector("#messageBoard").classList.add("hide")
-        }
         document.querySelector("#mobileUser").innerHTML = name;
+        if (!(API_chat in data['tablist'])) {
+            document.querySelector("#messageBoard").classList.add("hide");
+        }
         tabs = "";
         for (i = 0; i < data["tablist"].length; i++) {
             tabs += '<button id="tab' + data["tablist"][i].replace(" ", "") + '" class="ecTab" onclick="tab(\'' + data["tablist"][i] + '\')">' + data["tablist"][i] + '</button>';
