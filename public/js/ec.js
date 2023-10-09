@@ -1525,6 +1525,7 @@ function fillStatsTable(data) {
             sticker = stickers[i];
             let image = document.createElement("img");
             image.src = sticker.url;
+            image.title = sticker.teamnum;
             image.alt = sticker.teamnum;
             image.width = 75;
             image.draggable = false;
