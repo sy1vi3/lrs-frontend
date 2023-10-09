@@ -56,7 +56,7 @@ function handleLogin(data) {
             //}
         }
         if (html == "<span>Choose a Team:</span>") {
-            html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> You will not be able to log into the Console until shortly before the event starts.';
+            html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> If you beleive this to be an error, contact event support at 903-401-8088.';
         }
         document.querySelector("#form").innerHTML = html;
     }
