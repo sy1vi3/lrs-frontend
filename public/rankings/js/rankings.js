@@ -162,7 +162,8 @@ function rankingsHandler(data) {
         init = true;
     }
     
-    
+    // Why isn't it working?
+
 }
 
 function startScroll() {
