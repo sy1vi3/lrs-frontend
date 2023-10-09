@@ -257,7 +257,7 @@ function handleMain(data) {
         document.querySelector("#username").innerHTML = "Welcome, " + name + "!";
         document.querySelector("#mobileUser").innerHTML = name;
         if (role == "Observer") {
-            document.querySelector("#messageBoard").classList.add("hide");
+            document.querySelector("#messageAction").classList.add("hide");
         }
         if (role == "Event Partner") {
             document.querySelector("#showTeam").classList.add("hide");
