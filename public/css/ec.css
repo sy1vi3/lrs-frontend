@@ -124,7 +124,7 @@ table:not(.framed) {
     border-collapse: collapse
 }
 
-    table:not(.framed, .sticky) th, table:not(.framed) td {
+    table:not(.framed):not(.sticky) th, table:not(.framed) td {
         border: 1px solid #808080;
         padding: 10px 16px;
         text-align: center;
@@ -143,7 +143,7 @@ table:not(.framed) {
         background: #000
     }
 
-    table:not(.framed, .sticky) th {
+    table:not(.framed):not(.sticky) th {
         border-bottom-width: 4px;
     }
 
