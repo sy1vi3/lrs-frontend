@@ -476,7 +476,8 @@ ul {
         #Chat.show #messageBoard > #messageWindow {
             width: 100%;
             position: absolute;
-            height: calc(100% - 135px - 20px)
+            height: calc(100% - 135px - 20px);
+            word-break: break-all;
         }
 
         #Chat.show #messageBoard > #messageAction {
@@ -509,6 +510,7 @@ ul {
     #messageBoard #messageWindow {
         overflow-y: auto;
         height: calc(100% - 135px);
+        word-break: break-all;
         box-sizing: border-box;
         width: 280px
     }
@@ -1915,7 +1917,7 @@ input:checked + .slider:before {
     width: 100% !important;
 }
 
-#emoteTable td{
+#emoteTable td {
     width: 50px;
     padding: 5px;
     margin: 0;
@@ -1930,4 +1932,12 @@ input:checked + .slider:before {
 
 #emoteTable {
     margin: 20px;
+}
+
+#emoteTable tr{
+    background: none !important;
+}
+
+#emoteTable td:hover{
+    background: #000;
 }
