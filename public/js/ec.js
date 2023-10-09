@@ -522,10 +522,19 @@ function handleQueue(data) {
     if (data.operation == "post") {
         queueHtml = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Status</th></tr>";
         for (i = 0; i < data.queue.length; i++) {
-            start = timeslots[data.queue[i].teamNum].start;
-            stop = timeslots[data.queue[i].teamNum].stop;
+            if (data.queue[i].teamNum in timeslots) {
+                start = timeslots[data.queue[i].teamNum].start;
+                stop = timeslots[data.queue[i].teamNum].stop;
+            }
+            else {
+                start = 0;
+                stop = 99999999999999999;
+            }
             let now = Math.floor(Date.now() / 1000);
-            if (start < now  && now < stop) {
+            if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
+                queueHtml += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            }
+            else if (start < now  && now < stop) {
                 queueHtml += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
             }
             else {

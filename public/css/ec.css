@@ -2129,3 +2129,7 @@ input:checked + .slider:before {
 .priorityQueue {
     background: #41c42f !important;
 }
+
+.JROTC {
+    background: #fc037b !important;
+}
