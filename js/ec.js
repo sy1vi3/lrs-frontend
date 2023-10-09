@@ -20,6 +20,8 @@ var inspectionTeam = "";
 var skillsRowid = -1;
 var skillsAttempts = {};
 
+var chat_sound = new Audio('sounds/messagesound.mp3');
+
 function showModal(text) {
   document.querySelector("#textModal .modal-text").innerHTML = text;
   document.querySelector("#textModal").classList.add("show");
@@ -27,6 +29,12 @@ function showModal(text) {
 
 function modalClose(selector) {
   document.querySelector(selector).classList.remove("show");
+}
+
+function playMessageSound() {
+    chat_sound.pause();
+    chat_sound.currentTime = 0;
+    chat_sound.play();
 }
 
 function tab(tab) {
@@ -162,9 +170,15 @@ function handleMain(data) {
 function handleChat(data) {
   if(data.operation == "post") {
     html = "";
-    for(i=0; i<data.chat.length; i++) {
-      msg = data.chat[i];
-      html += '<div class="messageLine ' + msg.authorType + '" oncontextmenu="chatDelete(' + msg.rowid + ')"><span class="messageAuthor">' + msg.author + ': </span><span class="messageText">' + msg.message + '</span></div>';
+      for (i = 0; i < data.chat.length; i++) {
+          msg = data.chat[i];
+          if (msg.author != name) {
+              playMessageSound();
+          }
+          else {
+              console.log("same")
+          }
+          html += '<div class="messageLine ' + msg.authorType + '" oncontextmenu="chatDelete(' + msg.rowid + ')"><span class="messageAuthor">' + msg.author + ': </span><span class="messageText">' + msg.message + '</span></div>';
     }
     e = document.querySelectorAll("#messageBoard #messageWindow");
     e[0].innerHTML = html;
@@ -554,7 +568,7 @@ function skillsCalc(action) {
       if(action == "show") {
         websocket.send(JSON.stringify({api: API_skills_ctrl, operation: "showTeam", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet}));
       } else if(action == "save") {
-        msg = {api: API_skills_ctrl, operation: "save", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet};
+          msg = { api: API_skills_ctrl, operation: "save", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet, comp: "vrc"};
         if(skillsRowid > -1)
           msg.rowid = skillsRowid;
         websocket.send(JSON.stringify(msg));
@@ -686,13 +700,35 @@ function techChangePasscode() {
   }
 }
 
+
+// Cool Color Stuff
+
+
+function hashCode(str) { 
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+}
+
+function intToRGB(i) {
+    var c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase();
+
+    return "00000".substring(0, 6 - c.length) + c;
+}
+
+
+
 //API: Rankings
 
 function handleRankings(data) {
     if (data.operation == "return_data") {
         div_ranks = data.list;
         div_ranks_len = Object.keys(div_ranks).length;
-        html = '<tbody><tr><th>Rank</th><th>Team</th><th>Score</th><th>Stop Time</th></tr>';
+        
         if (document.querySelector("#divsDropdown").value == null) {
             document.querySelector("#divsDropdown").value = "Science";
         }
@@ -700,14 +736,17 @@ function handleRankings(data) {
             ranks = div_ranks[property];
             ranks_len = Object.keys(ranks).length;
             if (document.querySelector("#divsDropdown").value == property) {
+                html = '<tbody><tr><th>Rank</th><th>Team</th><th>Score</th><th>Stop Time</th></tr>';
                 for (i = 0; i < ranks_len; i++) {
                     teaminfo = ranks[i + 1];
                     html += '<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td></tr>';
                 }
+                html += "</tbody>";
+                document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
+                document.getElementById("skillsScoreTable").style.backgroundColor = "#"+intToRGB(hashCode(property));
             }
         }
-        html += "</tbody>";
-        document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
+        
     }
     else if (data.operation == "div_fill") {
         old_value = document.querySelector("#divsDropdown").value;
@@ -716,7 +755,7 @@ function handleRankings(data) {
         html = '';
         for (i = 0; i < divs_len; i++) {
             div_name = divs[i + 1];
-            html += '<option value="' + div_name + '">' + div_name + '</option>'
+            html += '<option value="' + div_name + '" style="background-color:#' + intToRGB(hashCode(div_name)) + '">' + div_name + '</option>';     
         }
         document.querySelector("#divsDropdown").innerHTML = html;
         document.querySelector("#divsDropdown").value = old_value;
@@ -724,5 +763,6 @@ function handleRankings(data) {
 }
 
 function refreshRanks() {
-    websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings"}));
+    websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
 }
+

@@ -537,10 +537,13 @@
         </div> <!-- End of Skills Scores tab -->
 
         <div id="Rankings" class="tabContent v">
-            <h2>Skills Rankings</h2>
-            <select class="divDropdown" id="divsDropdown" onchange="refreshRanks()">
-                <option value=""></option>
-            </select>
+            <h2>
+                Skills Rankings     |     Division:
+                <select class="divDropdown" id="divsDropdown" onchange="refreshRanks()">
+                    <option value=""></option>
+                </select>
+            </h2>
+            
             <div id="skillsScores" class="scrollBox">
                 <table id="skillsScoreTable">
                     <tr>

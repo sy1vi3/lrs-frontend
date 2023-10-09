@@ -1316,6 +1316,7 @@ label:hover, label:active {
     text-align: center
 }
 
+
     #SkillsScores #scoreHistory {
         text-align: initial;
         margin: 0 50px;
@@ -1362,5 +1363,60 @@ label:hover, label:active {
 }
 
 #SkillsScores #scoreHistory #scoreHistoryTable tr > :last-child {
+    padding: 6px
+}
+
+#Rankings {
+    padding: 0 20px 20px 20px;
+    text-align: center
+}
+
+
+    #Rankings #skillsScores {
+        text-align: initial;
+        margin: 0 50px;
+        height: 100%;
+        flex-grow: 0
+    }
+
+@media (max-width: 1020px) {
+    #Rankings #skillsScores {
+        margin: 0 10px
+    }
+}
+
+#Rankings #skillsScores #skillsScoreTable {
+    width: 100%
+}
+
+@media (max-width: 700px) {
+    #Rankings #skillsScores #skillsScoreTable tr {
+        padding: 2px
+    }
+
+        #Rankings #skillsScores #skillsScoreTable tr > :nth-child(2) {
+            display: none
+        }
+
+    #Rankings #skillsScores #skillsScoreTable #mobile {
+        display: contents !important;
+        text-align: center
+    }
+
+    #Rankings #skillsScores #skillsScoreTable #desktop {
+        display: none
+    }
+}
+
+#Rankings #skillsScores #skillsScoreTable .btn.dark {
+    padding: 6px;
+    width: 40px
+}
+
+#Rankings #skillsScores #skillsScoreTable #mobile {
+    display: none
+}
+
+#SkillsScores #skillsScores #skillsScoreTable tr > :last-child {
     padding: 6px
 }
