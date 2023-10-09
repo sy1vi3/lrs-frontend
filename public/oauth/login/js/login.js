@@ -50,12 +50,7 @@ function handleLogin(data) {
         if (html == "<span>Choose a Team:</span>") {
             html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event';
         }
-        if (Object.keys(codes).length == 1) {
-            teamLogin(passcode)
-        }
-        else {
-            document.querySelector("#form").innerHTML = html;
-        }
+        document.querySelector("#form").innerHTML = html;
     }
 }
 
