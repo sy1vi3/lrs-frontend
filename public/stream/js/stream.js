@@ -25,8 +25,9 @@ var jitsi;
 
 function load(roomcode) {
     domain = "connect.liveremoteskills.org";
+    console.log("silent: " + silent);
     if (silent == 'true') {
-        const options = {
+        options = {
             roomName: "room" + roomnum,
             userInfo: {
                 email: '',
@@ -91,7 +92,7 @@ function load(roomcode) {
         };
     }
     else {
-        const options = {
+        options = {
             roomName: "room" + roomnum,
             userInfo: {
                 email: '',
