@@ -1011,6 +1011,6 @@ function fillStatsTable() {
 
 
 function RE_login() {
-    window.open("https://test.robotevents.com/oauth/authorize?client_id=8&response_type=code", "loginWindow", 'width=800,height=600');
+    window.location.replace("https://test.robotevents.com/oauth/authorize?client_id=8&response_type=code");
 }
 
