@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="css/ec.css">
     <script type="text/javascript" src="js/ec.js"></script>
     <script type="text/javascript" src="js/emotes.js"></script>
+    <script type="text/javascript" src="js/timeslots.js"></script>
     <script type="text/javascript" src="https://connect.liveremoteskills.org/external_api.js"></script>
-    <link rel="preload" href="img/games/2014-2015-Skyrise/skyrise_field_corner.png" as="image" />
+    <!--<link rel="preload" href="img/games/2014-2015-Skyrise/skyrise_field_corner.png" as="image" />
     <link rel="preload" href="img/games/2014-2015-Skyrise/vrc_skyrise.png" as="image" />
     <link rel="preload" href="img/games/2015-2016-Nothing-But-Net/nothing_but_net_field_corner.png" as="image" />
     <link rel="preload" href="img/games/2015-2016-Nothing-But-Net/vrc_nothing_but_net.png" as="image" />
@@ -29,7 +30,7 @@
     <link rel="preload" href="img/games/2021-2022-Frisbee-Frenzy/frisbee_frenzy_field_corner.png" as="image" />
     <link rel="preload" href="img/games/2021-2022-Frisbee-Frenzy/frisbee_frenzy_field_side.png" as="image" />
     <link rel="preload" href="img/games/2021-2022-Frisbee-Frenzy/frisbee_frenzy_field_top.png" as="image" />
-    <link rel="preload" href="img/games/2021-2022-Frisbee-Frenzy/vrc_frisbee_frenzy.png" as="image" />
+    <link rel="preload" href="img/games/2021-2022-Frisbee-Frenzy/vrc_frisbee_frenzy.png" as="image" />-->
 </head>
 
 <body class="container v" onload="init()">
@@ -793,21 +794,21 @@
 
             <div id="Rankings" class="tabContent v">
                 <h2>
-                    Skills Rankings     |     Event:
+                    Combinded Event Skills Rankings     |     Event:
                     <select class="divDropdown" id="divsDropdown" onchange="refreshRanks()">
                         <option value=""> </option>
                     </select>
                 </h2>
-               <!-- <input type="text" id="rankingsTeamSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 1)" placeholder="Search for teams..." class="teamSearch">-->
+                <input type="text" id="rankingsTeamSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 1)" placeholder="Search for teams..." class="teamSearch">
                 <div id="skillsScores" class="scrollBox">
-                    <!--<table id="skillsScoreTable">
+                    <table id="skillsScoreTable">
                         <tr>
                             <th>Rank</th>
                             <th>Team</th>
                             <th>Score</th>
                             <th>Stop Time</th>
                         </tr>
-                    </table>-->
+                    </table>
                 </div>
             </div> <!-- End of Skills Rankings tab -->
 

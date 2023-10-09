@@ -2125,3 +2125,7 @@ input:checked + .slider:before {
     height: 100%;
     border-width: 0px !important;
 }
+
+.priorityQueue {
+    background: #41c42f !important;
+}

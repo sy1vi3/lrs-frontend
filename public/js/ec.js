@@ -522,7 +522,15 @@ function handleQueue(data) {
     if (data.operation == "post") {
         queueHtml = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Status</th></tr>";
         for (i = 0; i < data.queue.length; i++) {
-            queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            start = timeslots[data.queue[i].teamNum].start;
+            stop = timeslots[data.queue[i].teamNum].stop;
+            let now = Math.floor(Date.now() / 1000);
+            if (start < now  && now < stop) {
+                queueHtml += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            }
+            else {
+                queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            }
         }
         queueHtml += "</tbody>";
         e = document.querySelectorAll("#skillsQueue");
@@ -543,9 +551,19 @@ function handleQueue(data) {
                 actions = row.referee;
             else
                 actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Invite</button>';
-            inspectQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
-            skillsQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
 
+            start = timeslots[data.queue[i].teamNum].start;
+            stop = timeslots[data.queue[i].teamNum].stop;
+            let now = Math.floor(Date.now() / 1000);
+            if (start < now && now < stop) {
+                inspectQueue += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
+                skillsQueue += "<tr class='priorityQueue'><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
+
+            }
+            else {
+                inspectQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
+                skillsQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
+            }
         }
         inspectQueue += "</tbody>";
         skillsQueue += "</tbody>";
@@ -596,11 +614,11 @@ function inspectionUnqueue() {
 function handleInspectionCtrl(data) {
     if (data.operation == "post") {
         inspHtml = "<tbody><tr><th>Team</th><th>Inspection Status</th><th>Actions</th></tr>";
+        
 
         for (i = 0; i < data.inspections.length; i++) {
             row = data.inspections[i];
             inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
-
         }
         inspHtml += "</tbody>";
         document.querySelector("#InspectionControl #allTeams").innerHTML = inspHtml;
@@ -1263,52 +1281,54 @@ function intToRGB(i) {
 
 //API: Rankings
 
+function display_rankings(div_ranks) {
+    div_ranks_len = Object.keys(div_ranks).length;
+    for (var property in div_ranks) {
+        ranks = div_ranks[property];
+        ranks_len = Object.keys(ranks).length;
+        if (document.querySelector("#divsDropdown").value == property) {
+            try {
+                program_type = ranks[1].comp;
+            }
+            catch {
+                program_type = comp_preset;
+            }
+
+            if (program_type != "VRC" && program_type != "VIQC") {
+                program_type = comp_preset;
+            }
+
+            if (program_type == "VRC") {
+                html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
+                for (i = 0; i < ranks_len; i++) {
+                    teaminfo = ranks[i + 1];
+                    driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+                    driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+                    html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                }
+            }
+            else if (program_type == "VIQC") {
+                html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Driver</th><th>Prog</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
+                for (i = 0; i < ranks_len; i++) {
+                    teaminfo = ranks[i + 1];
+                    driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
+                    driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
+                    html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                }
+            }
+            html += "</tbody>";
+            document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
+            bg_color = shadeColor("#" + intToRGB(hashCode(property)), -50);
+            document.getElementById("skillsScoreTable").style.backgroundColor = bg_color;
+            teamSort(document.querySelector("#Rankings #skillsScoreTable"), document.querySelector("#Rankings #rankingsTeamSort"));
+        }
+    }
+}
+
 function handleRankings(data) {
     if (data.operation == "return_data") {
         div_ranks = data.list;
-        div_ranks_len = Object.keys(div_ranks).length;
-
-        if (document.querySelector("#divsDropdown").value != "") {
-            html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value + '" id="rankingsiframe"></iframe>';
-            document.querySelector("#Rankings #skillsScores").innerHTML = html;
-        }
-        //for (var property in div_ranks) {
-        //    ranks = div_ranks[property]; 
-        //    ranks_len = Object.keys(ranks).length;
-        //    if (document.querySelector("#divsDropdown").value == property) {
-        //        program_type = ranks[1].comp;
-
-        //        if (program_type != "VRC" && program_type != "VIQC") {
-        //            program_type = comp_preset;
-        //        }
-                
-        //        if (program_type == "VRC") {
-        //            html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
-        //            for (i = 0; i < ranks_len; i++) {
-        //                teaminfo = ranks[i + 1];
-        //                driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-        //                driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-        //                html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team +'</button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
-        //            }
-        //        }
-        //        else if (program_type == "VIQC") {
-        //            html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Driver</th><th>Prog</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
-        //            for (i = 0; i < ranks_len; i++) {
-        //                teaminfo = ranks[i + 1];
-        //                driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
-        //                driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-        //                html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
-        //            }
-        //        }
-        //        html += "</tbody>";
-        //        document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
-        //        bg_color = shadeColor("#" + intToRGB(hashCode(property)), -50);
-        //        document.getElementById("skillsScoreTable").style.backgroundColor = bg_color;
-        //        teamSort(document.querySelector("#Rankings #skillsScoreTable"), document.querySelector("#Rankings #rankingsTeamSort"));
-        //    }
-        //}
-        
-
+        display_rankings(div_ranks);
     }
     else if (data.operation == "div_fill") {
         old_value = document.querySelector("#divsDropdown").value;
@@ -1327,8 +1347,7 @@ function handleRankings(data) {
 function refreshRanks() {
     //websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
     if (document.querySelector("#divsDropdown").value != "") {
-        html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value + '" id="rankingsiframe"></iframe>';
-        document.querySelector("#Rankings #skillsScores").innerHTML = html;
+        display_rankings(div_ranks);
     }
 }
 
