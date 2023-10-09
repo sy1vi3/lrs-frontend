@@ -981,13 +981,14 @@ th, td {
         padding: 0
     }
 
-#InspectionControl #right #V5Toggle:checked ~ #SCscroll1, #InspectionControl #right #cortexToggle:checked ~ #SCscroll2, #InspectionControl #right #vexuToggle:checked ~ #SCscroll3 {
+#InspectionControl #right #V5Toggle:checked ~ #SCscroll1, #InspectionControl #right #cortexToggle:checked ~ #SCscroll2, #InspectionControl #right #iqToggle:checked ~ #SCscroll3 {
     display: block
 }
 
-#InspectionControl #right #V5Toggle:not(:checked) ~ #SCscroll1, #InspectionControl #right #cortexToggle:not(:checked) ~ #SCscroll2, #InspectionControl #right #vexuToggle:not(:checked) ~ #SCscroll3 {
+#InspectionControl #right #V5Toggle:not(:checked) ~ #SCscroll1, #InspectionControl #right #cortexToggle:not(:checked) ~ #SCscroll2, #InspectionControl #right #iqToggle:not(:checked) ~ #SCscroll3 {
     display: none
 }
+
 
 #InspectionControl #right input:hover, #InspectionControl #right label:hover {
     cursor: pointer
