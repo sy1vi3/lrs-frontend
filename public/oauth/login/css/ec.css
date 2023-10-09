@@ -1537,3 +1537,7 @@ label:hover, label:active {
    margin-left: 0px;
    margin-right: 50px;
 }
+
+#announceBoxScrollBox{
+    height: 200px;
+}

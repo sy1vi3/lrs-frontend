@@ -54,9 +54,9 @@ function modalClose(selector) {
 }
 
 function playMessageSound() {
-    //chat_sound.pause();
-    //chat_sound.currentTime = 0;
-    //chat_sound.play();
+    chat_sound.pause();
+    chat_sound.currentTime = 0;
+    chat_sound.play();
 }
 
 function tab(tab) {
@@ -131,6 +131,8 @@ function connect(tokenLogin = false) {
                 team_control(data);
             case API_event_data:
                 handleEventData(data);
+            case API_event_ctrl:
+                handleEventControl(data);
         }
     };
 
@@ -236,7 +238,8 @@ function handleChat(data) {
 function playChatSound(data) {
     if (data.operation == "new_msg") {
         author = data.author;
-        if (author != name) {
+        content = data.new_msg_content;
+        if (author != name && content.includes("@" + name)) {
             playMessageSound();
             console.log("Play Sound");
         }
@@ -1348,5 +1351,19 @@ function handleEventData(data) {
             html += "<option value=" + all_events[i] + ">" + all_events[i] + "</option>";
         }
         document.querySelector("#volunteerEvent").innerHTML = html;
+    }
+}
+
+function handleEventControl(data) {
+    if (data.operation == "room_code_update") {
+        rooms_codes = data.rooms;
+        html = '';
+        for (i in Object.keys(rooms_codes)) {
+
+            room = "Room" + (Object.keys(rooms_codes)[i]);
+            room_code = rooms_codes[Object.keys(rooms_codes)[i]];
+            html += "<tr><td>" + room + "</td><td>" + room_code + "</td></tr>";
+        }
+        document.querySelector("#room_code_footer").innerHTML = html;
     }
 }

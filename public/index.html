@@ -658,29 +658,42 @@
             <div id="EventControl" class="tabContent v">
                 <div id="controlBox" class="scrollBox">
                     <div id="left" class="container v tc">
-                        <h3>Event Control</h3>
-                        <div id="announceBox" class="scrollBox container h">
-                            <div id="announcement">
-                                <textarea id="typeAnnounce" rows="10"></textarea>
-                                <button class="btn gray" id="fullwidthbutton" onclick="eventAnnouncement()">Send Announcement</button>
+                        <div class="stackedScrollBoxes" id="announceBoxScrollBox">
+                            <div class="stackedScrollBoxes" id="announceBoxScrollBox">
+                                <h3>Event Control</h3>
+                                    <div id="announcement">
+                                        <textarea id="typeAnnounce" rows="10"></textarea>
+                                        <button class="btn gray" id="fullwidthbutton" onclick="eventAnnouncement()">Send Announcement</button>
+                                    </div>
                             </div>
-                            <div id="buttonPanel">
+                            <div class="stackedScrollBoxes">
                                 <table>
-                                    <tr>
-                                        <td><button class="btn lavender" onclick="eventCtrl('teamChat', true)">Enable Team Chat</button></td>
-                                        <td><button class="btn lavender" onclick="eventCtrl('inspection', true)">Open Inspection</button></td>
-                                        <td><button class="btn lavender" onclick="eventCtrl('skills', true)">Open Skills</button></td>
-                                        <td><button class="btn green" onclick="make_stream()">Stream Capture URLs, DO NOT LEAK</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button class="btn red" onclick="eventCtrl('teamChat', false)">Disable Team Chat</button></td>
-                                        <td><button class="btn red" onclick="eventCtrl('inspection', false)">Close Inspection</button><br></td>
-                                        <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
-                                        <td><button class="btn yellow" onclick="refreshTeams()">Update Team List</button></td>
-                                    </tr>
+
                                 </table>
                             </div>
-                            
+                        </div>
+                        <div class=" stackedScrollBoxes">
+                            <table>
+                                <tr>
+                                    <td><button class="btn lavender" onclick="eventCtrl('teamChat', true)">Enable Team Chat</button></td>
+                                    <td><button class="btn lavender" onclick="eventCtrl('inspection', true)">Open Inspection</button></td>
+                                    <td><button class="btn lavender" onclick="eventCtrl('skills', true)">Open Skills</button></td>
+
+                                </tr>
+                                <tr>
+                                    <td><button class="btn red" onclick="eventCtrl('teamChat', false)">Disable Team Chat</button></td>
+                                    <td><button class="btn red" onclick="eventCtrl('inspection', false)">Close Inspection</button><br></td>
+                                    <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
+
+                                </tr>
+                                <tr>
+                                    <td><button colspan="2" class="btn green" onclick="make_stream()">Stream Capture URLs, DO NOT LEAK</button></td>
+                                    <td><button class="btn yellow" onclick="refreshTeams()">Update Team List</button></td>
+                                </tr>
+                                <tfoot id="room_code_footer">
+
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                     <div id="right" class="container v tc">
