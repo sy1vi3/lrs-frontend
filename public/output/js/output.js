@@ -53,8 +53,8 @@ function connect() {
 function createNewRoom(room) {
     room_obj = document.querySelector('#room' + room) !== null
     if (!room_obj) {
-        
-        console.log("creating")
+
+        console.log("creating" + room)
         document.querySelector("#Livestreams").innerHTML = "";
         var ifrm = document.createElement("iframe");
         if (room != 0) {
