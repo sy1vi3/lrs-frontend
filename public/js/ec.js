@@ -386,7 +386,7 @@ function handleMain(data) {
             teamJitsi.executeCommand('toggleFilmStrip');
         }
     }
-    else if("modal" in data){
+    else if ("modal" in data) {
         showModal(data.modal);
     }
 }
@@ -1483,8 +1483,12 @@ function fillStatsTable(data) {
                 }
                 html += '</td></tr>';
             }
-            else {
+            else if (role == "Team") {
                 html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="sendCongrats(`' + teams[key] + '`)" class="btn green">Congratulate</button><button onclick="giftSticker(`' + teams[key] + '`)" class="btn pink">Gift Sticker</button></td></tr>';
+
+            }
+            else {
+                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td></td></tr>';
 
             }
         }
@@ -1703,7 +1707,7 @@ function updateVolunteers(data) {
             if (u_role == "Livestream" || u_role == "Output") {
                 html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Ban</button></td></tr>'
             }
-            else if (user_name != name && user_name != "Guest") {
+            else if (user_name != name) {
                 html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Ban</button><button class="btn green" onclick=vol_send_message(this.parentNode.parentNode.querySelector("#name").innerHTML)>Alert</button></td></tr>'
             }
             if (u_role == "Livestream") {

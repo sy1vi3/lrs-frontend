@@ -2140,3 +2140,38 @@ input:checked + .slider:before {
 .JROTC {
     background: #fc037b !important;
 }
+
+.ping {
+    word-wrap: break-word;
+    user-select: text;
+    margin: 0;
+    border: 0;
+    font-style: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+    outline: 0;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-weight: 500;
+    unicode-bidi: plaintext;
+    position: relative;
+    transition: background-color 50ms ease-out,color 50ms ease-out;
+    cursor: pointer;
+    font-weight: 900;
+}
+    .ping.Team {
+        background: #da7272aa;
+    }
+    .ping.Partner {
+        background: #8772daaa;
+    }
+    .ping.Referee {
+        background: #7bda72aa;
+    }
+    .ping.Producer {
+        background: #72d8daaa;
+    }
+    .ping.Staff {
+        background: #dab672aa;
+    }

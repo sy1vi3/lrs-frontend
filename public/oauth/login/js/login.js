@@ -36,16 +36,23 @@ function handleLogin(data) {
         for (num in Object.keys(codes)) {
             team_number = teams[num]
             passcode = codes[team_number]
-            if ((num % 3) == 0) {
-                button_type = 'btn lavender'
-            }
-            else if ((num % 2) == 0) {
-                button_type = 'btn red'
+            if (team_number != "Guest") {
+                if ((num % 3) == 0) {
+                    button_type = 'btn lavender'
+                }
+                else if ((num % 2) == 0) {
+                    button_type = 'btn red'
+                }
+                else {
+                    button_type = 'btn yellow'
+                }
+                html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
             }
             else {
-                button_type = 'btn yellow'
+                html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> You will not be able to log into the Console until shortly before the event starts.';
+                html += '<br> <br>Login as guest:<br>';
+                html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
             }
-            html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
         }
         if (html == "<span>Choose a Team:</span>") {
             html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> You will not be able to log into the Console until shortly before the event starts.';
