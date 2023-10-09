@@ -24,7 +24,7 @@ const emotes = {
     ravioli: '<img src="https://cdn.discordapp.com/emojis/401856936741437440.png?v=1" draggable="false" class="emoji">',
     reeee: '<img src="https://cdn.discordapp.com/emojis/641422369046659072.png?v=1" draggable="false" class="emoji">',
     pros: '<img src="https://cdn.discordapp.com/emojis/243540580016193547.png?v=1" draggable="false" class="emoji">',
-    ez: '<img src="https://cdn.discordapp.com/emojis/620288884923826185.png?v=1" draggable="false" class="emoji">',
+    ez: '<img src="https://media.discordapp.net/attachments/260546095082504202/838506150507839515/ez-circle.png?width=609&height=609" draggable="false" class="emoji">',
     dq: '<img src="https://cdn.discordapp.com/emojis/447629100044255242.png?v=1" draggable="false" class="emoji">',
     skittles: '<img src="https://media.discordapp.net/attachments/260546095082504202/837129731014000710/20210425_182642.jpg" draggable="false" class="emoji">',
     axothonk: '<img src="https://cdn.discordapp.com/emojis/768318342321799198.png?v=1" draggable="false" class="emoji">',
