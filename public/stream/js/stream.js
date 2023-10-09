@@ -55,7 +55,6 @@ function load(roomcode) {
             hideConferenceSubject: true,
             hideConferenceTimer: true,
             hideParticipantsStats: true,
-            hiddenDomain: "connect.liveremoteskills.org"
         },
         interfaceConfigOverwrite: {
             AUTO_PIN_LATEST_SCREEN_SHARE: false,
@@ -103,6 +102,7 @@ function load(roomcode) {
     jitsi.executeCommand('toggleFilmStrip');
     console.log(options);
     console.log(jitsi);
+    jitsi.allow = "“camera 'none'; microphone 'none'”"
 }
 
 
@@ -145,9 +145,72 @@ function livestream(data) {
         }
     }
     else if (data.operation == "code") {
-        code = data.passcode;
+        code = data.info.passcode;
+        team_info = data.info.info;
         load(code);
+        document.querySelector("#teamNum").innerHTML = team_info.team;
+        document.querySelector("#teamName").innerHTML = team_info.name;
+        document.querySelector("#teamLoc").innerHTML = team_info.location;
     }
+    else if (data.operation == "showScore") {
+        if (data.room == roomnum) {
+            if (data.scoresheet.comp == "viqc") {
+                iqHandleSkills(data);
+            }
+            else {
+                vrcHandleSkills(data);
+            }
+        }
+    }
+}
+
+function iqHandleSkills(data) {
+    scoresheet = data.scoresheet;
+    skillsType = scoresheet.type;
+    if (skillsType == 1)
+        skillsType = "Driving Skills";
+    else if (skillsType == 2)
+        skillsType = "Programming Skills";
+    document.querySelector("#iqScoreModal #skillsType").innerHTML = skillsType;
+    document.querySelector("#iqScoreModal #iqSkillsRisers").innerHTML = scoresheet.redBalls;
+    document.querySelector("#iqScoreModal #iqSkillsRows").innerHTML = scoresheet.blueBalls;
+    document.querySelector("#iqScoreModal #iqSkillsStacks").innerHTML = scoresheet.ownedGoals;
+    document.querySelector("#iqScoreModal #iqSkillsFinalScore").innerHTML = scoresheet.score;
+    document.querySelector("#iqScoreModal").classList.add("show");
+    setTimeout(function () { document.querySelector("#iqScoreModal").classList.remove("show"); }, 6000);
+    
+}
+
+function vrcHandleSkills(data) {
+    scoresheet = data.scoresheet;
+    skillsType = scoresheet.type;
+    if (skillsType == 1)
+        skillsType = "Driving Skills";
+    else if (skillsType == 2)
+        skillsType = "Programming Skills";
+    document.querySelector("#scoreModal #skillsType").innerHTML = skillsType;
+    document.querySelector("#scoreModal #skillsRedBalls").innerHTML = scoresheet.redBalls;
+    document.querySelector("#scoreModal #skillsBlueBalls").innerHTML = scoresheet.blueBalls;
+    document.querySelector("#scoreModal #skillsStopTime").innerHTML = scoresheet.stopTime;
+    document.querySelector("#scoreModal #skillsFinalScore").innerHTML = scoresheet.score;
+    goalList = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+    ownedGoals = scoresheet.ownedGoals;
+    for (i = 0; i < goalList.length; i++) {
+        document.querySelector("#scoreModal #og" + goalList[i]).classList.remove("red");
+        document.querySelector("#scoreModal #og" + goalList[i]).classList.remove("blue");
+        document.querySelector("#scoreModal #og" + goalList[i]).classList.remove("none");
+        if (i <= 2) j = i;
+        else if (i <= 5) j = i + 1;
+        else j = i + 2;
+        if (ownedGoals[j] == "r")
+            document.querySelector("#scoreModal #og" + goalList[i]).classList.add("red");
+        else if (ownedGoals[j] == "b")
+            document.querySelector("#scoreModal #og" + goalList[i]).classList.add("blue");
+        else
+            document.querySelector("#scoreModal #og" + goalList[i]).classList.add("none");
+    }
+    document.querySelector("#scoreModal").classList.add("show");
+    setTimeout(function () { document.querySelector("#scoreModal").classList.remove("show"); }, 6000);
 }
 
 

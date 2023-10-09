@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>LRS Stream View</title>
@@ -18,6 +18,52 @@
         <div id="teamName">&nbsp;</div>
         <div id="teamLoc">&nbsp;</div>
     </div>
+
+
+    <div id="scoreModal" class="modal">
+        <div id="scoreSheet" class="modal-scoresheet">
+            <span class="close" onclick="modalClose('#scoreModal')"><i class="fas fa-times-circle"></i></span>
+            <div class="container v">
+                <h2 id="skillsType">Skills Score</h2>
+                <span>Red balls scored:&nbsp;&nbsp;<span id="skillsRedBalls" class="boxed"></span></span><br>
+                <span>Blue balls scored:&nbsp;&nbsp;<span id="skillsBlueBalls" class="boxed"></span></span><br><br>
+                <span>Owned Goals:</span>
+                <table id="scoringField1" class="scoring">
+                    <tr>
+                        <td id="ogA" class="red">A</td>
+                        <td id="ogB">B</td>
+                        <td id="ogC">C</td>
+                    </tr>
+                    <tr>
+                        <td id="ogD">D</td>
+                        <td id="ogE">E</td>
+                        <td id="ogF">F</td>
+                    </tr>
+                    <tr>
+                        <td id="ogG">G</td>
+                        <td id="ogH">H</td>
+                        <td id="ogI">I</td>
+                    </tr>
+                </table>
+                <span>Skills Stop Time:&nbsp;&nbsp;<span id="skillsStopTime" class="boxed"></span></span>
+                <br>
+                <h3>Final Score:&nbsp;&nbsp;<span id="skillsFinalScore"></span></h3>
+            </div>
+        </div>
+    </div> <!-- End of score modal -->
+    <div id="iqScoreModal" class="modal">
+        <div id="scoreSheet" class="modal-scoresheet">
+            <span class="close" onclick="modalClose('#iqScoreModal')"><i class="fas fa-times-circle"></i></span>
+            <div class="container v">
+                <h2 id="skillsType">Skills Score</h2>
+                <span>Risers scored:&nbsp;&nbsp;<span id="iqSkillsRisers" class="boxed"></span></span><br>
+                <span>Completed Rows:&nbsp;&nbsp;<span id="iqSkillsRows" class="boxed"></span></span><br><br>
+                <span>Completed Stacks:&nbsp;&nbsp;<span id="iqSkillsStacks" class="boxed"></span></span><br><br>
+                <br>
+                <h3>Final Score:&nbsp;&nbsp;<span id="iqSkillsFinalScore"></span></h3>
+            </div>
+        </div>
+    </div> <!-- End of IQ score modal -->
 </body>
 
 </html>

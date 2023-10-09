@@ -39,3 +39,270 @@ body {
 #teamNum { font-size: 22rem; }
 #teamName { font-size: 16rem; }
 #teamLoc { font-size: 13rem; font-style: italic; }
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,600;1,300;1,600&family=Oxygen:wght@700&family=Roboto+Slab:wght@300;600&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
+
+* {
+    user-select: none;
+}
+
+body {
+    font-family: "Open Sans",sans-serif;
+    font-weight: 300;
+    color: #F0F0F0;
+    background: #363639;
+    margin: 0
+}
+
+b, strong {
+    font-weight: 600
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: "Oxygen",sans-serif
+}
+
+roman {
+    font-family: "Roboto Slab",serif
+}
+
+a[href] {
+    color: #C3DFFF
+}
+
+    a[href]:hover, a[href]:focus, a[href]:active {
+        color: #E6F6FF
+    }
+
+    a[href].inv {
+        color: #F0F0F0;
+        text-decoration: none
+    }
+
+        a[href].inv:hover, a[href].inv:focus, a[href].inv:active {
+            color: #E6F6FF;
+            text-decoration: underline
+        }
+
+
+
+hr {
+    border-color: #808080;
+    margin: 32px 0
+}
+
+div.table {
+    max-width: 100%;
+    overflow: auto
+}
+
+table:not(.framed) {
+    border-collapse: collapse
+}
+
+    table:not(.framed):not(.sticky) th, table:not(.framed) td {
+        border: 1px solid #808080;
+        padding: 10px 16px;
+        text-align: center;
+        white-space: nowrap
+    }
+
+    table:not(.framed).sticky th {
+        border-left: 1px solid #808080;
+        border-right: 1px solid #808080;
+        padding: 10px 16px;
+        text-align: center;
+        white-space: nowrap
+    }
+
+    table:not(.framed) tr:hover {
+        background: #000
+    }
+
+    table:not(.framed):not(.sticky) th {
+        border-bottom-width: 4px;
+    }
+
+    table:not(.framed).hoverable tr:not(:hover) th {
+        background: #26272A
+    }
+
+    table:not(.framed):not(.hoverable) th {
+        background: #26272A
+    }
+
+
+
+
+
+
+@media (max-width: 1000px) {
+    table.framed {
+        width: 100%
+    }
+}
+
+@media (max-width: 500px) {
+    table.framed {
+        margin: 8px 0
+    }
+}
+
+table.framed th, table.framed td {
+    padding: 4px;
+    text-align: left
+}
+
+
+
+.ecTab {
+    padding: 10px;
+    margin-top: 4px;
+    background: #26272A;
+    border-style: none;
+    font-size: 12pt;
+    color: #F0F0F0;
+    border-radius: 6px 6px 0 0;
+    border-bottom: none
+}
+
+    .ecTab:hover, .ecTab:active {
+        background: #363639;
+        text-decoration: underline;
+        cursor: pointer
+    }
+
+    .ecTab.sel {
+        background: #363639;
+        font-weight: bold
+    }
+
+    .ecTab:focus {
+        outline: 0
+    }
+
+th {
+    text-align: left;
+    padding-right: 4px
+}
+
+th, td {
+    padding: 4px
+}
+
+
+
+.modal {
+    display: none;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    overflow: auto;
+    background: rgba(0,0,0,0.7)
+}
+
+    .modal.show {
+        display: block
+    }
+
+.modal-content {
+    display: block;
+    background-color: #363639;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 7px;
+    border: 2px solid #808080;
+    /*    max-width: 30em;
+    max-height: 16em*/
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        box-sizing: border-box;
+        width: 100vw
+    }
+}
+
+.modal-text {
+    padding: 20px;
+    text-align: center
+}
+
+.modal-scoresheet {
+    display: block;
+    border: 2px solid #808080;
+    max-width: 28em;
+    max-height: 38em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10pt 15pt 10pt 20pt;
+    background: #26272A;
+    text-align: center
+}
+
+@media (max-width: 500px) {
+    .modal-scoresheet {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none
+    }
+}
+
+@media (max-height: 610px) and (min-width:501px) {
+    .modal-scoresheet {
+        position: relative;
+        box-sizing: border-box;
+        top: 0;
+        left: calc(50vw - 10em);
+        transform: none;
+        width: 20em
+    }
+}
+
+
+
+
+
+.scoring {
+    margin: 15pt auto;
+    border-spacing: 20px;
+    border-collapse: separate !important;
+}
+
+    .scoring td {
+        font-size: 16pt;
+        font-weight: bold;
+    }
+
+    .scoring :hover {
+        background: inherit;
+    }
+
+    .scoring .red {
+        background: red;
+    }
+
+    .scoring .blue {
+        background: blue;
+    }
+
+    .scoring .none {
+        background: #363639;
+    }
+
+
+
+
+
+

@@ -237,6 +237,9 @@ function handleMain(data) {
         if (role == "Observer") {
             document.querySelector("#messageBoard").classList.add("hide");
         }
+        if (role == "Event Partner") {
+            document.querySelector("#showTeam").classList.add("hide");
+        }
         tabs = "";
         for (i = 0; i < data["tablist"].length; i++) {
             tabs += '<button id="tab' + data["tablist"][i].replace(" ", "") + '" class="ecTab" onclick="tab(\'' + data["tablist"][i] + '\')">' + data["tablist"][i] + '</button>';
@@ -899,7 +902,7 @@ function skillsCalc(action) {
         }
         if (document.querySelector("#teams.teamDropdown").value) {
             if (action == "show") {
-                websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "showTeam", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet }));
+                websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "showTeam", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet, room: ref_room_number }));
             } else if (action == "save") {
                 msg = { api: API_skills_ctrl, operation: "save", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet, comp: "vrc" };
                 if (skillsRowid > -1)
@@ -937,7 +940,7 @@ function iqSkillsCalc(action) {
         }
         if (document.querySelector("#teams.teamDropdown").value) {
             if (action == "show") {
-                websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "showTeam", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet }));
+                websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "showTeam", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet, room: ref_room_number }));
             } else if (action == "save") {
                 msg = { api: API_skills_ctrl, operation: "save", teamNum: document.querySelector("#teams.teamDropdown").value, scoresheet: scoresheet, comp: "viqc" };
                 if (skillsRowid > -1)
@@ -1035,7 +1038,7 @@ function handleMeetingCtrl(data) {
                         disableTileView: false,
                         hideConferenceSubject: false,
                         hideConferenceTimer: true,
-                        hideParticipantsStats: true
+                        hideParticipantsStats: true                      
                     },
                     interfaceConfigOverwrite: {
                         AUTO_PIN_LATEST_SCREEN_SHARE: false,
@@ -1317,18 +1320,18 @@ function updateVolunteers(data) {
         for (u in keys) {
             user_name = keys[u]
             passcode = volunteers[user_name].Passcode;
-            role = volunteers[user_name].Role;
+            u_role = volunteers[user_name].Role;
             event_code = volunteers[user_name].Event;
-            if (role == "Head Referee") {
-                role = "Referee";
+            if (u_role == "Head Referee") {
+                u_role = "Referee";
             }
-            if (role == "Livestream") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+            if (u_role == "Livestream") {
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
             else if (user_name != name && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
-            if (role == "Livestream") {
+            if (u_role == "Livestream") {
                 streamcode = passcode;
             }
         }
@@ -1583,10 +1586,10 @@ function handleRefSetup(data) {
                     //enableNoAudioDetection: false,
                     //enableNoisyMicDetection: false,
                     //startAudioOnly: false,
-                    //startWithAudioMuted: true,
+                    startWithAudioMuted: true,
                     //startSilent: false,
                     //maxFullResolutionParticipants: -1,
-                    //startWithVideoMuted: true,
+                    startWithVideoMuted: true,
                     //startScreenSharing: false,
                     //hideLobbyButton: true,
                     //disableProfile: true,
