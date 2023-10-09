@@ -65,6 +65,12 @@ function init() {
             document.querySelector("#Login button").click();
         }
     });
+    var textBox = document.getElementById("typeHere");
+    textBox.addEventListener("keydown", function (event) {
+        if (event.keyCode == 13) {
+            document.querySelector("#chatSendButton").click();
+        }
+    });
 }
 
 function connect() {

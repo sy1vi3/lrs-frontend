@@ -13,7 +13,7 @@
 
     <header id="header" class="container h hide">
         <div id="leftSplit" class="container h">
-            <img id="sponsors" src="sponsors3.gif">
+            <img id="sponsors"src="sponsors3.gif">
             <h1 id="eventConsole">Event Console</h1>
         </div>
         <div id="middleSplit" class="container">
@@ -22,7 +22,7 @@
         <div id="rightSplit" class="container h">
             <h1 id="username">Welcome!</h1>
             <button id="logout" class="btn red" onclick="logout()">Logout</button>
-            <img id="logo" src="img/Logo.png">
+            <img id="logo" src="img/Logo.png" class="insiteLogo">
         </div>
     </header>
 
@@ -50,7 +50,7 @@
             <div id="messageWindow"></div>
             <div id="messageAction" class="container v">
                 <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(0)"></textarea>
-                <button class="btn gray" onclick="chatSend(0)">Send Message to Everyone</button>
+                <button id="chatSendButton" class="btn gray" onclick="chatSend(0)">Send Message to Everyone</button>
             </div>
         </div> <!-- End of desktop chat -->
 
@@ -700,7 +700,7 @@
     <div id="Login" class="container h">
         <div id="login">
             <div id="logo">
-                <img src="img/Logo.png"></img>
+                <img src="img/Logo.png">
                 <h1>Event Console</h1>
             </div>
             <noscript>
