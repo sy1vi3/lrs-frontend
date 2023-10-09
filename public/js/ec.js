@@ -1333,6 +1333,28 @@ function removeStickers(team) {
     }
 }
 
+function chatBanUser(team) {
+    reason = prompt("Ban " + team + " from the Team Chat? \n Provide a reason:")
+    if (reason != null) {
+        websocket.send(JSON.stringify({ api: "Moderation", operation: "chat_ban_user", target: team, reason: reason}));
+    }
+}
+
+function chatUnbanUser(team) {
+    websocket.send(JSON.stringify({ api: "Moderation", operation: "chat_unban_user", target: team}));
+}
+
+function stickerBanUser(team) {
+    reason = prompt("Ban " + team + " from using Stickers? \n Provide a reason:")
+    if (reason != null) {
+        websocket.send(JSON.stringify({ api: "Moderation", operation: "sticker_ban_user", target: team, reason: reason }));
+    }
+}
+
+function stickerUnbanUser(team) {
+    websocket.send(JSON.stringify({ api: "Moderation", operation: "sticker_unban_user", target: team }));
+}
+
 function fillStatsTable(data) {
     if (data.operation == "post") {
         teams_data = data.data;
@@ -1350,7 +1372,20 @@ function fillStatsTable(data) {
                 html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="queueInvite(`' + teams[key] + '`, `General`)" class="btn lavender">Invite to Event Room</button></td></tr>';
             }
             else if (role == "Event Partner" || role == "Staff" || role == "Producer") {
-                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="resetSticker(`' + teams[key] + '`)" class="btn lightblue">Reset Sticker Image</button><button onclick="removeStickers(`' + teams[key] + '`)" class="btn green">Remove Stickers</button></td></tr>';
+                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="resetSticker(`' + teams[key] + '`)" class="btn lightblue">Reset Sticker Image</button><button onclick="removeStickers(`' + teams[key] + '`)" class="btn green">Remove Stickers</button>';
+                if (value.chatBanned) {
+                    html += '<button onclick="chatUnbanUser(`' + teams[key] + '`)" class="btn green">Unban from Chat</button>';
+                }
+                else {
+                    html += '<button onclick="chatBanUser(`' + teams[key] + '`)" class="btn red">Ban from Chat</button>';
+                }
+                if (value.sticker_banned) {
+                    html += '<button onclick="stickerUnbanUser(`' + teams[key] + '`)" class="btn green">Unban from Stickers</button>';
+                }
+                else {
+                    html += '<button onclick="stickerBanUser(`' + teams[key] + '`)" class="btn red">Ban from Stickers</button>';
+                }
+                html += '</td></tr>';
             }
             else {
                 html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="sendCongrats(`' + teams[key] + '`)" class="btn green">Congratulate</button></td></tr>';
