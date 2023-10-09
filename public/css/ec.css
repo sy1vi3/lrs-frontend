@@ -1904,3 +1904,26 @@ input:checked + .slider:before {
     left: 0;
     top: 0;
 }
+
+#homeBox *{
+    position: relative !important;
+}
+
+.emoji{
+    width: 25px !important;
+}.tableemoji{
+    width: 100% !important;
+}
+
+#emoteTable td{
+    width: 50px;
+    padding: 5px;
+    margin: 0;
+}
+
+#chatSendButton{
+    width: 75%;
+}
+#chatEmoteButton{
+    width: 20%;
+}

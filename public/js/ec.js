@@ -366,6 +366,13 @@ function handleChat(data) {
         html = "";
         for (i = 0; i < data.chat.length; i++) {
             msg = data.chat[i];
+            msg.message = msg.message.replace(/:[a-z0-9]+:/ig, function (x) {
+                emote_name = x.slice(1, -1);
+                if (emote_name in emotes) {
+                    return emotes[emote_name];
+                }
+            })
+            console.log(msg.message);
             html += '<div class="messageLine ' + msg.authorType + '" oncontextmenu="chatDelete(' + msg.rowid + ')"><span class="messageAuthor">' + msg.author + ': </span><span class="messageText">' + msg.message + '</span></div>';
         }
         e = document.querySelectorAll("#messageBoard #messageWindow");
@@ -376,6 +383,30 @@ function handleChat(data) {
         if (data.badge && data.chat[data.chat.length - 1].author != name)
             document.querySelector("#mobileHeader #messagesbutton .badge").classList.remove("hide");
     }
+}
+
+function emotePopup() {
+    html = '';
+    emotes_keys = Object.keys(emotes);
+    num_emotes = Object.keys(emotes).length;
+    num_emotes_per_row = Math.ceil(Math.sqrt(num_emotes));
+    num_rows = Math.ceil(num_emotes / num_emotes_per_row);
+    for (i = 1; i <= num_rows; i++) {
+        html += '<tr>'
+        for (j = 1; j <= num_emotes_per_row; j++) {
+            emote_number = (i - 1) * num_emotes_per_row + j;
+            if (emote_number <= num_emotes) {
+                html += '<td onclick="emoteInsert(`' + emotes_keys[emote_number - 1]+'`)">' + emotes[emotes_keys[emote_number-1]] + '</td>';
+            }
+        }
+        html += '</tr>'
+    }
+    document.querySelector("#emoteTable").innerHTML = html;
+    document.querySelector("#emoteModal").classList.add("show");
+}
+
+function emoteInsert(emote) {
+    document.querySelector("#typeHere").value += ' :' + emote + ': ';
 }
 
 function playChatSound(data) {
