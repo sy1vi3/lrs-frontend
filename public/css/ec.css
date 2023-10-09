@@ -2077,3 +2077,12 @@ input:checked + .slider:before {
     margin-bottom: 12px; /* Add some space below the input */
     background-color: #26272A;
 }
+
+#helpBox{
+    margin: 20px;
+    text-align: center;
+}
+
+#helpBox *{
+    position: initial !important;
+}

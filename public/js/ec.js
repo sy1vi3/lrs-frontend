@@ -268,6 +268,26 @@ function handleMain(data) {
             document.querySelector("#homeActions").innerHTML = '<button class="btn yellow" onclick="homeBoxEdit()">Edit</button>';
         }
         tabs = "";
+        tabs_list = {
+            Home: 1,
+            "Inspection Control": 2,
+            "Skills Control": 3,
+            "Meeting Control": 4,
+            "Event Control": 5,
+            "Event Config": 6,
+            "Production": 7,
+            Stats: 8,
+            Inspection: 9,
+            Skills: 10,
+            "Skills Scores": 11,
+            Rankings: 12,
+            Settings: 13,
+            "Event Room": 14,
+            "Help": 15
+        }
+        data["tablist"] = data["tablist"].sort(function (a, b) {
+            return tabs_list[a] - tabs_list[b];
+        });
         for (i = 0; i < data["tablist"].length; i++) {
             onclick_name = data["tablist"][i];
             if (data["tablist"][i] == "Stats") {
