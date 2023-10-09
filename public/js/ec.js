@@ -16,6 +16,7 @@ const API_volunteers = "Volunteers"
 const API_sound = "Sound"
 const API_team_control = "Team Control"
 const API_livestream = "API_livestream"
+const API_event_data = "Event Data"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -25,12 +26,15 @@ var role = "";
 var inspectionTeam = "";
 var skillsRowid = -1;
 var skillsAttempts = {};
+var user_event;
 
 var saveAttempts;
 var saveTeam;
 var oldProgram;
+var all_events = [];
 
-var ALL_ROOMS =[]
+var ALL_ROOMS = [];
+var event_teams = {};
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
@@ -124,6 +128,8 @@ function connect(tokenLogin = false) {
                 updateVolunteers(data);
             case API_team_control:
                 team_control(data);
+            case API_event_data:
+                handleEventData(data);
         }
     };
 
@@ -147,8 +153,8 @@ function connect(tokenLogin = false) {
                 document.querySelector("#chatSendButton").click();
             }
         });
-        oldProgram = "VIQC";
-        document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVIQC").innerHTML;
+        //oldProgram = "VIQC";
+        //document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVIQC").innerHTML;
     };
 
     websocket.onclose = function (event) {
@@ -274,7 +280,11 @@ function handleQueue(data) {
     if (data.operation == "post") {
         queueHtml = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Status</th></tr>";
         for (i = 0; i < data.queue.length; i++) {
-            queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            team_event = event_teams[data.queue[i].teamNum].div;
+
+            if (team_event == user_event || user_event == "ALL") {
+                queueHtml += "<tr><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
+            }
         }
         queueHtml += "</tbody>";
         e = document.querySelectorAll("#skillsQueue");
@@ -285,17 +295,25 @@ function handleQueue(data) {
         inspectQueue = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Queued since</th><th>Actions</th></tr>";
         skillsQueue = inspectQueue;
         for (i = 0; i < data.queue.length; i++) {
-            row = data.queue[i];
-            if (role == "Event Partner")
-                actions = row.referee + '<button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
-            else if (row.referee == name)
-                actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Re-Invite</button><button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
-            else if (row.referee)
-                actions = row.referee;
-            else
-                actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Invite</button>';
-            inspectQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
-            skillsQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
+            if (Object.keys(event_teams).length != 0) {
+                team_event = event_teams[data.queue[i].teamNum].div;
+            }
+            else {
+                team_event = "NO_DATA";
+            }
+            if (team_event == user_event || user_event == "ALL") {
+                row = data.queue[i];
+                if (role == "Event Partner")
+                    actions = row.referee + '<button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
+                else if (row.referee == name)
+                    actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Re-Invite</button><button onclick="queueRemove(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn red">Remove</button>';
+                else if (row.referee)
+                    actions = row.referee;
+                else
+                    actions = '<button onclick="queueInvite(\'' + row.teamNum + '\', \'' + row.purpose + '\')" class="btn lavender">Invite</button>';
+                inspectQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
+                skillsQueue += "<tr><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose != "Inspection" ? actions : row.referee) + "</td></tr>";
+            }
         }
         inspectQueue += "</tbody>";
         skillsQueue += "</tbody>";
@@ -349,14 +367,30 @@ function handleInspectionCtrl(data) {
         inspHtml = "<tbody><tr><th>Team</th><th>Inspection Status</th><th>Actions</th></tr>";
         for (i = 0; i < data.inspections.length; i++) {
             row = data.inspections[i];
-            inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
+            if (Object.keys(event_teams).length != 0) {
+                team_event = event_teams[row.teamNum].div;
+            }
+            else {
+                team_event = "NO_DATA";
+            }
+            if (team_event == user_event || user_event == "ALL") {
+                inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
+            }
         }
         inspHtml += "</tbody>";
         document.querySelector("#InspectionControl #allTeams").innerHTML = inspHtml;
 
         passedTeams = '<option value=""></option>';
         for (i = 0; i < data.passedTeams.length; i++) {
-            passedTeams += '<option value="' + data.passedTeams[i] + '">' + data.passedTeams[i] + '</option>';
+            if (Object.keys(event_teams).length != 0) {
+                team_event = event_teams[data.passedTeams[i]].div;
+            }
+            else {
+                team_event = "NO_DATA";
+            }
+            if (team_event == user_event || user_event == "ALL") {
+                passedTeams += '<option value="' + data.passedTeams[i] + '">' + data.passedTeams[i] + '</option>';
+            }
         }
         skillsTeam = document.querySelector("#teams.teamDropdown").value;
         document.querySelector("#teams.teamDropdown").innerHTML = passedTeams;
@@ -538,12 +572,29 @@ function handleSkillsCtrl(data) {
         scorelist = data.scores;
         html = "<tbody><tr><th>Time Scored</th><th>Team</th><th>Type</th><th>Score</th><th>Actions</th></tr>";
         for (i = 0; i < scorelist.length; i++) {
-            html += "<tr><td>" + scorelist[i].timestamp + "</td><td>" + scorelist[i].teamNum + "</td><td>" + scorelist[i].type + "</td><td>" + scorelist[i].score + "</td><td>" + "<button onclick='skillsScoreEdit(" + scorelist[i].rowid + ")' class='btn lavender'>Edit</button>" + "<button onclick='skillsScoreDelete(" + scorelist[i].rowid + ")' class='btn red'>Delete</button>" + "</td></tr>";
+            if (Object.keys(event_teams).length != 0) {
+                team_event = event_teams[scorelist[i].teamNum].div;
+            }
+            else {
+                team_event = "NO_DATA";
+            }
+            if (team_event == user_event || user_event == "ALL") {
+                html += "<tr><td>" + scorelist[i].timestamp + "</td><td>" + scorelist[i].teamNum + "</td><td>" + scorelist[i].type + "</td><td>" + scorelist[i].score + "</td><td>" + "<button onclick='skillsScoreEdit(" + scorelist[i].rowid + ")' class='btn lavender'>Edit</button>" + "<button onclick='skillsScoreDelete(" + scorelist[i].rowid + ")' class='btn red'>Delete</button>" + "</td></tr>";
+            }
         }
         html += "</tbody>";
         document.querySelector("#SkillsControl #allTeams").innerHTML = html;
 
-    } else if (data.operation == "editableScore" && data.data.comp == "vrc") {
+    }
+    else if (data.operation == "set_teams") {
+        teams_info = data.teams;
+        event_teams = {};
+        for (i in Object.keys(teams_info)) {
+            event_teams[teams_info[i].teamNum] = teams_info[i];
+        }
+        console.log(event_teams);
+    }
+    else if (data.operation == "editableScore" && data.data.comp == "vrc") {
         scoresheet = data.data;
         skillsRowid = scoresheet.rowid;
         skillsClear();
@@ -586,31 +637,16 @@ function handleSkillsCtrl(data) {
         document.getElementById("skillsStopTime").value = scoresheet.stopTime;
         iqSkillsCalc("none");
         document.querySelector("#skillsCancelEdit").classList.remove("hide");
-    } else if (data.operation == "setType") {
-        teamNum = data.teamNum;
-        program = data.comp;
-        team_old = document.querySelector("#SkillsControl .teamDropdown").value;
-        console.log(team_old);
-        if (program == "VRC" && oldProgram != "VRC") {
-            oldProgram = "VRC";
-            setTypeVRC();
-        }
-        else if (program == "VIQC" && oldProgram != "VIQC") {
-            oldProgram = "VIQC";
-            setTypeVIQC();
-        }
     }
 }
 
 
 function setTypeVRC() {
-    document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVRC").innerHTML;
-    websocket.send(JSON.stringify({ api: API_inspection_ctrl, operation: "get" }));
+    document.querySelector("#SkillsControl #right #skillsContentBox").innerHTML = document.querySelector("#hiddenVRC #hiddenVRCContent").innerHTML;
 }
 
 function setTypeVIQC() {
-    document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVIQC").innerHTML;
-    websocket.send(JSON.stringify({ api: API_inspection_ctrl, operation: "get" }));
+    document.querySelector("#SkillsControl #right #skillsContentBox").innerHTML = document.querySelector("#hiddenVIQC #hiddenVIQCContent").innerHTML;
 }
 
 function skillsGetAttempts() {
@@ -624,9 +660,14 @@ function skillsGetAttempts() {
             console.log("Unimportant Error Please Ignore")
         }
     else {
-        websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get_comp", teamNum: team }));
         attempts = skillsAttempts[team];
-        saveAttempts = attempts;
+        program = event_teams[team].comp;
+        if (program == "VRC") {
+            setTypeVRC();
+        }
+        else if (program == "VIQC") {
+            setTypeVIQC();
+        }
         document.querySelector("#SkillsControl #dAttempts").innerHTML = attempts[0];
         document.querySelector("#SkillsControl #pAttempts").innerHTML = attempts[1];
         document.querySelector("#SkillsControl .skillsLabel").classList.remove("hide");
@@ -942,6 +983,9 @@ function handleRankings(data) {
                         html += ('<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
                     }
                 }
+                else {
+                    console.log("Neither Format");
+                }
                 html += "</tbody>";
                 document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
                 document.getElementById("skillsScoreTable").style.backgroundColor = "#" + intToRGB(hashCode(property));
@@ -1018,6 +1062,7 @@ function volunteer_table_add_row() {
     vol_name = document.querySelector("#volunteerName").value;
     vol_role = document.querySelector("#volunteerRole").value;
     vol_code = document.querySelector("#volunteerCode").value;
+    vol_event = document.querySelector("#volunteerEvent").value;
 
     all_codes = []
     for (u in volunteers) {
@@ -1045,11 +1090,12 @@ function volunteer_table_add_row() {
         return;
     }
     volunteers[vol_name] = { Role: vol_role, Passcode: vol_code }
-    volunteer_to_add = { Role: vol_role, Passcode: vol_code, Name: vol_name }
+    volunteer_to_add = { Role: vol_role, Passcode: vol_code, Name: vol_name, Event: vol_event}
     websocket.send(JSON.stringify({ api: API_volunteers, operation: "add", user_info: volunteer_to_add }));
     document.querySelector("#volunteerName").value = ""
     document.querySelector("#volunteerRole").value = "Staff"
     document.querySelector("#volunteerCode").value = ""
+    document.querySelector("#volunteerEvent").value = "ALL";
 }
 
 function updateVolunteers(data) {
@@ -1061,11 +1107,15 @@ function updateVolunteers(data) {
             user_name = keys[u]
             passcode = volunteers[user_name].Passcode;
             role = volunteers[user_name].Role;
+            event_code = volunteers[user_name].Event;
             if (role == "Head Referee") {
                 role = "Referee";
             }
-            if (user_name != name && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+            if (role == "Livestream") {
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="event" class="smol">' + event_code + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+            }
+            else if (user_name != name && user_name != "Guest") {
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="event" class="smol">' + event_code + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
             if (role == "Livestream") {
                 streamcode = passcode;
@@ -1114,6 +1164,13 @@ function edit_code(user) {
     user.querySelector("#name").value = existing_name;
     user.querySelector("#edit_name").value = existing_name;
 
+    existing_event = user.querySelector("#event").innerHTML; 
+    event_options = document.querySelector("#volunteerEvent").innerHTML;
+    html = '<select id="edit_event">' + event_options + '</select>';
+    user.querySelector("#event").innerHTML = html;
+    console.log(existing_event);
+    user.querySelector("#edit_event").value = existing_event;
+
     user.querySelector("#actions").innerHTML = '<button class="btn lavender" onclick=save_user(this.parentNode.parentNode)>Save</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button>';
 }
 
@@ -1123,6 +1180,7 @@ function save_user(user) {
     username = user.querySelector("#edit_name").value;
     passcode = user.querySelector("#edit_code").value;
     userrole = user.querySelector("#edit_role").value;
+    eventcode = user.querySelector("#edit_event").value;
     oldcode = volunteers[oldname].Passcode;
     if (username == "" || /[^a-zA-Z]/.test(username)) {
         showModal("Please enter a valid username");
@@ -1156,7 +1214,7 @@ function save_user(user) {
         delete volunteers[oldname];
     }
 
-    edit_vol = { Name: username, Passcode: passcode, Role: userrole, OldName: oldname };
+    edit_vol = { Name: username, Passcode: passcode, Role: userrole, OldName: oldname, Event: eventcode};
     websocket.send(JSON.stringify({ api: API_volunteers, operation: "edit", user_info: edit_vol }));
 }
 
@@ -1254,10 +1312,36 @@ function refreshTeams() {
 }
 
 function make_stream() {
-    html = "<b>DO NOT LEAK</b> <br><br> ";
+    html = "<b>These links grant access to meeting rooms:</b> <br><br> ";
     for (room in ALL_ROOMS) {
         num = ALL_ROOMS[room];
-        html += '<a href=https://console.liveremoteskills.org/stream?room=' + num + '&token=' + streamcode + '>Field ' + num + '</a> <br><br>';
+        html += '<a class="roomlink">https://console.liveremoteskills.org/stream?room=' + num + '&token=' + streamcode + '</a> <br><br>';
     }
     showModal(html);
+}
+
+function handleEventData(data) {
+    if (data.operation == "event_info") {
+        user_event = data.event;
+        if (role == "Event Partner" || role == "Referee" || role == "Staff" || role == "Head Referee") {
+            websocket.send(JSON.stringify({ api: API_inspection_ctrl, operation: "get" }));
+            websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get" }));
+        }
+        websocket.send(JSON.stringify({ api: API_queue, operation: "get" }));
+        teams_info = data.teams;
+        event_teams = {};
+        for (i in Object.keys(teams_info)) {
+            event_teams[teams_info[i].teamNum] = teams_info[i];
+            team_div = teams_info[i].div;
+            if (!all_events.includes(team_div)) {
+                all_events.push(team_div);
+            }
+            
+        }
+        html = '<option value="ALL">ALL</option>';
+        for (i in all_events) {
+            html += "<option value=" + all_events[i] + ">" + all_events[i] + "</option>";
+        }
+        document.querySelector("#volunteerEvent").innerHTML = html;
+    }
 }

@@ -1668,6 +1668,7 @@ textarea {
 #volunteers_table {
     width: 100%;
     max-height: 500px;
+    font-size: 12px;
 }
 
 #volunteerName{
@@ -1700,4 +1701,20 @@ td.smol button{
 
 .onebuttonrow button {
     width: 90%;
+}
+
+.roomlink{
+    user-select: all;
+}
+
+#scoringList1{
+    max-width: 250px;
+}
+
+#skillsContentBox{
+    text-align: center;
+}
+
+#volunteerRole{
+    max-width: 90%;
 }

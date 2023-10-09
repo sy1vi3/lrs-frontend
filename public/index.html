@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>LRS Console</title>
@@ -548,8 +548,16 @@
                             <h4 id="skillsLabel1" class="skillsLabel">Completed: <span id="dAttempts">-</span> Driving + <span id="pAttempts">-</span> Programming</h4>
                         </h3>
                     </div>
-                    <div id="scoringList1" class="tabContent2">
-                        <p>No Team Selected</p>
+                    <div class="buttonRow">
+                        <input type="radio" onchange="skillsCalc('none')" id="driving" name="runToggle">
+                        <label for="driving">Driving Skills</label>
+                        <input type="radio" onchange="skillsCalc('none')" id="programming" name="runToggle">
+                        <label for="programming">Programming Skills</label>
+                    </div>
+                    <div id="skillsContentBox">
+                        <div id="scoringList1" class="tabContent2">
+                            <p>No Team Selected</p>
+                        </div>
                     </div>
                 </div>
             </div> <!-- End of Skills Control tab -->
@@ -682,6 +690,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Role</th>
+                                        <th>Event</th>
                                         <th>Access Code</th>
                                         <th id="minusSign">Actions</th>
                                     </tr>
@@ -690,6 +699,7 @@
                                     <tr id="volunteer">
                                         <td id="name">Taran</td>
                                         <td>Admin</td>
+                                        <td>RE-EVENT-CODE</td>
                                         <td id="code">Passcode</td>
                                         <td class="smol"><button onclick='edit_code(this.parentNode.parentNode.querySelector("#code"))'>Change Code</button><button onclick='remove_volunteer(this.parentNode.parentNode.querySelector("#name"))'>Revoke Access</button></td>
                                     </tr>
@@ -702,6 +712,11 @@
                                                 <option value="Staff">Staff</option>
                                                 <option value="Head Referee">Referee</option>
                                                 <option value="Event Partner">Event Partner</option>
+                                            </select>
+                                        </th>
+                                        <th class="bottom">
+                                            <select id="volunteerEvent">
+                                                <option value="ALL">ALL</option>
                                             </select>
                                         </th>
                                         <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
@@ -843,35 +858,37 @@
             <input type="radio" onchange="skillsCalc('none')" id="programming" name="runToggle">
             <label for="programming">Programming Skills</label>
         </div>
-        <div id="scoringList1" class="tabContent2">
-            <p>Red balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsRed" value="0" min="0" max="15"></p>
-            <p>Blue balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsBlue" value="15" min="0" max="15"></p>
-            <table id="scoringField1" class="scoring">
-                <tr>
-                    <td onclick="skillsOgToggle('A')" id="ogA" class="blue">A</td>
-                    <td onclick="skillsOgToggle('B')" id="ogB" class="blue">B</td>
-                    <td onclick="skillsOgToggle('C')" id="ogC" class="blue">C</td>
-                </tr>
-                <tr>
-                    <td onclick="skillsOgToggle('D')" id="ogD" class="blue">D</td>
-                    <td onclick="skillsOgToggle('E')" id="ogE" class="blue">E</td>
-                    <td onclick="skillsOgToggle('F')" id="ogF" class="blue">F</td>
-                </tr>
-                <tr>
-                    <td onclick="skillsOgToggle('G')" id="ogG" class="blue">G</td>
-                    <td onclick="skillsOgToggle('H')" id="ogH" class="blue">H</td>
-                    <td onclick="skillsOgToggle('I')" id="ogI" class="blue">I</td>
-                </tr>
-            </table>
-            <br>
-            Skills Stop Time: <input type="number" onchange="skillsCalc('none')" id="skillsStopTime" value="0" min="0" max="60">
-            <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
-        </div>
-        <div class="buttonRow">
-            <button onclick="skillsCalc('show')" class="btn lavender">Show Team</button>
-            <button onclick="skillsCalc('save')" class="btn yellow">Save</button>
-            <button onclick="skillsClear()" class="btn red">Clear</button>
-            <button id="skillsCancelEdit" onclick="skillsCancelEdit()" class="btn dark hide">Cancel Edit</button>
+        <div id="hiddenVRCContent">
+            <div id="scoringList1" class="tabContent2">
+                <p>Red balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsRed" value="0" min="0" max="15"></p>
+                <p>Blue balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsBlue" value="15" min="0" max="15"></p>
+                <table id="scoringField1" class="scoring">
+                    <tr>
+                        <td onclick="skillsOgToggle('A')" id="ogA" class="blue">A</td>
+                        <td onclick="skillsOgToggle('B')" id="ogB" class="blue">B</td>
+                        <td onclick="skillsOgToggle('C')" id="ogC" class="blue">C</td>
+                    </tr>
+                    <tr>
+                        <td onclick="skillsOgToggle('D')" id="ogD" class="blue">D</td>
+                        <td onclick="skillsOgToggle('E')" id="ogE" class="blue">E</td>
+                        <td onclick="skillsOgToggle('F')" id="ogF" class="blue">F</td>
+                    </tr>
+                    <tr>
+                        <td onclick="skillsOgToggle('G')" id="ogG" class="blue">G</td>
+                        <td onclick="skillsOgToggle('H')" id="ogH" class="blue">H</td>
+                        <td onclick="skillsOgToggle('I')" id="ogI" class="blue">I</td>
+                    </tr>
+                </table>
+                <br>
+                Skills Stop Time: <input type="number" onchange="skillsCalc('none')" id="skillsStopTime" value="0" min="0" max="60">
+                <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
+            </div>
+            <div class="buttonRow">
+                <button onclick="skillsCalc('show')" class="btn lavender">Show Team</button>
+                <button onclick="skillsCalc('save')" class="btn yellow">Save</button>
+                <button onclick="skillsClear()" class="btn red">Clear</button>
+                <button id="skillsCancelEdit" onclick="skillsCancelEdit()" class="btn dark hide">Cancel Edit</button>
+            </div>
         </div>
     </div> <!-- End of hidden VRC sheet -->
     <div id="hiddenVIQC" class="hide">
@@ -890,17 +907,19 @@
             <input type="radio" onchange="iqSkillsCalc('none')" id="programming" name="runToggle">
             <label for="programming">Programming Skills</label>
         </div>
-        <div id="scoringList1" class="tabContent2">
-            <p>Risers Scored: <input type="number" onchange="iqSkillsCalc('none')" id="iqRisers" value="0" min="0" max="27"></p>
-            <p>Completed Rows: <input type="number" onchange="iqSkillsCalc('none')" id="iqRows" value="0" min="0" max="8"></p>
-            <p>Completed Stacks: <input type="number" onchange="iqSkillsCalc('none')" id="iqStacks" value="0" min="0" max="9"></p>
-            <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
-        </div>
-        <div class="buttonRow">
-            <button onclick="iqSkillsCalc('show')" class="btn lavender">Show Team</button>
-            <button onclick="iqSkillsCalc('save')" class="btn yellow">Save</button>
-            <button onclick="iqSkillsClear()" class="btn red">Clear</button>
-            <button id="skillsCancelEdit" onclick="skillsCancelEdit()" class="btn dark hide">Cancel Edit</button>
+        <div id="hiddenVIQCContent">
+            <div id="scoringList1" class="tabContent2">
+                <p>Risers Scored: <input type="number" onchange="iqSkillsCalc('none')" id="iqRisers" value="0" min="0" max="27"></p>
+                <p>Completed Rows: <input type="number" onchange="iqSkillsCalc('none')" id="iqRows" value="0" min="0" max="8"></p>
+                <p>Completed Stacks: <input type="number" onchange="iqSkillsCalc('none')" id="iqStacks" value="0" min="0" max="9"></p>
+                <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
+            </div>
+            <div class="buttonRow">
+                <button onclick="iqSkillsCalc('show')" class="btn lavender">Show Team</button>
+                <button onclick="iqSkillsCalc('save')" class="btn yellow">Save</button>
+                <button onclick="iqSkillsClear()" class="btn red">Clear</button>
+                <button id="skillsCancelEdit" onclick="skillsCancelEdit()" class="btn dark hide">Cancel Edit</button>
+            </div>
         </div>
     </div>
 </body>
