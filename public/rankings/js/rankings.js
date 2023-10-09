@@ -128,7 +128,7 @@ function rankingsHandler(data) {
 
             html += "</tbody>";
             document.querySelector("#skillsScoreTable" + property).innerHTML = html;
-            color = shadeColor("#" + intToRGB(hashCode(property), -50);
+            color = shadeColor("#" + intToRGB(hashCode(property), -50));
             document.getElementById("skillsScoreTable" + property).style.backgroundColor = "#" + intToRGB(hashCode(property));
         }
         if (document.querySelector("#rankingsParent").offsetHeight > (window.innerHeight - document.querySelector("#rankingsHeader").offsetHeight)) {  
