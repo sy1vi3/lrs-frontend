@@ -27,6 +27,10 @@ var oldProgram;
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
+window.onLoadCallback = function () {
+    gapi.auth2.init();
+    console.log("huh?");
+}
 
 function showModal(text) {
     document.querySelector("#textModal .modal-text").innerHTML = text;

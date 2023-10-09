@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/ec.css">
     <script type="text/javascript" src="js/ec.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link rel="icon" type="image/svg+xml" href="favicon/favicon.png">
+    <meta name="google-signin-client_id" content="638564608522-g0setquu8qekdfigcgjcqgbqpfv8t6f9.apps.googleusercontent.com">
 </head>
 
 <body class="container v" onload="init()">
@@ -666,6 +668,7 @@
                         </tr>
                     </table>
                 </div>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </div> <!-- End of Event Control tab -->
 
             <div id="TechSupport" class="tabContent v">
