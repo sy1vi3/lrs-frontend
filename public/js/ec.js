@@ -157,7 +157,7 @@ function login() {
     } else {
         showModal("Invalid access code");
     }
-    console.log("button1")
+    console.log("button2")
 }
 
 function logout() {
@@ -1020,3 +1020,5 @@ function onSignIn(googleUser) {
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 }
+
+
