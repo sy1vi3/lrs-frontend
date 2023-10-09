@@ -110,6 +110,7 @@ function connect() {
     websocket = new WebSocket("wss://ecsrv.liveremoteskills.org:443");
     websocket.onmessage = function (event) {
         data = JSON.parse(event.data);
+        console.log(data);
         switch (data.api) {
             case API_login:
                 if ("failure" in data) {
