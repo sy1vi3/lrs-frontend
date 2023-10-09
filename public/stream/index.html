@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Event Console</title>
@@ -9,19 +9,20 @@
     <!--<link rel="icon" type="image/svg+xml" href="favicon/favicon.png">-->
 </head>
 
-<body class="container v" onload="init()" id="body">
+<body onload="init()">
     <input type="text" id="accessCode" autofocus placeholder="3384-T-xxxxxx">
     <button id="loginbutton" onclick="connect()">Login</button>
     <button id="loadbutton" onclick="load()" class="hide">Load</button>
 
-    <div id="jitsi_box"></div>
+    <div id="jitsiBox"></div>
+    
     <div id="current">
         <div id="teamNum">5090X</div>
         <div id="teamName">Radio Active</div>
         <div id="teamLocation">Chandler, Arizona, United States</div>
     </div>
     
-
+    <div id="queue"></div>
 </body>
 
 </html>
