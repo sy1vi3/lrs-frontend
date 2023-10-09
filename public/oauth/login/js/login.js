@@ -49,7 +49,7 @@ function handleLogin(data) {
         }
         if (html == "Log in as: ") {
             html = 'No registered teams are associated with this RobotEvents account'
-            html += '<button class="btn gray" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
+            html += '<button class="btn gray" value="2021-O-RgAqY8" onclick="teamLogin(`2021-O-RgAqY8`)">Log in as Guest</button>';
         }
         if (Object.keys(codes).length == 1) {
             teamLogin(passcode)
