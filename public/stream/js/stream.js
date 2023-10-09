@@ -67,6 +67,7 @@ function load() {
             BRAND_WATERMARK_LINK: '',
             CONNECTION_INDICATOR_DISABLED: true,
             DEFAULT_LOCAL_DISPLAY_NAME: 'Livestream',
+            DEFAULT_LOGO_URL: '',
             DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
             DISABLE_FOCUS_INDICATOR: true,
             DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
