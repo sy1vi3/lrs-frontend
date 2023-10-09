@@ -116,8 +116,10 @@ function connect() {
                 if ("failure" in data) {
                     console.log("Login fail")
                 }
+                break;
             case API_livestream:
                 livestream(data);
+                break;
         }
     };
 
