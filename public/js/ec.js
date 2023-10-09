@@ -22,6 +22,7 @@ const API_event_config = "Event Config"
 const API_production = "Production"
 const API_output = "Output"
 const API_home = "Home"
+const API_settings = "Settings"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -84,8 +85,12 @@ function tab(tab) {
     }
     if (tab != "") {
         document.getElementById(tab.replace(" ", "")).classList.add("show");
-        if (tab != API_chat)
+        if (tab != API_chat && tab != "Stats") {
             document.getElementById("tab" + tab.replace(" ", "")).classList.add("sel");
+        }
+        else if (tab != API_chat){
+            document.getElementById("tab" + "Event".replace(" ", "")).classList.add("sel");
+        }
     }
 }
 
@@ -177,6 +182,9 @@ function connect(tokenLogin = false) {
             case API_home:
                 homeHandler(data);
                 break;
+            case API_settings:
+                settingsHandler(data);
+                break;
         }
     };
 
@@ -255,7 +263,11 @@ function handleMain(data) {
         }
         tabs = "";
         for (i = 0; i < data["tablist"].length; i++) {
-            tabs += '<button id="tab' + data["tablist"][i].replace(" ", "") + '" class="ecTab" onclick="tab(\'' + data["tablist"][i] + '\')">' + data["tablist"][i] + '</button>';
+            onclick_name = data["tablist"][i];
+            if (data["tablist"][i] == "Stats") {
+                data["tablist"][i] = "Event";
+            }
+            tabs += '<button id="tab' + data["tablist"][i].replace(" ", "") + '" class="ecTab" onclick="tab(\'' + onclick_name + '\')">' + data["tablist"][i] + '</button>';
         }
         document.querySelector("#tabsAndContent > #ecHeader").innerHTML = tabs;
         document.querySelector("#Login").classList.add("hide");
@@ -1299,46 +1311,140 @@ function refreshRanks() {
     websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
 }
 
-
-function fillStatsTable() {
-    teams_data = data.data;
-    html = ''
-    for (key in teams_data) {
-        value = teams_data[key];
-        html += "<tr><td>" + key + "</td><td>" + value.program + "</td><td>" + value.div + "</td><td>" + value.inspection + "</td><td>" + value.driver + "</td><td>" + value.prog + "</td></tr>"
-    }
-    num_teams = Object.keys(teams_data).length;
-    num_runs = scorelist.length;
-    proglist = {};
-    driverlist = {};
-    totalScores = 0;
-    progScores = 0;
-    driverScores = 0;
-    for (run in scorelist) {
-        if (scorelist[run].type == "Programming") {
-            proglist[run] = scorelist[run];
-            progScores += scorelist[run].score;
-        }
-        else if (scorelist[run].type == "Driving") {
-            driverlist[run] = scorelist[run];
-            driverScores += scorelist[run].score;
-        }
-        totalScores += scorelist[run].score;
-    }
-    avg_total = Math.floor(totalScores / num_runs);
-    avg_driver = Math.floor(driverScores / Object.keys(driverlist).length);
-    avg_prog = Math.floor(progScores / Object.keys(proglist).length);
-    document.querySelector("#statsTableBody").innerHTML = html;
-    document.querySelector("#teamsAtEvent").innerHTML = "Teams at Event: " + num_teams;
-    document.querySelector("#totalRun").innerHTML = "Skills Matches Run: " + num_runs;
-    document.querySelector("#driverRun").innerHTML = "Driver Matches Run: " + Object.keys(driverlist).length;
-    document.querySelector("#progRun").innerHTML = "Programming Matches Run: " + Object.keys(proglist).length;
-    document.querySelector("#averageDriver").innerHTML = "Average Driver Score: " + avg_driver;
-    document.querySelector("#averageProg").innerHTML = "Average Programming Score: " + avg_prog;
-    document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + avg_total;
-
+function teamCardView(team) {
+    websocket.send(JSON.stringify({ api: "Stats", operation: "get_info_card", team: team }));
 }
 
+function sendCongrats(team) {
+    websocket.send(JSON.stringify({ api: "Settings", operation: "congrats", team: team }));
+}
+
+function fillStatsTable(data) {
+    if (data.operation == "post") {
+        teams_data = data.data;
+        
+        html = ''
+        let teams = Object.keys(teams_data);
+        teams.sort(function (a, b) {
+            a = parseInt(a.replace(/\D/g, ''));
+            b = parseInt(b.replace(/\D/g, ''));
+            return (a - b);
+        });
+        for (key in teams) {
+            value = teams_data[teams[key]];
+            if (role == "Head Referee") {
+                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="queueInvite(`' + teams[key] + '`, `General`)" class="btn lavender">Invite to Event Room</button></td></tr>';
+            }
+            else {
+                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="sendCongrats(`' + teams[key] + '`)" class="btn green">Congratulate</button></td></tr>';
+
+            }
+        }
+        num_teams = Object.keys(teams_data).length;
+        num_runs = scorelist.length;
+        proglist = {};
+        driverlist = {};
+        totalScores = 0;
+        progScores = 0;
+        driverScores = 0;
+        for (run in scorelist) {
+            if (scorelist[run].type == "Programming") {
+                proglist[run] = scorelist[run];
+                progScores += scorelist[run].score;
+            }
+            else if (scorelist[run].type == "Driving") {
+                driverlist[run] = scorelist[run];
+                driverScores += scorelist[run].score;
+            }
+            totalScores += scorelist[run].score;
+        }
+        avg_total = Math.floor(totalScores / num_runs);
+        avg_driver = Math.floor(driverScores / Object.keys(driverlist).length);
+        avg_prog = Math.floor(progScores / Object.keys(proglist).length);
+        document.querySelector("#statsTableBody").innerHTML = html;
+        document.querySelector("#teamsAtEvent").innerHTML = "Teams at Event: " + num_teams;
+        document.querySelector("#totalRun").innerHTML = "Skills Matches Run: " + num_runs;
+        document.querySelector("#driverRun").innerHTML = "Driver Matches Run: " + Object.keys(driverlist).length;
+        document.querySelector("#progRun").innerHTML = "Programming Matches Run: " + Object.keys(proglist).length;
+        document.querySelector("#averageDriver").innerHTML = "Average Driver Score: " + avg_driver;
+        document.querySelector("#averageProg").innerHTML = "Average Programming Score: " + avg_prog;
+        document.querySelector("#averageCombined").innerHTML = "Average Combined Score: " + avg_total;
+    }
+    else if (data.operation == "info_card") {
+        team_info = data.data;
+        document.querySelector("#infoTeamNumber").innerHTML = team_info.num;
+        document.querySelector("#infoTeamName").innerHTML = team_info.name;
+        document.querySelector("#infoTeamOrg").innerHTML = team_info.org;
+        document.querySelector("#infoTeamReg").innerHTML = team_info.loc;
+        document.querySelector("#infoTeamGrd").innerHTML = team_info.grade;
+
+        num_driver = team_info.driver;
+        num_prog = team_info.prog;
+
+        document.querySelector("#driverStamps").innerHTML = "";
+        document.querySelector("#progStamps").innerHTML = "";
+
+        for (i = 0; i < num_driver; i++) {
+            document.querySelector("#driverStamps").innerHTML += '<img class="skillsDisc driver" src="img/random/driver_skills.png" width="60" height="60" draggable="false"/>';
+        }
+        for (i = 0; i < num_prog; i++) {
+            document.querySelector("#progStamps").innerHTML += '<img class="skillsDisc prog" src="img/random/prog_skills.png" width="60" height="60" draggable="false"/>';
+        }
+
+        if (num_prog + num_driver == 0) {
+            document.querySelector("#driverStamps").innerHTML += '<img class="skillsNone" src="img/random/no_skills.png" width="200" height=113" draggable="false"/>';
+        }
+
+        html = '';
+        stickers = team_info.stickers;
+        for (i in stickers) {
+            sticker = stickers[i];
+            html += '<div><img class="teamSticker" src="' + sticker + '" width="75"/></div>';
+        }
+        if (!html.includes(myStickerURL)) {
+            html += '<div><img onclick="giftSticker(`' + team_info.num + '`)"class="teamSticker" src="img/random/plus_icon.png" width="75" draggable="false"/></div>';
+        }
+        document.querySelector("#teamSharedStickers").innerHTML = html;
+
+        if (stickers.length > 0) {
+            document.querySelector("#stickerTitle").innerHTML = "Team Stickers";
+        }
+        else {
+            document.querySelector("#stickerTitle").innerHTML = "";
+        }
+
+        document.querySelector("#teamInfoModal").classList.add("show");
+
+    }
+}
+
+function stickerEdit() {
+    html = '<input type="text" id="editStickerURL" placeholder="https://link/to/your/image">  <button id="saveSticker" class="btn green" onclick="stickerSave()">Save</button>';
+    document.querySelector("#stickerActions").innerHTML = html;
+}
+
+function stickerSave(){
+    new_url = document.querySelector("#editStickerURL").value;
+    websocket.send(JSON.stringify({ api: "Settings", operation: "set_sticker_url", sticker_url: new_url }));
+    html = '<button id="editMySticker" class="btn yellow" onclick="stickerEdit()">Edit Sticker</button>';
+    document.querySelector("#stickerActions").innerHTML = html;
+}
+
+function giftSticker(team) {
+    if (confirm("Are you sure? Gift your team's sticker to " + team + "?")) {
+        websocket.send(JSON.stringify({ api: "Settings", operation: "gift_sticker", team: team }));
+        teamCardView(team);
+    }
+}
+
+var myStickerURL = '';
+
+function settingsHandler(data) {
+    if (data.operation == "set_my_sticker") {
+        document.querySelector("#currentSticker").innerHTML = '<img src="' + data.url + '" width="75" />';
+        myStickerURL = data.url;
+    }
+}
 
 function RE_login() {
     window.location.replace("https://robotevents.com/oauth/authorize?client_id=8&redirect_uri=https%3A%2F%2Fconsole.liveremoteskills.org%2Foauth%2Flogin%2F&response_type=code");

@@ -477,7 +477,7 @@ ul {
             width: 100%;
             position: absolute;
             height: calc(100% - 135px - 20px);
-            word-break: break-all;
+            word-break: break-word;
         }
 
         #Chat.show #messageBoard > #messageAction {
@@ -510,7 +510,7 @@ ul {
     #messageBoard #messageWindow {
         overflow-y: auto;
         height: calc(100% - 135px);
-        word-break: break-all;
+        word-break: break-word;
         box-sizing: border-box;
         width: 280px
     }
@@ -541,6 +541,34 @@ ul {
             content: "\f11e";
             color: #E45656
         }
+        #messageBoard #messageWindow .system::before {
+            content: "\f013";
+            color: #9c9c9c
+        }
+        #messageBoard #messageWindow .system > .messageAuthor {
+            color: #9c9c9c
+        }
+
+
+        #messageBoard #messageWindow .score::before {
+            content: "\f0e7";
+            color: #11d625
+        }
+
+        #messageBoard #messageWindow .score > .messageAuthor {
+            color: #11d625
+        }
+
+
+        #messageBoard #messageWindow .sticker::before {
+            content: "\f06b";
+            color: #bd2683
+        }
+
+        #messageBoard #messageWindow .sticker > .messageAuthor {
+            color: #bd2683
+        }
+
 
         #messageBoard #messageWindow .referee > .messageAuthor {
             color: #E45656
@@ -566,6 +594,35 @@ ul {
 
         #messageBoard #messageWindow .announcement > .messageText {
             color: #FDD835;
+            font-weight: bold;
+            font-size: 13pt
+        }
+
+        #messageBoard #messageWindow .sticker > .messageAuthor {
+            display: none
+        }
+
+
+        #messageBoard #messageWindow .score > .messageAuthor {
+            display: none
+        }
+
+        #messageBoard #messageWindow .system > .messageAuthor {
+            display: none
+        }
+
+        #messageBoard #messageWindow .sticker > .messageText {
+            color: #bd2683;
+            font-weight: bold;
+            font-size: 13pt
+        }
+        #messageBoard #messageWindow .score > .messageText {
+            color: #11d625;
+            font-weight: bold;
+            font-size: 13pt
+        }
+        #messageBoard #messageWindow .system > .messageText {
+            color: #9c9c9c;
             font-weight: bold;
             font-size: 13pt
         }
@@ -687,8 +744,8 @@ th, td {
 .modal-scoresheet {
     display: block;
     border: 2px solid #808080;
-    max-width: 28em;
-    max-height: 38em;
+/*    max-width: 28em;
+    max-height: 38em;*/
     position: fixed;
     top: 50%;
     left: 50%;
@@ -1574,18 +1631,22 @@ label:hover, label:active {
 }
 
     #Settings #settingsBox{
-        max-height: 200px;
-/*        max-width: 440px;*/
-        margin-left: 400px;
-        margin-right: 400px;
-        margin-top: 200px;
-        margin-bottom: 200px;
+        margin-left: 50px;
+        margin-right: 50px;
+        margin-top: 50px;
+        margin-bottom: 50px;
         text-align: center;
+        display: grid;
+        place-items: center;
     }
+        #Settings #settingsBox div{
+            position: relative !important;
+        }
 
-    #Settings #settingLink{
-        float: left;
-    }
+
+        #Settings #settingLink {
+            float: left;
+        }
 
 @media (max-width: 1020px) {
     #Stats #statsBox {
@@ -1940,4 +2001,27 @@ input:checked + .slider:before {
 
 #emoteTable td:hover{
     background: #000;
+}
+
+.skillsDisc{
+    vertical-align: middle;
+}
+
+#driverStamps, #progStamps {
+    text-align: center;
+}
+
+#teamInfoContainer {
+    display: grid;
+    grid-template-columns: 350px 350px;
+    grid-row-gap: 20px;
+}
+
+#teamStickers {
+    grid-column: auto / span 2;
+}
+
+#teamSharedStickers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 }

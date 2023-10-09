@@ -617,16 +617,13 @@
             <div id="Stats" class="tabContent v">
                 <div id="statsBox" class="scrollBox">
                     <div id="left" class="container v tc">
-                        <h2>Team Data</h2>
+                        <h2>Teams</h2>
                         <div id="tableBox" class="scrollBox">
                             <table id="teamsTableStats" class="table sticky">
                                 <tr>
                                     <th>Team</th>
-                                    <th>Program</th>
-                                    <th>Div</th>
-                                    <th>Inspection</th>
-                                    <th>Driver Runs</th>
-                                    <th>Prog Runs</th>
+                                    <th>Profile</th>
+                                    <th>Actions</th>
                                 </tr>
                                 <tbody id="statsTableBody">
                             </table>
@@ -691,7 +688,7 @@
                                     <td><button class="btn grey" onclick="clearChat()">Wipe Chat History</button></td>
                                 </tr>
                                 <tr>
-                               
+
                                     <td><button class="btn red" id="RE_BTN" onclick="post_to_re()">RobotEvents Link</button></td>
                                 </tr>
                                 <tfoot id="room_code_footer">
@@ -762,12 +759,26 @@
 
             <div id="Settings" class="tabContent v">
                 <div id="settingsBox" class="scrollBox">
+                    <div id="myTeamInfo">
+                        <h1>Team Number: 5090X</h1>
+                    </div>
                     <div id="settingLink">
-                        <h1>Open Meetings in a New Tab</h1>
-                        <label class="switch" onload="settingsLoad()">
-                            <input id="meetingCheckSetting" type="checkbox" onchange="settingChange()">
-                            <span class="slider"></span>
-                        </label>
+                        <h1>
+                            Open Meetings in a New Tab: 
+                            <label class="switch" onload="settingsLoad()">
+                                <input id="meetingCheckSetting" type="checkbox" onchange="settingChange()">
+                                <span class="slider"></span>
+                            </label>
+                        </h1>
+                    </div>
+                    <div id="setMySticker">
+                        <h1><u>Team Sticker</u></h1>
+                        <div id="currentSticker">
+                            <img src="https://cdn.discordapp.com/avatars/428334191118385172/25a3844f0d4c054c12a384f0e45f1fcb.png?size=128" width="75" />
+                        </div>
+                        <div id="stickerActions">
+                            <button id="editMySticker" class="btn yellow" onclick="stickerEdit()">Edit Sticker</button>
+                        </div>
                     </div>
                 </div>
             </div> <!-- End of Settings tab -->
@@ -945,6 +956,86 @@
         </div>
     </div> <!-- End of IQ score modal -->
 
+    <div id="teamInfoModal" class="modal">
+        <div id="infoBody" class="modal-scoresheet">
+            <span class="close" onclick="modalClose('#teamInfoModal')"><i class="fas fa-times-circle"></i></span>
+            <div id="teamInfoContainer">
+                <div id="teamSkillsStamps" class="container v">
+                    <h2><u>Skills Stamps</u></h2> <br />
+                    <div id="driverStamps">
+                        <b>Driving Skills: </b>
+                        <img class="skillsDisc driver" src="img/random/driver_skills.png" width="50" height="50" draggable="false"/>
+                        <img class="skillsDisc driver" src="img/random/driver_skills.png" width="50" height="50" />
+                        <img class="skillsDisc driver" src="img/random/driver_skills.png" width="50" height="50" />
+                    </div>
+                    <div id="progStamps">
+                        <b>Auton Skills: </b>
+                        <img class="skillsDisc prog" src="img/random/prog_skills.png" width="50" height="50" />
+                        <img class="skillsDisc prog" src="img/random/prog_skills.png" width="50" height="50" draggable="false"/>
+                    </div>
+                </div>
+                <div id="teamInformation" class="container v">
+                    <h2><u>Team Info</u></h2> <br />
+                    <div id="teamOverview">
+                        <b>Team Number: </b><span id="infoTeamNumber">5090X</span> <br />
+                        <b>Team Name: </b><span id="infoTeamName">Radio Active</span><br />
+                        <b>Organization: </b><span id="infoTeamOrg">Microchip Community Team</span><br />
+                        <b>Region: </b><span id="infoTeamReg">Chandler, AZ, USA</span><br />
+                        <b>Grade Level: </b><span id="infoTeamGrd">High School</span><br />
+                    </div>
+                </div>
+                <div id="teamStickers" class="container v">
+                    <h2><u id="stickerTitle">Team Stickers</u></h2> <br />
+                    <div id="teamSharedStickers">
+                        <div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div> <div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div> <div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div><div>
+                            <img class="teamSticker" src="https://cdn.discordapp.com/avatars/201116159343460357/ebf61582bb3ea64d0ae10b33d07aa32b.png?size=128" width="75" height="75" />
+                        </div>
+                       </div>
+                    </div>
+            </div>
+ 
+        </div>
+    </div> <!-- End of IQ score modal -->
 
 
     <div id="hiddenVRC" class="hide">
