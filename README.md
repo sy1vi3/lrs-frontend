@@ -6,7 +6,7 @@
 <br>
 
 **Event Console frontend:** https://gitlab.com/18x18az/event-console/-/tree/frontend
-- Can be deployed as a static site (e.g. with GitLab Pages)
+- Designed for deployment with GitLab Pages
 - `stream` folder does not need to be widely deployed
 - Yes, it is pretty messy
 - Yes, it should be using React
