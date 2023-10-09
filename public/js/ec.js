@@ -52,9 +52,7 @@ const comp_preset = "VIQC";
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
 
-if (urlParams.get('token') != null) {
-    connect(true);
-}
+
 
 function showModal(text) {
     document.querySelector("#textModal .modal-text").innerHTML = text;
@@ -96,7 +94,10 @@ function tab(tab) {
     }
 }
 
-function init() {    
+function init() {
+    if (urlParams.get('token') != null) {
+        connect(true);
+    }
     document.querySelector("#Login #accessCode").addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
             document.querySelector("#Login button").click();
