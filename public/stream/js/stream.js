@@ -26,73 +26,7 @@ var jitsi;
 function load(roomcode) {
     domain = "connect.liveremoteskills.org";
     console.log("silent: " + silent);
-    if (silent == 'true') {
-        options = {
-            roomName: "room" + roomnum,
-            userInfo: {
-                email: '',
-                displayName: 'Livestream'
-            },
-            width: '100%',
-            height: '100%',
-            parentNode: document.querySelector('#jitsiBox'),
-            configOverwrite: {
-                disableAudioLevels: true,
-                enableNoAudioDetection: false,
-                enableNoisyMicDetection: false,
-                startAudioOnly: false,
-                startWithAudioMuted: true,
-                startSilent: true,
-                maxFullResolutionParticipants: -1,
-                startWithVideoMuted: true,
-                startScreenSharing: false,
-                hideLobbyButton: true,
-                disableProfile: true,
-                prejoinPageEnabled: false,
-                enableAutomaticUrlCopy: false,
-                disableDeepLinking: true,
-                disableInviteFunctions: true,
-                remoteVideoMenu: { disableKick: true },
-                disableRemoteMute: true,
-                disableTileView: true,
-                hideConferenceSubject: true,
-                hideConferenceTimer: true,
-                hideParticipantsStats: true,
-            },
-            interfaceConfigOverwrite: {
-                AUTO_PIN_LATEST_SCREEN_SHARE: false,
-                CONNECTION_INDICATOR_DISABLED: true,
-                DEFAULT_LOCAL_DISPLAY_NAME: 'Livestream',
-                DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
-                DISABLE_FOCUS_INDICATOR: true,
-                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                DISABLE_PRESENCE_STATUS: true,
-                DISABLE_RINGING: true,
-                DISABLE_TRANSCRIPTION_SUBTITLES: true,
-                DISABLE_VIDEO_BACKGROUND: true,
-                ENABLE_DIAL_OUT: false,
-                ENABLE_FEEDBACK_ANIMATION: false,
-                HIDE_INVITE_MORE_HEADER: true,
-                INITIAL_TOOLBAR_TIMEOUT: 1,
-                JITSI_WATERMARK_LINK: '',
-                LANG_DETECTION: false,
-                LOCAL_THUMBNAIL_RATIO: 16 / 9,
-                MAXIMUM_ZOOMING_COEFFICIENT: 1,
-                MOBILE_APP_PROMO: false,
-                SETTINGS_SECTIONS: [],
-                SHOW_CHROME_EXTENSION_BANNER: false,
-                SHOW_POWERED_BY: false,
-                SHOW_PROMOTIONAL_CLOSE_PAGE: false,
-                TOOLBAR_ALWAYS_VISIBLE: false,
-                TOOLBAR_BUTTONS: [],
-                TOOLBAR_TIMEOUT: 1,
-                VIDEO_QUALITY_LABEL_DISABLED: true,
-                ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
-            }
-        };
-    }
-    else {
-        options = {
+    var options = {
             roomName: "room" + roomnum,
             userInfo: {
                 email: '',
@@ -154,8 +88,12 @@ function load(roomcode) {
                 VIDEO_QUALITY_LABEL_DISABLED: true,
                 ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
             }
-        };
+    };
+    console.log(options.configOverwrite.startSilent);
+    if (silent == "true") {
+        options.configOverwrite.startSilent = true;
     }
+    console.log(options.configOverwrite.startSilent);
     jitsi = (new JitsiMeetExternalAPI(domain, options));
     jitsi.on('passwordRequired', function () {
         jitsi.executeCommand('password', roomcode);
