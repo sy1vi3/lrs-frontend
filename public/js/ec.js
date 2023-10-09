@@ -409,7 +409,6 @@ function handleChat(data) {
                     return x;
                 }
             })
-            console.log(msg.message);
             html += '<div class="messageLine ' + msg.authorType + '" oncontextmenu="chatDelete(' + msg.rowid + ')"><span class="messageAuthor">' + msg.author + ': </span><span class="messageText">' + msg.message + '</span></div>';
         }
         e = document.querySelectorAll("#messageBoard #messageWindow");
