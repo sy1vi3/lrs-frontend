@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,600;1,300;1,600&family=Oxygen:wght@700&family=Roboto+Slab:wght@300;600&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
 
+* {
+    user-select: none;
+}
+
 body {
     font-family: "Open Sans",sans-serif;
     font-weight: 300;
@@ -1505,10 +1509,6 @@ label:hover, label:active {
         text-align: center;
         margin-left: 50%;
     }
-
-    #Stats #teamsTableStats{
-        
-    }
 #teamsTableStats{
     width: 100%;
 }
@@ -1534,8 +1534,5 @@ label:hover, label:active {
 #sponsors{
    margin-left: 0px;
    margin-right: 50px;
-}
-
-* {
-    user-select: none;
+   height: 95%;
 }
