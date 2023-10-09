@@ -264,7 +264,9 @@ function queueInvite(team, purpose) {
     if (purpose == "Inspection")
         websocket.send(JSON.stringify({ api: API_inspection_ctrl, operation: "invite", teamNum: team }));
     else {
+        websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "get_comp", teamNum: team }));
         websocket.send(JSON.stringify({ api: API_skills_ctrl, operation: "invite", teamNum: team }));
+        console.log("Inviting")
         document.querySelector("#teams.teamDropdown").value = team;
         if (purpose == "Driving Skills")
             document.getElementById("driving").checked = true;
