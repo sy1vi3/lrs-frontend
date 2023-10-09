@@ -15,10 +15,9 @@ const API_stats = "Stats"
 const API_volunteers = "Volunteers"
 const API_sound = "Sound"
 const API_team_control = "Team Control"
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 const API_livestream = "API_livestream"
 
+const urlParams = new URLSearchParams(window.location.search);
 var websocket;
 var plannedClose = false;
 var name = "";
