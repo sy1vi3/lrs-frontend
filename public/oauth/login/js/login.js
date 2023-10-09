@@ -47,7 +47,7 @@ function handleLogin(data) {
             }
             html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
         }
-        if (html == "Log in as: ") {
+        if (html == "<span>Choose a Team:</span>") {
             html = 'No registered teams are associated with this RobotEvents account'
             html += '<button class="btn gray" value="2021-O-RgAqY8" onclick="teamLogin(`2021-O-RgAqY8`)">Log in as Guest</button>';
         }
