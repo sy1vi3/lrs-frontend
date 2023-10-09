@@ -35,6 +35,7 @@ var all_events = [];
 
 var ALL_ROOMS = [];
 var event_teams = {};
+var team_program_type;
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
@@ -392,9 +393,11 @@ function handleInspectionCtrl(data) {
                 passedTeams += '<option value="' + data.passedTeams[i] + '">' + data.passedTeams[i] + '</option>';
             }
         }
+        old_content_box = document.querySelector("#skillsContentBox").innerHTML;
         skillsTeam = document.querySelector("#teams.teamDropdown").value;
         document.querySelector("#teams.teamDropdown").innerHTML = passedTeams;
         document.querySelector("#teams.teamDropdown").value = skillsTeam;
+        document.querySelector("#skillsContentBox").innerHTML = old_content_box;
 
     } else if (data.operation == "editableForm") {
         inspectionTeam = data.data.teamNum;
@@ -643,10 +646,12 @@ function handleSkillsCtrl(data) {
 
 function setTypeVRC() {
     document.querySelector("#SkillsControl #right #skillsContentBox").innerHTML = document.querySelector("#hiddenVRC #hiddenVRCContent").innerHTML;
+    team_program_type = "VRC";
 }
 
 function setTypeVIQC() {
     document.querySelector("#SkillsControl #right #skillsContentBox").innerHTML = document.querySelector("#hiddenVIQC #hiddenVIQCContent").innerHTML;
+    team_program_type = "VIQC";
 }
 
 function skillsGetAttempts() {
@@ -662,10 +667,10 @@ function skillsGetAttempts() {
     else {
         attempts = skillsAttempts[team];
         program = event_teams[team].comp;
-        if (program == "VRC") {
+        if (program == "VRC" && team_program_type != "VRC") {
             setTypeVRC();
         }
-        else if (program == "VIQC") {
+        else if (program == "VIQC" && team_program_type != "VIQC") {
             setTypeVIQC();
         }
         document.querySelector("#SkillsControl #dAttempts").innerHTML = attempts[0];
@@ -740,7 +745,7 @@ function skillsCalc(action) {
         + (blueOwned.C && blueOwned.F && blueOwned.I)  // CFI
         + (blueOwned.A && blueOwned.E && blueOwned.I)  // AEI
         + (blueOwned.C && blueOwned.E && blueOwned.G); // CEG
-    if ((type != 1 && type != 2) || parseInt(redBallsRaw) != parseFloat(redBallsRaw) || parseFloat(redBallsRaw) < 0 || parseInt(redBallsRaw) > 15 || parseInt(blueBallsRaw) != parseFloat(blueBallsRaw) || parseFloat(blueBallsRaw) < 0 || parseInt(blueBallsRaw) > 15 || parseInt(stopTimeRaw) != parseFloat(stopTimeRaw) || parseFloat(stopTimeRaw) < 0 || parseInt(stopTimeRaw) > 60) {
+    if ((type != 1 && type != 2) || parseInt(redBallsRaw) != parseFloat(redBallsRaw) || parseFloat(redBallsRaw) < 0 || parseInt(redBallsRaw) > 16 || parseInt(blueBallsRaw) != parseFloat(blueBallsRaw) || parseFloat(blueBallsRaw) < 0 || parseInt(blueBallsRaw) > 16 || parseInt(stopTimeRaw) != parseFloat(stopTimeRaw) || parseFloat(stopTimeRaw) < 0 || parseInt(stopTimeRaw) > 60) {
         document.getElementById("skillsFinalScore").innerHTML = "--";
     } else {
         redAlliance = parseInt(redBallsRaw) + 6 * redRows;
@@ -997,7 +1002,7 @@ function handleRankings(data) {
         old_value = document.querySelector("#divsDropdown").value;
         divs = data.list;
         divs_len = Object.keys(divs).length;
-        html = '';
+        html = '<option value=""> </option>';
         for (i = 0; i < divs_len; i++) {
             div_name = divs[i + 1];
             html += '<option value="' + div_name + '" style="background-color:#' + intToRGB(hashCode(div_name)) + '">' + div_name + '</option>';
