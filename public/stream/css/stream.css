@@ -38,8 +38,7 @@ body {
     color: #292929;
     padding: 1vmin;
     position: absolute;
-    top: 975px;
-    height: 105px !important;
+    top: 0;
     left: calc(50vw - 30vmin);
 }
 
