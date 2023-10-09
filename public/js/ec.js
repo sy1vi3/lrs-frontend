@@ -157,6 +157,7 @@ function login() {
     } else {
         showModal("Invalid access code");
     }
+    console.log("button1")
 }
 
 function logout() {
