@@ -41,6 +41,9 @@ function handleLogin(data) {
         if (html == "") {
             html = 'No registered teams are associated with this RobotEvents account.'
         }
+        if (Object.keys(codes).length == 1) {
+            teamLogin(passcode)
+        }
         document.querySelector("#teamButtons").innerHTML = html;
     }
 }
