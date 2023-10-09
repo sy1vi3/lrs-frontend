@@ -533,7 +533,7 @@ function handleQueue(data) {
                 start = 0;
                 stop = 99999999999999999;
             }
-            let now = Math.floor(Date.now() / 1000);
+            var now = Math.floor(Date.now() / 1000);
             if (data.queue[i].teamNum in timeslots) {
                 if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
                     queueHtml += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + data.queue[i].teamNum + "</td><td>" + data.queue[i].purpose + "</td><td>" + (data.queue[i].ongoing ? "Invited" : "") + "</td></tr>";
@@ -577,7 +577,7 @@ function handleQueue(data) {
                 start = 0;
                 stop = 99999999999999999;
             }
-            let now = Math.floor(Date.now() / 1000);
+            var now = Math.floor(Date.now() / 1000);
             if (data.queue[i].teamNum in timeslots) {
                 if (timeslots[data.queue[i].teamNum].program.includes("JROTC")) {
                     inspectQueue += "<tr class='JROTC'><td>" + (i + 1).toString() + "</td><td>" + row.teamNum + "</td><td>" + row.purpose + "</td><td>" + row.timeQueued + "</td><td>" + (row.purpose == "Inspection" ? actions : row.referee) + "</td></tr>";
@@ -1135,13 +1135,23 @@ function shadeColor(color, percent) {
 
     return "#" + RR + GG + BB;
 }
+function downloadVideo(file) {
+    path = 'https://re-lrs.s3.us-east-2.amazonaws.com/' + file;
+    window.open(path, '_blank').focus();
+}
 function handleSkillsScores(data) {
     if (data.operation == "post") {
         scorelist = data.scores;
         html = '<tbody><tr id="desktop"><th>Team</th><th>Time Scored</th><th>Skills Type</th><th>Final Score</th><th>View Scoresheet</th></tr><tr id="mobile"><th>Team</th><th>Time</th><th>Type</th><th>Score</th><th>Details</th></tr>';
         for (i = 0; i < scorelist.length; i++) {
             score = scorelist[i];
-            html += '<tr><td><button onclick="teamCardView(`' + score.teamNum + '`)" class="btn dark" style="width: 100% !important;">' + score.teamNum + '</button></td><td>' + score.timestamp + '</td><td><span id="desktop">' + score.type + '</span><span id="mobile"><i class="fas fa-' + (score.type == "Programming" ? 'code' : 'gamepad') + '"></i></span></td><td>' + score.score + '</td><td><button onclick="skillsScoreView(' + score.rowid + ')" class="btn dark"><i class="fas fa-search"></i></button></td></tr>';
+            if (score.filename != "null"){
+                scoreButtons = '<button onclick="skillsScoreView(' + score.rowid + ')" class="btn dark"><i class="fas fa-search"></i></button><button onclick="downloadVideo(`' + score.filename + '`)" class="btn dark"><i class="fas fa-download"></i></button>';
+            }
+            else {
+                scoreButtons = '<button onclick="skillsScoreView(' + score.rowid + ')" class="btn dark"><i class="fas fa-search"></i></button>';
+            }
+            html += '<tr><td><button onclick="teamCardView(`' + score.teamNum + '`)" class="btn dark" style="width: 100% !important;">' + score.teamNum + '</button></td><td>' + score.timestamp + '</td><td><span id="desktop">' + score.type + '</span><span id="mobile"><i class="fas fa-' + (score.type == "Programming" ? 'code' : 'gamepad') + '"></i></span></td><td>' + score.score + '</td><td>' + scoreButtons + '</td></tr>';
         }
         html += "</tbody>";
         document.querySelector("#SkillsScores #scoreHistoryTable").innerHTML = html;
