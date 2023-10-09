@@ -38,7 +38,8 @@ body {
     color: #292929;
     padding: 1vmin;
     position: absolute;
-    bottom: 0;
+    top: 975px;
+    height: 105px !important;
     left: calc(50vw - 30vmin);
 }
 
