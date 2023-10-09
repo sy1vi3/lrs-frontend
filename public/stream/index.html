@@ -1,21 +1,22 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Event Console</title>
+    <title>LRS Stream View</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/stream.css">
+    <link rel="icon" type="image/svg+xml" href="/img/recf_circle.svg">
+    <script type="text/javascript" src="https://connect.liveremoteskills.org/external_api.js"></script>
     <script type="text/javascript" src="js/stream.js"></script>
-    <!--<link rel="icon" type="image/svg+xml" href="favicon/favicon.png">-->
 </head>
 
-<body onload="init()">
+<body onload="connect()">
     <div id="jitsiBox"></div>
 
     <div id="info">
-        <div id="teamNum">Team Number</div>
-        <div id="teamName">Team Name</div>
-        <div id="teamLoc">Team Location</div>
+        <div id="teamNum">&nbsp;</div>
+        <div id="teamName">&nbsp;</div>
+        <div id="teamLoc">&nbsp;</div>
     </div>
 </body>
 
