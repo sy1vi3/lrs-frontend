@@ -469,6 +469,10 @@ ul {
     box-sizing: content-box
 }
 
+#messageBoard * {
+    user-select: text;
+}
+
     #messageBoard #messageWindow {
         overflow-y: auto;
         height: calc(100% - 135px);
@@ -1353,6 +1357,10 @@ label:hover, label:active {
 
 #EventControl textarea {
     padding: 12px
+}
+
+#EventControl #volunteers_table #passcode {
+    user-select: all;
 }
 
 #TechSupport {
