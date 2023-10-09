@@ -185,7 +185,7 @@ function handleMain(data) {
         role = data.role;
         document.querySelector("#username").innerHTML = "Welcome, " + name + "!";
         document.querySelector("#mobileUser").innerHTML = name;
-        if (!(API_chat in data['tablist'])) {
+        if (role == "Observer") {
             document.querySelector("#messageBoard").classList.add("hide");
         }
         tabs = "";
