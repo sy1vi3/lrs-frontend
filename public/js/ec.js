@@ -185,6 +185,9 @@ function handleMain(data) {
         name = data.name;
         role = data.role;
         document.querySelector("#username").innerHTML = "Welcome, " + name + "!";
+        if (name == "Guest") {
+            document.querySelector("#messageBoard").classList.add("hide")
+        }
         document.querySelector("#mobileUser").innerHTML = name;
         tabs = "";
         for (i = 0; i < data["tablist"].length; i++) {

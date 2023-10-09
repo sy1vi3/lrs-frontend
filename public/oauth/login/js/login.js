@@ -48,7 +48,8 @@ function handleLogin(data) {
             html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
         }
         if (html == "Log in as: ") {
-            html = 'No registered teams are associated with this RobotEvents account.'
+            html = 'No registered teams are associated with this RobotEvents account'
+            html += '<button class="btn gray" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
         }
         if (Object.keys(codes).length == 1) {
             teamLogin(passcode)
