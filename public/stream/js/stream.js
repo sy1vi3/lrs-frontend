@@ -28,7 +28,6 @@ function init() {
 
 function load() {
     document.querySelector("#loadbutton").classList.add("hide");
-    document.querySelector("#jitsi_box").classList.add("jitsi_box");
     domain = "connect.liveremoteskills.org";
     const options = {
         roomName: "room1",
@@ -38,7 +37,7 @@ function load() {
         },
         width: '100%',
         height: '100%',
-        parentNode: document.querySelector('#jitsi_box'),
+        parentNode: document.querySelector('#jitsiBox'),
         configOverwrite: {
             disableAudioLevels: true,
             enableNoAudioDetection: false,
@@ -97,7 +96,7 @@ function load() {
         }
     };
     const jitsi = (new JitsiMeetExternalAPI(domain, options));
-    jitsi.executeCommand('toggleFilmStrip');
+    jitsi.executeCommand('toggleFilmStrip'); // You have to do this on the `videoConferenceJoined` event...
     console.log(options);
     console.log(jitsi);
 }
