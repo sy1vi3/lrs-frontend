@@ -50,9 +50,9 @@ function modalClose(selector) {
 }
 
 function playMessageSound() {
-    chat_sound.pause();
-    chat_sound.currentTime = 0;
-    chat_sound.play();
+    //chat_sound.pause();
+    //chat_sound.currentTime = 0;
+    //chat_sound.play();
 }
 
 function tab(tab) {
