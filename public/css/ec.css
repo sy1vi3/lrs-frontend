@@ -1827,12 +1827,16 @@ textarea {
     max-height: 30px;
 }
 
-td.smol button{
-    width: 45%;
+td.smol button {
+    width: 30%;
+    font-size: 11px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
+
 .threebuttonrow button{
-    width: 30%;
+    width: 22%;
 }
 
 .onebuttonrow button {

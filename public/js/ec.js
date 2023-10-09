@@ -454,6 +454,9 @@ function playChatSound(data) {
             playMessageSound();
         }
     }
+    if (data.operation == "other_ping") {
+        playMessageSound();
+    }
 }
 
 function chatType(instance) {
@@ -614,7 +617,7 @@ function queueInvite(team, purpose) {
             document.getElementById("driving").checked = true;
         else
             document.getElementById("programming").checked = true;
-        setTimeout(function () { showModal(team + " has been invited to " + purpose + ". Don't let the team start running skills until the Recorder for this team shows up in the meeting room, or after two minutes from this point, whichever comes first."); }, 1500);
+        setTimeout(function () { showModal("<span color='yellow'>" + team + " has been invited to " + purpose + ". Don't let the team start running skills until the Recorder for this team shows up in the meeting room, or after two minutes from this point, whichever comes first.</span>"); }, 1500);
     }
 }
 
@@ -1664,6 +1667,15 @@ function volunteer_table_add_row() {
     document.querySelector("#volunteerRole").value = "Staff"
     document.querySelector("#volunteerCode").value = ""
 }
+function vol_send_message(user) {
+    text_to_send = prompt("Send message to " + user + "?");
+    if (text_to_send != "" && text_to_send != null) {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "alert_user", message: text_to_send, username: user }));
+    }
+    else {
+        showModal("Message can't be empty.");
+    }
+}
 
 function updateVolunteers(data) {
     if (data.operation == "update") {
@@ -1679,10 +1691,10 @@ function updateVolunteers(data) {
                 u_role = "Referee";
             }
             if (u_role == "Livestream" || u_role == "Output") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Ban</button></td></tr>'
             }
             else if (user_name != name && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + u_role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Ban</button><button class="btn green" onclick=vol_send_message(this.parentNode.parentNode.querySelector("#name").innerHTML)>Alert</button></td></tr>'
             }
             if (u_role == "Livestream") {
                 streamcode = passcode;
@@ -1851,10 +1863,10 @@ function team_control(data) {
             passcode = teams[user_name].Passcode;
             enabled = teams[user_name].Enabled;
             if (enabled == 0) {
-                html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button class="btn gray" onclick=team_edit_code(this.parentNode.parentNode)>Change Code</button><button class="btn yellow" onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button class="btn green" onclick=team_enable(this.parentNode.parentNode)>Enable</button></td></tr>';
+                html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button class="btn gray" onclick=team_edit_code(this.parentNode.parentNode)>Change</button><button class="btn yellow" onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button class="btn green" onclick=team_enable(this.parentNode.parentNode)>Enable</button><button class="btn green" onclick=vol_send_message(this.parentNode.parentNode.querySelector("#name").innerHTML)>Alert</button></td></td></tr>';
             }
             else {
-                html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button class="btn gray" onclick=team_edit_code(this.parentNode.parentNode)>Change Code</button><button class="btn yellow" onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button class="btn red" onclick=team_disable(this.parentNode.parentNode)>Disable</button></td></tr>';
+                html += '<tr id="event_team"><td id="name">' + user_name + '</td><td id="passcode">' + passcode + '</td><td class="threebuttonrow" id="actions"><button class="btn gray" onclick=team_edit_code(this.parentNode.parentNode)>Change</button><button class="btn yellow" onclick=team_force_logout(this.parentNode.parentNode)>Log Out</button><button class="btn red" onclick=team_disable(this.parentNode.parentNode)>Disable</button><button class="btn green" onclick=vol_send_message(this.parentNode.parentNode.querySelector("#name").innerHTML)>Alert</button></td></td></tr>';
             }
         }
 
@@ -2124,14 +2136,15 @@ function handleOutput(data) {
     }
     else if (data.operation == "setOutputCode") {
         outputCode = data.auth;
-        stream_obj = document.createElement("iframe");
-        stream_obj.setAttribute("src", "https://console.liveremoteskills.org/output/?token=" + outputCode);
-        stream_obj.setAttribute("id", "producerStreamView");
-       
-        document.querySelector("#streamOutput").appendChild(stream_obj);
     }
 }
-
+function launchOutput() {
+    stream_obj = document.createElement("iframe");
+    stream_obj.setAttribute("src", "https://console.liveremoteskills.org/output/?token=" + outputCode);
+    stream_obj.setAttribute("id", "producerStreamView");
+    document.querySelector("#streamOutput").innerHTML = "";
+    document.querySelector("#streamOutput").appendChild(stream_obj);
+}
 
 function producerOverride(room) {
     if (confirm("Are you sure? Change Livestream output to room: " + room + "?")) {
