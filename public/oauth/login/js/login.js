@@ -44,7 +44,9 @@ function handleLogin(data) {
         if (Object.keys(codes).length == 1) {
             teamLogin(passcode)
         }
-        document.querySelector("#teamButtons").innerHTML = html;
+        else {
+            document.querySelector("#teamButtons").innerHTML = html;
+        }
     }
 }
 
