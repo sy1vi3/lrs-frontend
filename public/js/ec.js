@@ -110,6 +110,8 @@ function connect() {
                 break;
             case API_stats:
                 fillStatsTable(data);
+            case "Sound":
+                playChatSound(data);
         }
     };
 
@@ -182,12 +184,6 @@ function handleChat(data) {
         html = "";
         for (i = 0; i < data.chat.length; i++) {
             msg = data.chat[i];
-            if (msg.author != name) {
-                playMessageSound();
-            }
-            else {
-                console.log("same")
-            }
             html += '<div class="messageLine ' + msg.authorType + '" oncontextmenu="chatDelete(' + msg.rowid + ')"><span class="messageAuthor">' + msg.author + ': </span><span class="messageText">' + msg.message + '</span></div>';
         }
         e = document.querySelectorAll("#messageBoard #messageWindow");
@@ -197,6 +193,19 @@ function handleChat(data) {
         e[1].lastChild.scrollIntoView(false);
         if (data.badge && data.chat[data.chat.length - 1].author != name)
             document.querySelector("#mobileHeader #messagesbutton .badge").classList.remove("hide");
+    }
+}
+
+function playChatSound(data) {
+    if (data.operation == "new_msg") {
+        author = data.author;
+        if (author != name) {
+            playMessageSound();
+            console.log("Play Sound");
+        }
+        else {
+            console.log("Same User");
+        }
     }
 }
 
