@@ -48,12 +48,12 @@ function handleLogin(data) {
                 }
                 html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
             }
-            else {
-                button_type = 'btn gray';
-                html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> You will not be able to log into the Console until shortly before the event starts.';
-                html += '<br> <br>Login as guest:<br>';
-                html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
-            }
+            //else {
+            //    button_type = 'btn gray';
+            //    html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> You will not be able to log into the Console until shortly before the event starts.';
+            //    html += '<br> <br>Login as guest:<br>';
+            //    html += '<button class="' + button_type + '" value="' + passcode + '" onclick="teamLogin(`' + passcode + '`)">' + team_number + '</button>';
+            //}
         }
         if (html == "<span>Choose a Team:</span>") {
             html = 'Your Robot&nbsp;Events account is not associated with a team registered for this event, or the Event Console is not currently configured to the correct event. <br> You will not be able to log into the Console until shortly before the event starts.';

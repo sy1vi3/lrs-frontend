@@ -1331,6 +1331,15 @@ function eventAnnouncement() {
         }
     }
 }
+function recorders() {
+    if (document.querySelector("#RECORDERS_BTN").classList.contains("green")) {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "setToggle", "flag": "recorders", "setting": false }));
+    }
+    else {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "setToggle", "flag": "recorders", "setting": true }));
+    }
+
+}
 
 function post_to_re() {
     if (document.querySelector("#RE_BTN").classList.contains("green")) {
@@ -2001,6 +2010,16 @@ function handleEventControl(data) {
         else {
             document.querySelector("#RE_BTN").classList.add("red");
             document.querySelector("#RE_BTN").classList.remove("green");
+        }
+    }
+    else if (data.operation == "set_recorders") {
+        if (data.linked == true) {
+            document.querySelector("#RECORDERS_BTN").classList.add("green");
+            document.querySelector("#RECORDERS_BTN").classList.remove("red");
+        }
+        else {
+            document.querySelector("#RECORDERS_BTN").classList.add("red");
+            document.querySelector("#RECORDERS_BTN").classList.remove("green");
         }
     }
 }
