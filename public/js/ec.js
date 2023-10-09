@@ -1413,18 +1413,25 @@ function fillStatsTable(data) {
         }
 
         html = '';
+        document.querySelector("#teamSharedStickers").innerHTML = html;
         stickers = team_info.stickers;
         for (i in stickers) {
             sticker = stickers[i];
-            html += '<div><img class="teamSticker" src="' + sticker + '" width="75"/></div>';
+            let image = document.createElement("img");
+            image.src = sticker;
+            image.width = 75;
+            image.draggable = false;
+            let div = document.createElement("div");
+            div.appendChild(image);
+            document.querySelector("#teamSharedStickers").appendChild(div);
         }
+        
         if (!html.includes(myStickerURL)) {
             document.querySelector("#teamInfoActions").innerHTML = '<img onclick="giftSticker(`' + team_info.num + '`)"class="teamSticker" src="img/random/plus_icon.png" width="50" draggable="false"/>';
         }
         else {
             document.querySelector("#teamInfoActions").innerHTML = '';
         }
-        document.querySelector("#teamSharedStickers").innerHTML = html;
 
         if (stickers.length > 0) {
             document.querySelector("#stickerTitle").innerHTML = "Team Stickers";
@@ -1461,7 +1468,11 @@ var myStickerURL = '';
 
 function settingsHandler(data) {
     if (data.operation == "set_my_sticker") {
-        document.querySelector("#currentSticker").innerHTML = '<img src="' + data.url + '" width="75" />';
+        let image = document.createElement("img");
+        image.src = data.url;
+        image.width = 75;
+        document.querySelector("#currentSticker").innerHTML = '';
+        document.querySelector("#currentSticker").appendChild(image);
         myStickerURL = data.url;
     }
 }
