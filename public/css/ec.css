@@ -1388,7 +1388,7 @@ label:hover, label:active {
 }
 
 #MeetingControl [id^=room] {
-    display: none;
+    /*display: none;*/
     height: 100%
 }
 
@@ -1717,4 +1717,11 @@ td.smol button{
 
 #volunteerRole{
     max-width: 90%;
+}
+
+.wrapperJitsi {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: 300px;
 }

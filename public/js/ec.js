@@ -37,6 +37,8 @@ var ALL_ROOMS = [];
 var event_teams = {};
 var team_program_type;
 
+var jitsiAdminPass;
+
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
 if (urlParams.get('token') != null) {
@@ -873,7 +875,7 @@ function skillsScoreView(rowid) {
 }
 
 // API: Meeting Control
-
+var meetingRooms = {}
 function handleMeetingCtrl(data) {
     if (data.operation == "set_code") {
         if ("rooms" in data) {
@@ -881,13 +883,91 @@ function handleMeetingCtrl(data) {
             options = [];
             jitsi = [];
             console.log(data.rooms);
+            document.querySelector("#jitsiMeetEPBox").innerHTML = "";
             for (i = 1; i <= data.rooms; i++) {
+                document.querySelector("#jitsiMeetEPBox").innerHTML += '<div id="room' + i + '"></div>';
                 options.push({
                     roomName: "room" + i.toString(),
                     parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
-                    userInfo: { email: "", displayName: "Event Bot" }
+                    width: "100%",
+                    height: "100%",
+                    userInfo: { email: "", displayName: name },
+                    configOverwrite: {
+                        disableAudioLevels: true,
+                        enableNoAudioDetection: false,
+                        enableNoisyMicDetection: false,
+                        startAudioOnly: false,
+                        startWithAudioMuted: true,
+                        startSilent: false,
+                        maxFullResolutionParticipants: -1,
+                        startWithVideoMuted: true,
+                        startScreenSharing: false,
+                        hideLobbyButton: true,
+                        disableProfile: true,
+                        prejoinPageEnabled: false,
+                        enableAutomaticUrlCopy: false,
+                        disableDeepLinking: true,
+                        disableInviteFunctions: true,
+                        remoteVideoMenu: { disableKick: true },
+                        disableRemoteMute: true,
+                        disableTileView: true,
+                        hideConferenceSubject: true,
+                        hideConferenceTimer: true,
+                        hideParticipantsStats: true
+                    },
+                    interfaceConfigOverwrite: {
+                        AUTO_PIN_LATEST_SCREEN_SHARE: false,
+                        CONNECTION_INDICATOR_DISABLED: true,
+                        DEFAULT_LOCAL_DISPLAY_NAME: 'Livestream',
+                        DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
+                        DISABLE_FOCUS_INDICATOR: true,
+                        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                        DISABLE_PRESENCE_STATUS: true,
+                        DISABLE_RINGING: true,
+                        DISABLE_TRANSCRIPTION_SUBTITLES: true,
+                        DISABLE_VIDEO_BACKGROUND: true,
+                        ENABLE_DIAL_OUT: false,
+                        ENABLE_FEEDBACK_ANIMATION: false,
+                        HIDE_INVITE_MORE_HEADER: true,
+                        INITIAL_TOOLBAR_TIMEOUT: 1,
+                        JITSI_WATERMARK_LINK: '',
+                        LANG_DETECTION: false,
+                        LOCAL_THUMBNAIL_RATIO: 16 / 9,
+                        MAXIMUM_ZOOMING_COEFFICIENT: 1,
+                        MOBILE_APP_PROMO: false,
+                        SETTINGS_SECTIONS: [],
+                        SHOW_CHROME_EXTENSION_BANNER: false,
+                        SHOW_POWERED_BY: false,
+                        SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+                        TOOLBAR_ALWAYS_VISIBLE: false,
+                        TOOLBAR_BUTTONS: [],
+                        TOOLBAR_TIMEOUT: 1,
+                        VIDEO_QUALITY_LABEL_DISABLED: true,
+                        ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
+                    }
                 });
-                jitsi.push(new JitsiMeetExternalAPI(domain, options[i - 1]));
+                console.log("i = " + i);
+                jitsi_room = new JitsiMeetExternalAPI(domain, options[i - 1]);
+              
+                jitsi.push(jitsi_room);
+            }
+            for (a in jitsi) {
+                let room_index = a
+                let b = parseInt(room_index) + 1;
+                jitsi[room_index].on('passwordRequired', function () {
+                    let room_number = b;
+                    let room_passcode = rooms_codes[room_number];
+                    console.log("Adding Passcode to room" + room_number + "  " + room_passcode);
+                    jitsi[room_index].executeCommand('password', room_passcode);
+                });
+
+                jitsi[room_index].on('filmstripDisplayChanged', function (data) {
+                    if (data.visible == true) {
+                        jitsi[room_index].executeCommand('toggleFilmStrip');
+                    }
+                });
+
+                jitsi[room_index].executeCommand('toggleFilmStrip');
             }
             console.log(options);
             console.log(jitsi);
@@ -1364,6 +1444,7 @@ function handleEventControl(data) {
             room_code = rooms_codes[Object.keys(rooms_codes)[i]];
             html += "<tr><td>" + room + "</td><td>" + room_code + "</td></tr>";
         }
+        jitsiAdminPass = data.admin_pass
         document.querySelector("#room_code_footer").innerHTML = html;
     }
 }

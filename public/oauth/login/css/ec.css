@@ -1332,18 +1332,18 @@ label:hover, label:active {
     margin: -540px -960px
 }
 
-#MeetingControl.show {
+/*#MeetingControl.show {
     display: block
-}
+}*/
 
-#MeetingControl #mcTab1:checked ~ #room1, #MeetingControl #mcTab2:checked ~ #room2, #MeetingControl #mcTab3:checked ~ #room3, #MeetingControl #mcTab4:checked ~ #room4 {
+/*#MeetingControl #mcTab1:checked ~ #room1, #MeetingControl #mcTab2:checked ~ #room2, #MeetingControl #mcTab3:checked ~ #room3, #MeetingControl #mcTab4:checked ~ #room4 {
     display: block
-}
+}*/
 
-#MeetingControl [id^=room] {
-    display: none;
-    height: 100%
-}
+/*#MeetingControl [id^=room] {*/
+/*    display: none;*/
+    /*height: 100%
+}*/
 
 #EventControl > * {
     margin: 30px
@@ -1540,4 +1540,12 @@ label:hover, label:active {
 
 #announceBoxScrollBox{
     height: 200px;
+}
+
+
+.wrapperJitsi {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: 200px;
 }

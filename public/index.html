@@ -119,6 +119,7 @@
                         <label for="cortexToggle">VRC/VEXU: Cortex</label>
                         <input type="radio" id="iqToggle" name="boop">
                         <label for="iqToggle">VIQC</label>
+
                         <div id="SCscroll1" class="scrollBox tabContent2">
                             <table id="V5Checklist">
                                 <tr>
@@ -640,19 +641,18 @@
             </div> <!-- End of Stats tab -->
 
             <div id="MeetingControl" class="tabContent v">
-                <input type="radio" id="mcTab1" name="mcTabs" checked>
+                <!--<input type="radio" id="mcTab1" name="mcTabs" checked>
                 <label for="mcTab1">Room 1</label>
                 <input type="radio" id="mcTab2" name="mcTabs">
                 <label for="mcTab2">Room 2</label>
                 <input type="radio" id="mcTab3" name="mcTabs">
                 <label for="mcTab3">Room 3</label>
                 <input type="radio" id="mcTab4" name="mcTabs">
-                <label for="mcTab4">Room 4</label>
+                <label for="mcTab4">Room 4</label>-->
                 <a id="init" class="btn dark" onclick="initMeetings()">Initialize</a>
-                <div id="room1"></div>
-                <div id="room2"></div>
-                <div id="room3"></div>
-                <div id="room4"></div>
+                <div id="jitsiMeetEPBox"class="wrapperJitsi">
+                    
+                </div>
             </div> <!-- End of Meeting Control tab -->
 
             <div id="EventControl" class="tabContent v">
