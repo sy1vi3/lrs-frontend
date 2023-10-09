@@ -128,6 +128,7 @@
                             </tr>
                         </table>
                     </div>
+                    <input type="text" id="inspectionCtrlScoreSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 0)" placeholder="Search for teams..." class="teamSearch" style="margin-left: 0 !important; margin-right: 0 !important;">
                     <div class="scrollBox stackedScrollBoxes">
                         <table id="allTeams">
                             <tr>
@@ -545,6 +546,7 @@
 
             <div id="SkillsControl" class="tabContent h">
                 <div id="left" class="container v tc">
+
                     <div class="scrollBox stackedScrollBoxes">
                         <table id="teamsInQueue">
                             <tr>
@@ -556,6 +558,7 @@
                             </tr>
                         </table>
                     </div>
+                    <input type="text" id="skillsCtrlScoreSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 1)" placeholder="Search for teams..." class="teamSearch" style="margin-left: 0 !important; margin-right: 0 !important;">
                     <div class="scrollBox stackedScrollBoxes">
                         <table id="allTeams">
                             <tr>
@@ -594,6 +597,7 @@
 
             <div id="SkillsScores" class="tabContent v">
                 <h2>Recorded Skills Scores</h2>
+                <input type="text" id="scoresTeamSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 0)" placeholder="Search for teams..." class="teamSearch">
                 <div id="scoreHistory" class="scrollBox">
                     <table id="scoreHistoryTable">
                         <tr id="desktop">
@@ -621,7 +625,7 @@
                         <option value=""> </option>
                     </select>
                 </h2>
-
+                <input type="text" id="rankingsTeamSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 1)" placeholder="Search for teams..." class="teamSearch">
                 <div id="skillsScores" class="scrollBox">
                     <table id="skillsScoreTable">
                         <tr>
@@ -639,6 +643,7 @@
                 <div id="statsBox" class="scrollBox">
                     <div id="left" class="container v tc">
                         <h2>Teams</h2>
+                        <input type="text" id="statsScoreSort" onkeyup="teamSort(this.parentNode.childNodes[5].childNodes[1], this, 0)" placeholder="Search for teams..." class="teamSearch" style="margin-left: 0 !important; margin-right: 0 !important;">
                         <div id="tableBox" class="scrollBox">
                             <table id="teamsTableStats" class="table sticky">
                                 <tr>
@@ -666,12 +671,20 @@
             </div> <!-- End of Stats tab -->
 
             <div id="MeetingControl" class="tabContent v">
-                <button id="init_meeting_rooms" class="btn dark" onclick="epLaunchMeetings()">Open Meeting Rooms</button>
-                <div id="jitsiMeetEPBox" class="wrapperJitsi"></div>
+                <div id="RoomControlBox" class="scrollBox">
+                    <div id="left" class="container v tc">
+                        <input type="text" id="roomName" placeholder="Room Name (event rooms follow the format of room1, room2, and so on)">
+                        <input type="number" id="inviteExpiry" placeholder="Link Expiry (mins)">
+                        <button class="btn lavender" id="create_invite" onclick="createInviteLink()">Create Invite Link for Teams</button>
+                        <span id="inviteLink" style="user-select: all"></span>
+                    </div>
+                    <div id="right" class="container v tc">
+                        <input type="text" id="roomName_create" placeholder="Room Name (event rooms follow the format of room1, room2, and so on)">
+                        <button class="btn green" id="create_room" onclick="joinRoom()">Join/Create Room as Moderator</button>
+                    </div>
+                </div>
 
-
-
-            </div> <!-- End of Meeting Control tab -->
+                </div> <!-- End of Meeting Control tab -->
 
             <div id="EventControl" class="tabContent v">
                 <div id="controlBox" class="scrollBox">

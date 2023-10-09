@@ -63,7 +63,7 @@ a[href] {
 
         .btn.dark:hover, .btn.dark:focus, .btn.dark:active {
             background: #000;
-            text-decoration: underline
+/*            text-decoration: underline*/
         }
 
     .btn.gray {
@@ -1451,18 +1451,6 @@ label:hover, label:active {
     margin: -540px -960px
 }
 
-#MeetingControl.show {
-    display: block
-}
-
-#MeetingControl #mcTab1:checked ~ #room1, #MeetingControl #mcTab2:checked ~ #room2, #MeetingControl #mcTab3:checked ~ #room3, #MeetingControl #mcTab4:checked ~ #room4 {
-    display: block
-}
-
-#MeetingControl [id^=room] {
-    /*display: none;*/
-    height: 100%
-}
 
 #EventControl > * {
     margin: 30px
@@ -1625,6 +1613,7 @@ label:hover, label:active {
         float: left;
         height: 100%;
         text-align: center;
+        
     }
 
     #Stats #right {
@@ -1632,8 +1621,25 @@ label:hover, label:active {
         height: 100%;
         text-align: center;
         margin-left: 50%;
+        
     }
-#teamsTableStats{
+
+#RoomControlBox #right {
+    float: right;
+    height: 100%;
+    text-align: center;
+    margin-left: 50%;
+}
+#RoomControlBox #left {
+    float: left;
+    height: 100%;
+    text-align: center;
+}
+
+#roomName, #roomName_create {
+    margin-top: 20px;
+}
+#teamsTableStats {
     width: 100%;
 }
 
@@ -2047,4 +2053,25 @@ input:checked + .slider:before {
 
 #teamInfoActions{
     float:right;
+}
+
+#RoomControlBox{
+    margin: 50px;
+}
+
+#inviteLink{
+    word-break: break-all;
+    max-width: 100%;
+}
+
+.teamSearch {
+    background-image: url('https://www.w3schools.com/css/searchicon.png'); /* Add a search icon to input */
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    margin-left: 50px;
+    margin-right: 50px;
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
 }

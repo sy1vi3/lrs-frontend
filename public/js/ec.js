@@ -24,6 +24,7 @@ const API_output = "Output"
 const API_home = "Home"
 const API_settings = "Settings"
 const API_moderaton = "Moderation"
+const API_jwt = "JWT"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -49,6 +50,7 @@ var refJitsi;
 const comp_preset = "VIQC";
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
+
 
 if (urlParams.get('token') != null) {
     console.log("loggin in")
@@ -185,6 +187,9 @@ function connect(tokenLogin = false) {
                 break;
             case API_settings:
                 settingsHandler(data);
+                break;
+            case API_jwt:
+                jwtHandler(data);
                 break;
         }
     };
@@ -597,6 +602,7 @@ function handleInspectionCtrl(data) {
         document.querySelector("#teams.teamDropdown").innerHTML = passedTeams;
         document.querySelector("#teams.teamDropdown").value = skillsTeam;
         document.querySelector("#skillsContentBox").innerHTML = old_content_box;
+        teamSort(document.querySelector("#InspectionControl #allTeams"), document.querySelector("#InspectionControl #inspectionCtrlScoreSort"), 0);
 
     } else if (data.operation == "editableForm") {
         inspectionTeam = data.data.teamNum;
@@ -778,7 +784,7 @@ function handleSkillsCtrl(data) {
         }
         html += "</tbody>";
         document.querySelector("#SkillsControl #allTeams").innerHTML = html;
-
+        teamSort(document.querySelector("#SkillsControl #allTeams"), document.querySelector("#SkillsControl #skillsCtrlScoreSort"), 1);
     }
     else if (data.operation == "set_teams") {
         teams_info = data.teams;
@@ -1042,17 +1048,37 @@ function skillsCancelEdit() {
 
 
 // API: Skills Scores
+function shadeColor(color, percent) {
 
+    var R = parseInt(color.substring(1, 3), 16);
+    var G = parseInt(color.substring(3, 5), 16);
+    var B = parseInt(color.substring(5, 7), 16);
+
+    R = parseInt(R * (100 + percent) / 100);
+    G = parseInt(G * (100 + percent) / 100);
+    B = parseInt(B * (100 + percent) / 100);
+
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
+
+    var RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
+    var GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
+    var BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
+
+    return "#" + RR + GG + BB;
+}
 function handleSkillsScores(data) {
     if (data.operation == "post") {
         scorelist = data.scores;
         html = '<tbody><tr id="desktop"><th>Team</th><th>Time Scored</th><th>Skills Type</th><th>Final Score</th><th>View Scoresheet</th></tr><tr id="mobile"><th>Team</th><th>Time</th><th>Type</th><th>Score</th><th>Details</th></tr>';
         for (i = 0; i < scorelist.length; i++) {
             score = scorelist[i];
-            html += '<tr><td>' + score.teamNum + '</td><td>' + score.timestamp + '</td><td><span id="desktop">' + score.type + '</span><span id="mobile"><i class="fas fa-' + (score.type == "Programming" ? 'code' : 'gamepad') + '"></i></span></td><td>' + score.score + '</td><td><button onclick="skillsScoreView(' + score.rowid + ')" class="btn dark"><i class="fas fa-search"></i></button></td></tr>';
+            html += '<tr><td><button onclick="teamCardView(`' + score.teamNum + '`)" class="btn dark" style="width: 100% !important;">' + score.teamNum + '</button></td><td>' + score.timestamp + '</td><td><span id="desktop">' + score.type + '</span><span id="mobile"><i class="fas fa-' + (score.type == "Programming" ? 'code' : 'gamepad') + '"></i></span></td><td>' + score.score + '</td><td><button onclick="skillsScoreView(' + score.rowid + ')" class="btn dark"><i class="fas fa-search"></i></button></td></tr>';
         }
         html += "</tbody>";
         document.querySelector("#SkillsScores #scoreHistoryTable").innerHTML = html;
+        teamSort(document.querySelector("#SkillsScores #scoreHistoryTable"), document.querySelector("#SkillsScores #scoresTeamSort"), 0);
     }
 }
 
@@ -1078,93 +1104,93 @@ function handleMeetingCtrl(data) {
 }
 
 function epLaunchMeetings() {
-    document.querySelector("#init_meeting_rooms").classList.add("hide");
-    domain = "connect.liveremoteskills.org";
-    options = [];
-    jitsi = [];
-    document.querySelector("#jitsiMeetEPBox").innerHTML = "";
-    for (i = 1; i <= num_rooms_ep; i++) {
-        document.querySelector("#jitsiMeetEPBox").innerHTML += '<div id="room' + i + '"></div>';
-        options.push({
-            roomName: "room" + i.toString(),
-            parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
-            width: "100%",
-            height: "100%",
-            jwt: jwt,
-            configOverwrite: {
-                disableAudioLevels: true,
-                enableNoAudioDetection: false,
-                enableNoisyMicDetection: false,
-                startAudioOnly: false,
-                startWithAudioMuted: true,
-                startWithVideoMuted: true,
-                startSilent: true,
-                maxFullResolutionParticipants: -1,
-                startWithVideoMuted: true,
-                startScreenSharing: false,
-                hideLobbyButton: true,
-                //disableProfile: true,
-                prejoinPageEnabled: false,
-                enableAutomaticUrlCopy: false,
-                disableDeepLinking: true,
-                disableInviteFunctions: true,
-                remoteVideoMenu: { disableKick: false },
-                disableRemoteMute: false,
-                disableTileView: false,
-                hideConferenceSubject: false,
-                hideConferenceTimer: true,
-                hideParticipantsStats: true
-            },
-            interfaceConfigOverwrite: {
-                AUTO_PIN_LATEST_SCREEN_SHARE: false,
-                CONNECTION_INDICATOR_DISABLED: true,
-                DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
-                DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
-                DISABLE_FOCUS_INDICATOR: false,
-                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                DISABLE_PRESENCE_STATUS: true,
-                DISABLE_RINGING: true,
-                DISABLE_TRANSCRIPTION_SUBTITLES: true,
-                DISABLE_VIDEO_BACKGROUND: true,
-                ENABLE_DIAL_OUT: false,
-                ENABLE_FEEDBACK_ANIMATION: false,
-                HIDE_INVITE_MORE_HEADER: true,
-                INITIAL_TOOLBAR_TIMEOUT: 1,
-                JITSI_WATERMARK_LINK: '',
-                LANG_DETECTION: false,
-                LOCAL_THUMBNAIL_RATIO: 16 / 9,
-                MAXIMUM_ZOOMING_COEFFICIENT: 1,
-                MOBILE_APP_PROMO: false,
-                //SETTINGS_SECTIONS: ['profile'],
-                SHOW_CHROME_EXTENSION_BANNER: false,
-                SHOW_POWERED_BY: false,
-                SHOW_PROMOTIONAL_CLOSE_PAGE: false,
-                TOOLBAR_ALWAYS_VISIBLE: true,
-                //TOOLBAR_BUTTONS: ['settings'],
-                //TOOLBAR_TIMEOUT: 1,
-                VIDEO_QUALITY_LABEL_DISABLED: true,
-                ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
-            }
-        });
-        console.log("i = " + i);
-        jitsi_room = new JitsiMeetExternalAPI(domain, options[i - 1]);
-        jitsi.push(jitsi_room);
-    }
-    for (a in jitsi) {
-        let room_index = a
-        jitsi[room_index].on('filmstripDisplayChanged', function (data) {
-            if (data.visible == true) {
-                jitsi[room_index].executeCommand('toggleFilmStrip');
-            }
-        });
-        jitsi[room_index].executeCommand('toggleFilmStrip');
-    }
-    jitsiInited = true;
+    //document.querySelector("#init_meeting_rooms").classList.add("hide");
+    //domain = "connect.liveremoteskills.org";
+    //options = [];
+    //jitsi = [];
+    //document.querySelector("#jitsiMeetEPBox").innerHTML = "";
+    //for (i = 1; i <= num_rooms_ep; i++) {
+    //    document.querySelector("#jitsiMeetEPBox").innerHTML += '<div id="room' + i + '"></div>';
+    //    options.push({
+    //        roomName: "room" + i.toString(),
+    //        parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
+    //        width: "100%",
+    //        height: "100%",
+    //        jwt: jwt,
+    //        configOverwrite: {
+    //            disableAudioLevels: true,
+    //            enableNoAudioDetection: false,
+    //            enableNoisyMicDetection: false,
+    //            startAudioOnly: false,
+    //            startWithAudioMuted: true,
+    //            startWithVideoMuted: true,
+    //            startSilent: true,
+    //            maxFullResolutionParticipants: -1,
+    //            startWithVideoMuted: true,
+    //            startScreenSharing: false,
+    //            hideLobbyButton: true,
+    //            //disableProfile: true,
+    //            prejoinPageEnabled: false,
+    //            enableAutomaticUrlCopy: false,
+    //            disableDeepLinking: true,
+    //            disableInviteFunctions: true,
+    //            remoteVideoMenu: { disableKick: false },
+    //            disableRemoteMute: false,
+    //            disableTileView: false,
+    //            hideConferenceSubject: false,
+    //            hideConferenceTimer: true,
+    //            hideParticipantsStats: true
+    //        },
+    //        interfaceConfigOverwrite: {
+    //            AUTO_PIN_LATEST_SCREEN_SHARE: false,
+    //            CONNECTION_INDICATOR_DISABLED: true,
+    //            DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
+    //            DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
+    //            DISABLE_FOCUS_INDICATOR: false,
+    //            DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+    //            DISABLE_PRESENCE_STATUS: true,
+    //            DISABLE_RINGING: true,
+    //            DISABLE_TRANSCRIPTION_SUBTITLES: true,
+    //            DISABLE_VIDEO_BACKGROUND: true,
+    //            ENABLE_DIAL_OUT: false,
+    //            ENABLE_FEEDBACK_ANIMATION: false,
+    //            HIDE_INVITE_MORE_HEADER: true,
+    //            INITIAL_TOOLBAR_TIMEOUT: 1,
+    //            JITSI_WATERMARK_LINK: '',
+    //            LANG_DETECTION: false,
+    //            LOCAL_THUMBNAIL_RATIO: 16 / 9,
+    //            MAXIMUM_ZOOMING_COEFFICIENT: 1,
+    //            MOBILE_APP_PROMO: false,
+    //            //SETTINGS_SECTIONS: ['profile'],
+    //            SHOW_CHROME_EXTENSION_BANNER: false,
+    //            SHOW_POWERED_BY: false,
+    //            SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+    //            TOOLBAR_ALWAYS_VISIBLE: true,
+    //            //TOOLBAR_BUTTONS: ['settings'],
+    //            //TOOLBAR_TIMEOUT: 1,
+    //            VIDEO_QUALITY_LABEL_DISABLED: true,
+    //            ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
+    //        }
+    //    });
+    //    console.log("i = " + i);
+    //    jitsi_room = new JitsiMeetExternalAPI(domain, options[i - 1]);
+    //    jitsi.push(jitsi_room);
+    //}
+    //for (a in jitsi) {
+    //    let room_index = a
+    //    jitsi[room_index].on('filmstripDisplayChanged', function (data) {
+    //        if (data.visible == true) {
+    //            jitsi[room_index].executeCommand('toggleFilmStrip');
+    //        }
+    //    });
+    //    jitsi[room_index].executeCommand('toggleFilmStrip');
+    //}
+    //jitsiInited = true;
 }
 
-function initMeetings() {
-        websocket.send(JSON.stringify({ api: API_meeting_ctrl, operation: "init" }));
-}
+//function initMeetings() {
+//        websocket.send(JSON.stringify({ api: API_meeting_ctrl, operation: "init" }));
+//}
 
 //function teamInitMeetings(){
 //    document.querySelector("#MeetingControl #init").classList.add("hide");
@@ -1252,7 +1278,7 @@ function handleRankings(data) {
                         teaminfo = ranks[i + 1];
                         driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
                         driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;"><i>' + teaminfo.team + '</i></button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team +'</button></td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td><td>' + driver_1 + '</td><td>' + driver_stoptime + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.prog_stoptime + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
                     }
                 }
                 else if (program_type == "VIQC") {
@@ -1261,7 +1287,7 @@ function handleRankings(data) {
                         teaminfo = ranks[i + 1];
                         driver_1 = parseInt(teaminfo.combined) - parseInt(teaminfo.prog);
                         driver_stoptime = parseInt(teaminfo.stoptime) - parseInt(teaminfo.prog_stoptime);
-                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;"><i>' + teaminfo.team + '</i></button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
+                        html += ('<tr><td>' + teaminfo.rank + '</td><td><button onclick="teamCardView(`' + teaminfo.team + '`)" class="btn dark" style="width: 100% !important;">' + teaminfo.team + '</button></td><td>' + teaminfo.combined + '</td><td>' + driver_1 + '</td><td>' + teaminfo.prog + '</td><td>' + teaminfo.driver_2 + '</td><td>' + teaminfo.prog_2 + '</td><td>' + teaminfo.driver_3 + '</td><td>' + teaminfo.prog_3 + '</td></tr>');
                     }
                 }
                 else {
@@ -1269,7 +1295,9 @@ function handleRankings(data) {
                 }
                 html += "</tbody>";
                 document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
-                document.getElementById("skillsScoreTable").style.backgroundColor = "#" + intToRGB(hashCode(property));
+                bg_color = shadeColor("#" + intToRGB(hashCode(property)), -50);
+                document.getElementById("skillsScoreTable").style.backgroundColor = bg_color;
+                teamSort(document.querySelector("#Rankings #skillsScoreTable"), document.querySelector("#Rankings #rankingsTeamSort"));
             }
         }
 
@@ -1820,10 +1848,9 @@ function handleEventControl(data) {
         for (i in Object.keys(rooms_codes)) {
             room = "Room" + (Object.keys(rooms_codes)[i]);
             room_code = rooms_codes[Object.keys(rooms_codes)[i]];
-            html += "<tr><td>" + room + "</td><td>" + room_code + "</td></tr>";
+            html += "<tr><td>" + room + "</td></tr>";
         }
         document.querySelector("#room_code_footer").innerHTML = html;
-        initMeetings();
     }
     else if (data.operation == "set_re_button") {
         if (data.linked == true) {
@@ -2084,4 +2111,54 @@ function homeBoxSave() {
         edited_contents = document.querySelector("#homeBox").innerHTML;
     }
     websocket.send(JSON.stringify({ api: API_home, operation: "post", content: edited_contents}));
+}
+
+function createInviteLink() {
+    room_name = document.querySelector("#roomName").value;
+    expiry = document.querySelector("#inviteExpiry").value;
+    if (room_name != "" && expiry != "") {
+        websocket.send(JSON.stringify({ api: API_jwt, operation: "get_invite_link", room: room_name, expiry: parseInt(expiry) * 60 }));
+        document.querySelector("#roomName").value = "";
+        document.querySelector("#inviteExpiry").value = "";
+    }
+    else {
+        showModal("Please enter valid values for Room Name and Expiry")
+    }
+}
+
+function joinRoom() {
+    room_name = document.querySelector("#roomName_create").value;
+    if (room_name != "") {
+        websocket.send(JSON.stringify({ api: API_jwt, operation: "join_room", room: room_name}));
+        document.querySelector("#roomName_create").value = "";
+    }
+    else {
+        showModal("Please enter a valid value for Room Name")
+    }
+}
+
+function jwtHandler(data) {
+    if (data.operation == "return_invite_link") {
+        document.querySelector("#inviteLink").innerHTML = data.link;
+    }
+    else if (data.operation == "return_join_link") {
+        window.open(data.link, '_blank').focus();
+    }
+}
+
+function teamSort(table, search, row) {
+    searchText = search.value;
+    filter = searchText.toUpperCase();
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[row];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
 }
