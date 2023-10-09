@@ -36,7 +36,7 @@ var all_events = [];
 var ALL_ROOMS = [];
 var event_teams = {};
 var team_program_type;
-
+var newTabMeets = false;
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
@@ -281,6 +281,46 @@ function showMobileChat() {
 
 // API: Queue
 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function settingChange() {
+    newTabMeets = document.querySelector("#meetingCheckSetting").checked;
+    setCookie("tabMeets", newTabMeets, 365)
+    console.log("set")
+}
+function settingsLoad() {
+    meetCookie = getCookie("tabMeets");
+    if (meetCookie == "") {
+        document.querySelector("#meetingCheckSetting").checked = false;
+    }
+    else {
+        console.log("ELSE");
+        console.log(mmeetCookie);
+    }
+    console.log(meetCookie);
+
+}
 function handleQueue(data) {
     if (data.operation == "post") {
         queueHtml = "<tbody><tr><th>Position</th><th>Team</th><th>Queued for</th><th>Status</th></tr>";
@@ -890,7 +930,7 @@ function handleMeetingCtrl(data) {
                     parentNode: document.querySelector("#MeetingControl #room" + i.toString()),
                     width: "100%",
                     height: "100%",
-                    userInfo: { email: "", displayName: name },
+                    userInfo: { email: "admin", displayName: name+" - EP" },
                     configOverwrite: {
                         disableAudioLevels: true,
                         enableNoAudioDetection: false,
@@ -902,7 +942,7 @@ function handleMeetingCtrl(data) {
                         startWithVideoMuted: true,
                         startScreenSharing: false,
                         hideLobbyButton: true,
-                        disableProfile: true,
+                        //disableProfile: true,
                         prejoinPageEnabled: false,
                         enableAutomaticUrlCopy: false,
                         disableDeepLinking: true,
@@ -917,7 +957,7 @@ function handleMeetingCtrl(data) {
                     interfaceConfigOverwrite: {
                         AUTO_PIN_LATEST_SCREEN_SHARE: false,
                         CONNECTION_INDICATOR_DISABLED: true,
-                        DEFAULT_LOCAL_DISPLAY_NAME: 'Livestream',
+                        DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
                         DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
                         DISABLE_FOCUS_INDICATOR: true,
                         DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
@@ -934,12 +974,12 @@ function handleMeetingCtrl(data) {
                         LOCAL_THUMBNAIL_RATIO: 16 / 9,
                         MAXIMUM_ZOOMING_COEFFICIENT: 1,
                         MOBILE_APP_PROMO: false,
-                        SETTINGS_SECTIONS: [],
+                        SETTINGS_SECTIONS: ['profile'],
                         SHOW_CHROME_EXTENSION_BANNER: false,
                         SHOW_POWERED_BY: false,
                         SHOW_PROMOTIONAL_CLOSE_PAGE: false,
                         TOOLBAR_ALWAYS_VISIBLE: false,
-                        TOOLBAR_BUTTONS: [],
+                        TOOLBAR_BUTTONS: ['settings'],
                         TOOLBAR_TIMEOUT: 1,
                         VIDEO_QUALITY_LABEL_DISABLED: true,
                         ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1

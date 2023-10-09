@@ -13,7 +13,7 @@
 
     <header id="header" class="container h hide">
         <div id="leftSplit" class="container h">
-            <img id="sponsors"src="sponsors3.gif">
+            <img id="sponsors" src="sponsors3.gif">
             <h1 id="eventConsole">LRS Console</h1>
         </div>
         <div id="middleSplit" class="container">
@@ -642,16 +642,16 @@
 
             <div id="MeetingControl" class="tabContent v">
                 <!--<input type="radio" id="mcTab1" name="mcTabs" checked>
-                <label for="mcTab1">Room 1</label>
-                <input type="radio" id="mcTab2" name="mcTabs">
-                <label for="mcTab2">Room 2</label>
-                <input type="radio" id="mcTab3" name="mcTabs">
-                <label for="mcTab3">Room 3</label>
-                <input type="radio" id="mcTab4" name="mcTabs">
-                <label for="mcTab4">Room 4</label>-->
+        <label for="mcTab1">Room 1</label>
+        <input type="radio" id="mcTab2" name="mcTabs">
+        <label for="mcTab2">Room 2</label>
+        <input type="radio" id="mcTab3" name="mcTabs">
+        <label for="mcTab3">Room 3</label>
+        <input type="radio" id="mcTab4" name="mcTabs">
+        <label for="mcTab4">Room 4</label>-->
                 <a id="init" class="btn dark" onclick="initMeetings()">Initialize</a>
-                <div id="jitsiMeetEPBox"class="wrapperJitsi">
-                    
+                <div id="jitsiMeetEPBox" class="wrapperJitsi">
+
                 </div>
             </div> <!-- End of Meeting Control tab -->
 
@@ -661,14 +661,13 @@
                         <div class="stackedScrollBoxes" id="announceBoxScrollBox">
                             <div class="stackedScrollBoxes" id="announceBoxScrollBox">
                                 <h3>Event Control</h3>
-                                    <div id="announcement">
-                                        <textarea id="typeAnnounce" rows="10"></textarea>
-                                        <button class="btn gray" id="fullwidthbutton" onclick="eventAnnouncement()">Send Announcement</button>
-                                    </div>
+                                <div id="announcement">
+                                    <textarea id="typeAnnounce" rows="10"></textarea>
+                                    <button class="btn gray" id="fullwidthbutton" onclick="eventAnnouncement()">Send Announcement</button>
+                                </div>
                             </div>
                             <div class="stackedScrollBoxes">
                                 <table>
-
                                 </table>
                             </div>
                         </div>
@@ -762,6 +761,18 @@
                 </div>
             </div> <!-- End of Event Control tab -->
 
+            <div id="Settings" class="tabContent v">
+                <div id="settingsBox" class="scrollBox">
+                    <div id="settingLink">
+                        <h1>Open Meetings in a New Tab</h1>
+                        <label class="switch" onload="settingsLoad()">
+                            <input id="meetingCheckSetting" type="checkbox" onchange="settingChange()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div> <!-- End of Settings tab -->
+
             <!-- TODO -->
             <div id="Chat" class="container tabContent">
                 <div id="messageBoard" class="container v">
@@ -794,9 +805,10 @@
                 <button class="btn lavender" onclick="login()">Login</button>
                 <button class="btn red" onclick="RE_login()">Login with Robot&nbsp;Events</button>
             </div>
-            
+
         </div>
     </div> <!-- End of Login tab -->
+   
 
     <div id="textModal" class="modal">
         <div class="modal-content">
