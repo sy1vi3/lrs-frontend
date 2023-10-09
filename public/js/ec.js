@@ -114,9 +114,6 @@ function connect(tokenLogin = false) {
             case API_meeting_ctrl:
                 handleMeetingCtrl(data);
                 break;
-            case API_tech_support:
-                handleTechSupport(data);
-                break;
             case API_stats:
                 fillStatsTable(data);
             case API_sound:
@@ -875,36 +872,6 @@ function eventAnnouncement() {
 
 // API: Tech Support
 
-function handleTechSupport(data) {
-    if ("users" in data) {
-        userlist = '<option value=""></option>';
-        for (i = 0; i < data.users.length; i++) {
-            userlist += '<option value="' + data.users[i] + '">' + data.users[i] + '</option>';
-        }
-        document.querySelector("#TechSupport select").innerHTML = userlist;
-    }
-}
-
-function techLogoutAll() {
-    user = document.querySelector("#TechSupport select").value;
-    if (user != "") {
-        if (confirm("Really logout all clients for " + user + "?"))
-            websocket.send(JSON.stringify({ api: API_tech_support, operation: "logoutUser", user: user }));
-    }
-}
-
-function techChangePasscode() {
-    user = document.querySelector("#TechSupport select").value;
-    pass = document.querySelector("#TechSupport #passcode");
-    if (user != "") {
-        if (pass.value.length != 13)
-            showModal("Must be 13 characters in length");
-        else if (confirm("Really change access code for " + user + "?")) {
-            websocket.send(JSON.stringify({ api: API_tech_support, operation: "changePasscode", user: user, passcode: pass.value }));
-            pass.value = "";
-        }
-    }
-}
 
 
 // Cool Color Stuff
@@ -1089,7 +1056,7 @@ function updateVolunteers(data) {
                 role = "Referee";
             }
             if (user_name != name && user_name != "Livestream" && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name">' + user_name + '</td><td id="role">' + role + '</td><td id="passcode">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
         }
         document.querySelector("#vol_table").innerHTML = html;
@@ -1266,4 +1233,10 @@ function team_control(data) {
 function team_enable(user) {
     teamnumber = user.querySelector("#name").innerHTML;
     websocket.send(JSON.stringify({ api: API_tech_support, operation: "enableUser", user: teamnumber }));
+}
+
+function refreshTeams() {
+    if (confirm("Are you sure? Really refresh team list?")) {
+        websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "refresh_teams" }));
+    }
 }
