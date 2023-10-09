@@ -1927,3 +1927,7 @@ input:checked + .slider:before {
 #chatEmoteButton{
     width: 20%;
 }
+
+#emoteTable {
+    margin: 20px;
+}

@@ -26,5 +26,13 @@ const emotes = {
     pros: '<img src="https://cdn.discordapp.com/emojis/243540580016193547.png?v=1" draggable="false" class="emoji">',
     ez: '<img src="https://cdn.discordapp.com/emojis/620288884923826185.png?v=1" draggable="false" class="emoji">',
     dq: '<img src="https://cdn.discordapp.com/emojis/447629100044255242.png?v=1" draggable="false" class="emoji">',
-
+    skittles: '<img src="https://media.discordapp.net/attachments/260546095082504202/837129731014000710/20210425_182642.jpg" draggable="false" class="emoji">',
+    axothonk: '<img src="https://cdn.discordapp.com/emojis/768318342321799198.png?v=1" draggable="false" class="emoji">',
+    jaketroll: '<img src="https://media.discordapp.net/attachments/260546095082504202/837134148178935808/unknown.png" draggable="false" class="emoji">',
+    welco: '<img src="https://cdn.discordapp.com/emojis/711613893088378927.png?v=1" draggable="false" class="emoji">',
+    robosauraus: '<img src="https://cdn.discordapp.com/emojis/805975477340209173.png?v=1" draggable="false" class="emoji">',
+    hyperhydrate: '<img src="https://cdn.discordapp.com/emojis/403758635873992707.png?v=1" draggable="false" class="emoji">',
+    partyparrot: '<img src="https://cdn.discordapp.com/emojis/416087231858737153.gif?v=1" draggable="false" class="emoji">',
+    dababy: '<img src="https://emoji.gg/assets/emoji/9925-dababy.png" draggable="false" class="emoji">',
+    will: '<img src="https://cdn.discordapp.com/emojis/736436063580717127.png?v=1" draggable="false" class="emoji">',
 }

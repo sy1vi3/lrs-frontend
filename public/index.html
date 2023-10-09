@@ -8,7 +8,7 @@
     <script type="text/javascript" src="js/ec.js"></script>
     <script type="text/javascript" src="js/emotes.js"></script>
     <script type="text/javascript" src="https://connect.liveremoteskills.org/external_api.js"></script>
-    <link rel="icon" type="image/svg+xml" href="img/recf_circle.svg">
+    <link rel="icon" type="image/svg+xml" href="img/logos/recf_circle.svg">
 </head>
 
 <body class="container v" onload="init()">
@@ -27,7 +27,7 @@
         <div id="rightSplit" class="container h">
             <h1 id="username">Welcome!</h1>
             <button id="logout" class="btn red" onclick="logout()">Logout</button>
-            <img id="logo" src="img/recf_circle.svg" class="insiteLogo">
+            <img id="logo" src="img/logos/recf_circle.svg" class="insiteLogo">
         </div>
     </header>
 
@@ -57,7 +57,7 @@
                 <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(0)"></textarea>
                 <span>
                     <button id="chatSendButton" class="btn gray" onclick="chatSend(0)">Send Message to Everyone</button>
-                    <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()"><img src="img/emoji.png" width="30" style=" margin-top: -10px; margin-bottom: -10px;"></button>
+                    <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()"><img src="img/random/emoji.png" width="30" style=" margin-top: -10px; margin-bottom: -10px;"></button>
                 </span>
             </div>
         </div> <!-- End of desktop chat -->
@@ -814,7 +814,7 @@
                         <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(1)"></textarea>
                         <span>
                             <button id="chatSendButton" class="btn gray" onclick="chatSend(1)">Send Message to Everyone</button>
-                            <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()"><img src="img/emoji.png" width="30" style=" margin-top: -10px; margin-bottom: -10px;"></button>
+                            <button id="chatEmoteButton" class="btn lavender" onclick="emotePopup()"><img src="img/random/emoji.png" width="30" style=" margin-top: -10px; margin-bottom: -10px;"></button>
                         </span>
                     </div>
                 </div>
@@ -854,7 +854,7 @@
     <div id="Login" class="container h">
         <div id="login">
             <div id="logo">
-                <img src="img/recf_circle.svg">
+                <img src="img/logos/recf_circle.svg">
                 <h1>LRS Console</h1>
             </div>
             <noscript>
@@ -925,18 +925,6 @@
             <span class="close" onclick="modalClose('#emoteModal')"><i class="fas fa-times-circle"></i></span>
             <div id="emotes" class="container v">
                 <table id="emoteTable">
-                    <tr>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                    </tr>
-                    <tr>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                        <td><img src="https://cdn.discordapp.com/emojis/389607080803434496.png?v=1" draggable="false" class="tableemoji"></td>
-                    </tr>
                 </table>
             </div>
         </div>
