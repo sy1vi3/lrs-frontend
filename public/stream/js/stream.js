@@ -99,7 +99,7 @@ function load(roomcode) {
             jitsi.executeCommand('toggleFilmStrip');
         }
     });
-
+   
     jitsi.executeCommand('toggleFilmStrip');
     console.log(options);
     console.log(jitsi);

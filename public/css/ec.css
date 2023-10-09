@@ -639,6 +639,8 @@ th, td {
     padding: 4px
 }
 
+
+
 .modal {
     display: none;
     z-index: 100;
@@ -664,8 +666,8 @@ th, td {
     transform: translate(-50%, -50%);
     padding: 5px 7px;
     border: 2px solid #808080;
-    max-width: 30em;
-    max-height: 16em
+/*    max-width: 30em;
+    max-height: 16em*/
 }
 
 @media (max-width: 500px) {
@@ -1808,3 +1810,9 @@ input:checked + .slider:before {
     .slider.round:before {
         border-radius: 50%;
     }
+
+
+#jitsiPopupNode iframe {
+    height: 80vh !important;
+    width: 80vw !important;
+}

@@ -54,6 +54,11 @@ function modalClose(selector) {
     document.querySelector(selector).classList.remove("show");
 }
 
+function JitsimodalClose(selector) {
+    document.querySelector(selector).classList.remove("show");
+    document.querySelector("#jitsiPopupNode").innerHTML = ""
+}
+
 function playMessageSound() {
     chat_sound.pause();
     chat_sound.currentTime = 0;
@@ -92,6 +97,7 @@ function init() {
     else {
         document.querySelector("#meetingCheckSetting").checked = false;
     }
+    
 
 }
 
@@ -168,6 +174,8 @@ function connect(tokenLogin = false) {
                 document.querySelector("#chatSendButton").click();
             }
         });
+
+        initMeetings();
         //oldProgram = "VIQC";
         //document.querySelector("#SkillsControl #right").innerHTML = document.querySelector("#hiddenVIQC").innerHTML;
     };
@@ -206,6 +214,7 @@ function logout() {
 // API: Main
 
 function handleMain(data) {
+    console.log(data);
     if ("name" in data && "role" in data && "tablist" in data) {
         name = data.name;
         role = data.role;
@@ -223,8 +232,93 @@ function handleMain(data) {
         document.querySelector("#header").classList.remove("hide");
         document.querySelector("#mobileHeader").classList.remove("hide");
         document.querySelector("#event-console").classList.remove("hide");
-    } else if ("modal" in data) {
-        showModal(data.modal);
+    } else if ("modal" in data && "room" in data) {
+        if (newTabMeets == true) {
+            showModal(data.modal);
+        }
+        else {
+            console.log("popping UP")
+            document.querySelector("#jitsiModal").classList.add("show");
+            document.querySelector("#jitsiModal").classList.remove("hide");
+            domain = "connect.liveremoteskills.org";
+            var teamOptions;
+            var teamJitsi;
+            teamOptions = {
+                roomName: "room" + data.room,
+                parentNode: document.querySelector("#jitsiPopupNode"),
+                //width: "500px",
+                //height: "500px",
+                userInfo: { email: "team", displayName: name },
+                configOverwrite: {
+                    //disableAudioLevels: true,
+                    //enableNoAudioDetection: false,
+                    //enableNoisyMicDetection: false,
+                    //startAudioOnly: false,
+                    //startWithAudioMuted: true,
+                    //startSilent: false,
+                    //maxFullResolutionParticipants: -1,
+                    //startWithVideoMuted: true,
+                    //startScreenSharing: false,
+                    //hideLobbyButton: true,
+                    //disableProfile: true,
+                    prejoinPageEnabled: false
+                    //enableAutomaticUrlCopy: false,
+                    //disableDeepLinking: true,
+                    //disableInviteFunctions: true,
+                    //remoteVideoMenu: { disableKick: true },
+                    //disableRemoteMute: true,
+                    //disableTileView: true,
+                    //hideConferenceSubject: true,
+                    //hideConferenceTimer: true,
+                    //hideParticipantsStats: true
+                },
+                interfaceConfigOverwrite: {
+                    //AUTO_PIN_LATEST_SCREEN_SHARE: false,
+                    //CONNECTION_INDICATOR_DISABLED: true,
+                    //DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
+                    DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
+                    //DISABLE_FOCUS_INDICATOR: true,
+                    DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                    //DISABLE_PRESENCE_STATUS: true,
+                    //DISABLE_RINGING: true,
+                    //DISABLE_TRANSCRIPTION_SUBTITLES: true,
+                    //DISABLE_VIDEO_BACKGROUND: true,
+                    //ENABLE_DIAL_OUT: false,
+                    //ENABLE_FEEDBACK_ANIMATION: false,
+                    //HIDE_INVITE_MORE_HEADER: true,
+                    //INITIAL_TOOLBAR_TIMEOUT: 1,
+                    //JITSI_WATERMARK_LINK: '',
+                    LANG_DETECTION: false
+                    //LOCAL_THUMBNAIL_RATIO: 16 / 9,
+                    //MAXIMUM_ZOOMING_COEFFICIENT: 1,
+                    //MOBILE_APP_PROMO: false,
+                    //SETTINGS_SECTIONS: ['profile'],
+                    //SHOW_CHROME_EXTENSION_BANNER: false,
+                    //SHOW_POWERED_BY: false,
+                    //SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+                    //TOOLBAR_ALWAYS_VISIBLE: false,
+                    //TOOLBAR_BUTTONS: ['settings'],
+                    //TOOLBAR_TIMEOUT: 1,
+                    //VIDEO_QUALITY_LABEL_DISABLED: true,
+                    //ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
+                }
+            }
+            teamJitsi = new JitsiMeetExternalAPI(domain, teamOptions);
+
+            teamJitsi.on('passwordRequired', function () {
+                console.log("Adding Passcode to team room");
+                teamJitsi.executeCommand('password', data.password);
+            });
+
+            teamJitsi.on('filmstripDisplayChanged', function (data) {
+                if (data.visible == true) {
+                    teamJitsi.executeCommand('toggleFilmStrip');
+                }
+            });
+            document.querySelector("#jitsiPopupNode").firstChild.height = "80vh";
+            document.querySelector("#jitsiPopupNode").firstChild.width = "80vw";
+            teamJitsi.executeCommand('toggleFilmStrip');
+        }
     }
 }
 
