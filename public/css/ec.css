@@ -135,6 +135,17 @@ a[href] {
         .btn.green:active {
             background: #8ad48a;
         }
+    .btn.pink {
+        background: #b81497;
+    }
+
+        .btn.pink:hover, .btn.pink:focus {
+            background: #b81497;
+        }
+
+        .btn.pink:active {
+            background: #f7ade8;
+        }
 
 hr {
     border-color: #808080;

@@ -1269,7 +1269,6 @@ function handleRankings(data) {
         div_ranks_len = Object.keys(div_ranks).length;
 
         if (document.querySelector("#divsDropdown").value != "") {
-            console.log(document.querySelector("#divsDropdown").value);
             html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value + '" id="rankingsiframe"></iframe>';
             document.querySelector("#Rankings #skillsScores").innerHTML = html;
         }
@@ -1326,7 +1325,11 @@ function handleRankings(data) {
 }
 
 function refreshRanks() {
-    websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
+    //websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings" }));
+    if (document.querySelector("#divsDropdown").value != "") {
+        html = '<iframe src="https://www.robotevents.com/vextv/skills/' + document.querySelector("#divsDropdown").value + '" id="rankingsiframe"></iframe>';
+        document.querySelector("#Rankings #skillsScores").innerHTML = html;
+    }
 }
 
 function teamCardView(team) {
@@ -1413,7 +1416,7 @@ function fillStatsTable(data) {
                 html += '</td></tr>';
             }
             else {
-                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="sendCongrats(`' + teams[key] + '`)" class="btn green">Congratulate</button></td></tr>';
+                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="sendCongrats(`' + teams[key] + '`)" class="btn green">Congratulate</button><button onclick="giftSticker(`' + teams[key] + '`)" class="btn pink">Gift Sticker</button></td></tr>';
 
             }
         }
