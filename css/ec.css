@@ -4,8 +4,8 @@
 body {
     font-family: "Open Sans",sans-serif;
     font-weight: 300;
-    color: #1B365D;
-    background: #9EA2A2;
+    color: #F0F0F0;
+    background: #363639;
     margin: 0
 }
 
@@ -52,7 +52,7 @@ a[href] {
 }
 
     .btn.dark {
-        background: #acb0b0;
+        background: #26272A;
         border: 1px solid #808080;
         color: #F0F0F0 !important
     }
@@ -140,16 +140,16 @@ table:not(.framed) {
     }
 
     table:not(.framed).hoverable tr:not(:hover) th {
-        background: #acb0b0
+        background: #26272A
     }
 
     table:not(.framed):not(.hoverable) th {
-        background: #acb0b0
+        background: #26272A
     }
 
 table.framed {
     border: 2px solid #808080;
-    background: #acb0b0;
+    background: #26272A;
     padding: 20px;
     margin: 30px 0
 }
@@ -262,7 +262,7 @@ body {
         flex-direction: row;
         border-bottom: 2px solid #808080;
         width: 100%;
-        background: #acb0b0
+        background: #26272A
     }
 }
 
@@ -409,7 +409,7 @@ ul {
 }
 
 #messageBoard {
-    background: #acb0b0;
+    background: #26272A;
     border-right: 2px solid #808080;
     width: fit-content;
     max-height: calc(100vh - 82px);
@@ -481,7 +481,7 @@ ul {
     #messageBoard #messageAction {
         border-top: 2px solid #808080;
         align-items: stretch;
-        background: #acb0b0;
+        background: #26272A;
         padding: 4px;
         width: 271px;
         bottom: 0;
@@ -509,7 +509,7 @@ ul {
 }
 
 #ecHeader {
-    background: #acb0b0;
+    background: #26272A;
     padding: 0 10px;
     overflow-x: auto
 }
@@ -517,7 +517,7 @@ ul {
 .ecTab {
     padding: 10px;
     margin-top: 4px;
-    background: #acb0b0;
+    background: #26272A;
     border-style: none;
     font-size: 12pt;
     color: #F0F0F0;
@@ -600,7 +600,7 @@ th, td {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 10pt 15pt 10pt 20pt;
-    background: #acb0b0;
+    background: #26272A;
     text-align: center
 }
 
@@ -652,7 +652,7 @@ th, td {
 }
 
     #myBtn.dark {
-        background: #acb0b0;
+        background: #26272A;
         border: 1px solid #808080;
         color: #F0F0F0 !important
     }
@@ -780,7 +780,7 @@ th, td {
 }
 
 .scrollBox {
-    background: #acb0b0;
+    background: #26272A;
     position: relative;
     overflow-y: auto;
     flex-grow: 1
@@ -831,7 +831,7 @@ th, td {
     }
 
 .stackedScrollBoxes {
-    background: #acb0b0;
+    background: #26272A;
     position: relative;
     overflow-y: auto;
     flex-grow: 1;
@@ -875,7 +875,7 @@ th, td {
     margin: 20px auto;
     padding: 10pt 20pt 10pt 20pt;
     border: 2px solid #808080;
-    background: #acb0b0;
+    background: #26272A;
     text-align: center
 }
 
@@ -922,7 +922,7 @@ th, td {
 
     #login #form {
         max-width: 256px;
-        background: #878a8a;
+        background: #26272A;
         padding: 20px;
         margin: 16px auto 0
     }
@@ -1094,7 +1094,7 @@ th, td {
 }
 
 #in-session > * {
-    background: #acb0b0;
+    background: #26272A;
     margin: 10pt;
     border: 2pt solid #808080
 }
@@ -1206,7 +1206,7 @@ th, td {
     }
 
 .teamDropdown {
-    background: #acb0b0;
+    background: #26272A;
     font: inherit;
     color: #F0F0F0
 }

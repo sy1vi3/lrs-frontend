@@ -53,413 +53,570 @@
     </div> <!-- End of desktop chat -->
     
     <div id="tabsAndContent" class="container v">
-      <div id="ecHeader" class="container h"></div>
-      
-      <div id="Inspection" class="tabContent h">
-        <div id="windowInspection" class="container v tc">
-          <h2>Inspection</h2>
-          <div class="buttonRow">
-            <button onclick="inspectionQueue();" class="btn lavender" id="myBtn insp-enter">Enter Queue for Inspection</button>
-            <button onclick="inspectionUnqueue();" class="btn red" id="default insp-leave">Leave Queue</button>
-          </div>
-          <table class="buttonRow framed" width="70%">
-            <tr>
-              <th>Inspection status:</th>
-              <td id="insp-status"></td>
-            </tr>
-          </table>
-        </div>
-        <div id="windowQueue" class="container v tc">
-          <h2>Queue</h2>
-          <div id="queueList" class="scrollBox">
-            <table id="skillsQueue">
-              <tr>
-                <th>Position</th><th>Team</th><th>Queued for</th><th>Status</th>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div> <!-- End of Inspection tab -->
-      
-      <div id="InspectionControl" class="h tabContent">
-        <div id="left" class="container v tc">
-          <div class="scrollBox stackedScrollBoxes">
-            <table id="teamsInQueue">
-              <tr>
-                <th>Position</th><th>Team</th><th>Queued for</th><th>Queued since</th><th>Actions</th>
-              </tr>
-            </table>
-          </div>
-          <div class="scrollBox stackedScrollBoxes">
-            <table id="allTeams">
-              <tr>
-                <th>Team</th><th>Inspection Status</th><th>Actions</th>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div id="right" class="container v tc">
-          <h3>Inspection: <span id="inspTeamNum"></span></h3>
-          <div id="systemChecklists">
-            <input type="radio" id="V5Toggle" name="boop" checked>
-            <label for="V5Toggle">V5 System</label>
-            <input type="radio" id="cortexToggle" name="boop">
-            <label for="cortexToggle">Cortex System</label>
-            <div id="SCscroll1" class="scrollBox tabContent2">
-              <table id="V5Checklist">
-                <tr>
-                  <th></th><th>Description</th><th>Rule</th>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-1"></td><td><label for="v5-1">Robot fits within starting size restrictions (18" x 18" x 18"). Team ID Plates must be installed for sizing inspection.</label></td><td>R5</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-2"></td><td><label for="v5-2">Team is only competing with ONE robot. They have no spare or replacement robots. Multiples of subsystem 3 is permitted.</label></td><td>R1</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-3"></td><td><label for="v5-3">Robot displays colored VEX Team Identification plates on at least (2) opposing sides, with only (1) color visible.</label></td><td>R27</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-4"></td><td><label for="v5-4">Robot does NOT contain any components which will be intentionally detached on the playing-field.</td><td>G5, R5</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-5"></td><td><label for="v5-5">Robot does NOT contain any components that could entangle or damage the playing-field or other robots.</label></td><td>R4</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-6"></td><td><label for="v5-6">Robot does NOT contain any sharp edges or corners.</label></td><td>R4</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-7"></td><td><label for="v5-7">Robot on/off switch is accessible &amp; Microcontroller lights are visible without moving or lifting the robot.</label></td><td>R25</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-8"></td><td><label for="v5-8">Team testifies that the designing, building and programming of the robot was done only by the students on the team.</label></td><td>R2, G2, G6</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-9"></td><td><label for="v5-9">ALL Robot components are (or are IDENTICAL to) OFFICIAL VEX Products as sold on VEXrobotics.com or materialsused as color filters, minimal grease or lubricant, minimal anti-static compound, hot glue for cable connections,unlimited 1/8th inch braided nylon rope, cable protection materials and tape for connections and labeling.</label></td><td>R6, R7, R8, R11, R12</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-10"></td><td><label for="v5-10">Robot does not use VEX products not intended for use as a robot component or any VEX packaging.</label></td><td>R6</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-11"></td><td><label for="v5-11">ALL Components on the Robot NOT meeting VRC Inspection Criteria are NON-FUNCTIONAL decorations</label></td><td>R13</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-12"></td><td><label for="v5-12">Any non-shattering plastic on the robot was cut from a single sheet of 0.070" material not larger than 12"x24".</label></td><td>R10</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-13"></td><td><label for="v5-13">Robot has only (1) VEX V 5 Robot Brain</label></td><td>R16</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-14"></td><td><label for="v5-14">Robot utilizes the VEXnet wireless communication system.</label></td><td>R17</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-15"></td><td><label for="v5-15">None of the electronics are from the VEXplorer, VEXpro, VEX-RCR, VEX IQ, or VEX Robotics by Hexbug.</label></td><td>R17</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-16"></td><td><label for="v5-16">Total number of Smart Motors is not more than eight (8) without use of pneumatics or six (6) with use of pneumatics.</label></td><td>R18</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-17"></td><td><label for="v5-17">Robot contains no VEX 2-wire Motors.</label></td><td>R18</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-18"></td><td><label for="v5-18">Robot uses one (1) V5 Robot Battery Li-Ion 1100mAh. </label></td><td>R20</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-19"></td><td><label for="v5-19">Robot is controlled by no more than (2) V5 Controllers.</label></td><td>R21</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-20"></td><td><label for="v5-20">NO VEX electrical components have been modified from their original state.</label></td><td>R22</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-21"></td><td><label for="v5-21">NO Method of attachment NOT provided by the VEX Design System is used. (Welding, Gluing, etc.)</label></td><td>R23</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-22"></td><td><label for="v5-22">Robot uses a maximum of two (2) VEX pneumatic air reservoirs. (Maximum 100 psi per air reservoir)</label></td><td>R26</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-23"></td><td><label for="v5-23">Robot contains no Components obtained from the V5 beta program.</label></td><td>R6</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-24"></td><td><label for="v5-24">If any custom cables are used, they are made only with official V5 Cable Stock.</label></td><td>R24</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-25"></td><td><label for="v5-25">Any NON-FUNCTIONAL decorations do not imitate Game or Field objects as a distraction for the V5 Vision Sensor. </label></td><td>R13</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-26"></td><td><label for="v5-26">Robot Brain has the latest firmware listed on VEX.com/firmware </label></td><td>R22</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="v5-27"><td><label for="v5-27">If Vision sensor is used, it has been calibrated &amp; tested on competition fields (this is not required to pass inspection)</label></td><td>Optional</td>
-                </tr>
-              </table>
+        <div id="ecHeader" class="container h"></div>
+
+        <div id="Inspection" class="tabContent h">
+            <div id="windowInspection" class="container v tc">
+                <h2>Inspection</h2>
+                <div class="buttonRow">
+                    <button onclick="inspectionQueue();" class="btn lavender" id="myBtn insp-enter">Enter Queue for Inspection</button>
+                    <button onclick="inspectionUnqueue();" class="btn red" id="default insp-leave">Leave Queue</button>
+                </div>
+                <table class="buttonRow framed" width="70%">
+                    <tr>
+                        <th>Inspection status:</th>
+                        <td id="insp-status"></td>
+                    </tr>
+                </table>
             </div>
-            <div id="SCscroll2" class="scrollBox tabContent2">
-              <table id="cortexChecklist">
-                <tr>
-                  <th></th><th>Description</th><th>Rule</th>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-1"></td><td><label for="cortex-1">Robot fits within starting size restrictions (18" x 18" x 18"). Team ID Plates must be installed for sizing inspection.</label></td><td>R5</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-2"></td><td><label for="cortex-2">Team is only competing with ONE robot. They have no spare or replacement robots. Multiples of subsystem 3 is permitted.</label></td><td>R1</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-3"></td><td><label for="cortex-3">Robot displays colored VEX Team Identification plates on at least (2) opposing sides, with only (1) color visible.</label></td><td>R27</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-4"></td><td><label for="cortex-4">Robot does NOT contain any components which will be intentionally detached on the playing-field.</td><td>G5, R5</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-5"></td><td><label for="cortex-5">Robot does NOT contain any components that could entangle or damage the playing-field or other robots.</label></td><td>R4</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-6"></td><td><label for="cortex-6">Robot does NOT contain any sharp edges or corners.</label></td><td>R4</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-7"></td><td><label for="cortex-7">Robot on/off switch is accessible &amp; Microcontroller lights are visible without moving or lifting the robot.</label></td><td>R25</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-8"></td><td><label for="cortex-8">Team testifies that the designing, building and programming of the robot was done only by the students on the team.</label></td><td>R2, G2, G6</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-9"></td><td><label for="cortex-9">ALL Robot components are (or are IDENTICAL to) OFFICIAL VEX Products as sold on VEXrobotics.com or materialsused as color filters, minimal grease or lubricant, minimal anti-static compound, hot glue for cable connections,unlimited 1/8th inch braided nylon rope, cable protection materials and tape for connections and labeling.</label></td><td>R6, R7, R8, R11, R12</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-10"></td><td><label for="cortex-10">Robot does not use VEX products not intended for use as a robot component or any VEX packaging.</label></td><td>R6</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-11"></td><td><label for="cortex-11">ALL Components on the Robot NOT meeting VRC Inspection Criteria are NON-FUNCTIONAL decorations</label></td><td>R13</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-12"></td><td><label for="cortex-12">Any non-shattering plastic on the robot was cut from a single sheet of 0.070" material not larger than 12"x24".</label></td><td>R10</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-13"></td><td><label for="cortex-13">Robot has only (1) VEX EDR Microcontroller.</label></td><td>R16</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-14"></td><td><label for="cortex-14">Robot utilizes the VEXnet wireless communication system.</label></td><td>R17</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-15"></td><td><label for="cortex-15">None of the electronics are from the VEXplorer, VEXpro, VEX-RCR, VEX IQ, or VEX Robotics by Hexbug.</label></td><td>R17</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-16"></td><td><label for="cortex-16">Total number of Servos and Motors is not more than (12) without use of pneumatics or (10) with use of pneumatics</label></td><td>R18</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-17"></td><td><label for="cortex-17">Robot uses (1) VEX 7.2V (Robot) Power Pack as the primary power source</label></td><td>R20</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-18"></td><td><label for="cortex-18">If the Robot has a Power Expander, it has a 2nd 7.2V (Robot) Power Pack</label></td><td>R20</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-19"></td><td><label for="cortex-19">Robot uses a maximum of (1) VEX Power Expander</label></td><td>R20</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-20"></td><td><label for="cortex-20">Robot has a charged 9V Backup Battery connected</label></td><td>R20</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-21"></td><td><label for="cortex-21">Robot is controlled by no more than (2) VEX hand-held transmitters.</label></td><td>R21</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-22"></td><td><label for="cortex-22">NO VEX electrical components have been modified from their original state.</label></td><td>R22</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-23"></td><td><label for="cortex-23">NO Method of attachment NOT provided by the VEX Design System is used. (Welding, Gluing, etc.)</label></td><td>R23</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-24"></td><td><label for="cortex-24">Robot uses a maximum of two (2) VEX pneumatic air reservoirs. (Maximum 100 psi per air reservoir)</label></td><td>R26</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" id="cortex-25"></td><td><label for="cortex-25">Any NON-FUNCTIONAL decorations do not imitate Game or Field objects as a distraction for the V5 Vision Sensor. </label></td><td>R13</td>
-                </tr>
-              </table>
+            <div id="windowQueue" class="container v tc">
+                <h2>Queue</h2>
+                <div id="queueList" class="scrollBox">
+                    <table id="skillsQueue">
+                        <tr>
+                            <th>Position</th>
+                            <th>Team</th>
+                            <th>Queued for</th>
+                            <th>Status</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
-          </div>
-          <div id="finishForm" class="buttonRow">
-            <input type="radio" id="not-started" name="finishFormButtons" checked>
-            <label for="not-started">Not Started</label>
-            <input type="radio" id="partial" name="finishFormButtons">
-            <label for="partial">Partial</label>
-            <input type="radio" id="pass" name="finishFormButtons">
-            <label for="pass">Passed</label>
-            <button onclick="inspectionSave()" class="btn yellow">Save</button>
-            <button onclick="inspectionClear()" class="btn red">Clear</button>
-          </div>
-        </div>
-      </div> <!-- End of Inspection Control tab -->
-      
-      <div id="Skills" class="tabContent h">
-        <div id="skillsActions" class="container v tc">
-        <h2>Skills</h2>
-        <div class="buttonRow">
-          <button onclick="skillsQueueDriving()" class="btn lavender" id="myBtn">Enter Queue for Driving Skills</button>
-          <button onclick="skillsQueueProgramming()" class="btn yellow" id="myBtn">Enter Queue for Programming Skills</button>
-          <button onclick="skillsUnqueue()" class="btn red" id="myBtn">Leave Queue</button>
-        </div>
-        <table class="buttonRow framed" width="80%">
-          <tr>
-            <th>Driving attempts completed:</th>
-            <td id="dAttempts"></td>
-          </tr>
-          <tr>
-            <th>Programming attempts completed:</th>
-            <td id="pAttempts"></td>
-          </tr>
-        </table>
-        </div>
-        <div class="container v tc">
-          <h2>Queue</h2>
-          <div id="queueList" class="scrollBox">
-            <table id="skillsQueue">
-              <tr>
-                <th>Position</th><th>Team</th><th>Queued for</th><th>Status</th>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div> <!-- End of Skills tab -->
-      
-      <div id="SkillsControl" class="tabContent h">
-      <div id="left" class="container v tc">
-          <div class="scrollBox stackedScrollBoxes">
-            <table id="teamsInQueue">
-              <tr>
-                <th>Position</th><th>Team</th><th>Queued for</th><th>Queued since</th><th>Actions</th>
-              </tr>
-            </table>
-          </div>
-          <div class="scrollBox stackedScrollBoxes">
-            <table id="allTeams">
-              <tr>
-                <th>Time Scored</th><th>Team</th><th>Type</th><th>Score</th><th>Actions</th>
-              </tr>
-            </table>
-          </div>
-      </div>
-      <div id="right" class="container v tc">
-        <div class="container h">
-          <h3>Robot Skills Challenge:
-            <select name="teams" id="teams" class="teamDropdown" onchange="skillsGetAttempts()">
-              <option value=""></option>
+        </div> <!-- End of Inspection tab -->
+
+        <div id="InspectionControl" class="h tabContent">
+            <div id="left" class="container v tc">
+                <div class="scrollBox stackedScrollBoxes">
+                    <table id="teamsInQueue">
+                        <tr>
+                            <th>Position</th>
+                            <th>Team</th>
+                            <th>Queued for</th>
+                            <th>Queued since</th>
+                            <th>Actions</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="scrollBox stackedScrollBoxes">
+                    <table id="allTeams">
+                        <tr>
+                            <th>Team</th>
+                            <th>Inspection Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="right" class="container v tc">
+                <h3>Inspection: <span id="inspTeamNum"></span></h3>
+                <div id="systemChecklists">
+                    <input type="radio" id="V5Toggle" name="boop" checked>
+                    <label for="V5Toggle">V5 System</label>
+                    <input type="radio" id="cortexToggle" name="boop">
+                    <label for="cortexToggle">Cortex System</label>
+                    <div id="SCscroll1" class="scrollBox tabContent2">
+                        <table id="V5Checklist">
+                            <tr>
+                                <th></th>
+                                <th>Description</th>
+                                <th>Rule</th>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-1"></td>
+                                <td><label for="v5-1">Robot fits within starting size restrictions (18" x 18" x 18"). Team ID Plates must be installed for sizing inspection.</label></td>
+                                <td>R5</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-2"></td>
+                                <td><label for="v5-2">Team is only competing with ONE robot. They have no spare or replacement robots. Multiples of subsystem 3 is permitted.</label></td>
+                                <td>R1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-3"></td>
+                                <td><label for="v5-3">Robot displays colored VEX Team Identification plates on at least (2) opposing sides, with only (1) color visible.</label></td>
+                                <td>R27</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-4"></td>
+                                <td><label for="v5-4">Robot does NOT contain any components which will be intentionally detached on the playing-field.</td>
+                                <td>G5, R5</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-5"></td>
+                                <td><label for="v5-5">Robot does NOT contain any components that could entangle or damage the playing-field or other robots.</label></td>
+                                <td>R4</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-6"></td>
+                                <td><label for="v5-6">Robot does NOT contain any sharp edges or corners.</label></td>
+                                <td>R4</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-7"></td>
+                                <td><label for="v5-7">Robot on/off switch is accessible &amp; Microcontroller lights are visible without moving or lifting the robot.</label></td>
+                                <td>R25</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-8"></td>
+                                <td><label for="v5-8">Team testifies that the designing, building and programming of the robot was done only by the students on the team.</label></td>
+                                <td>R2, G2, G6</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-9"></td>
+                                <td><label for="v5-9">ALL Robot components are (or are IDENTICAL to) OFFICIAL VEX Products as sold on VEXrobotics.com or materialsused as color filters, minimal grease or lubricant, minimal anti-static compound, hot glue for cable connections,unlimited 1/8th inch braided nylon rope, cable protection materials and tape for connections and labeling.</label></td>
+                                <td>R6, R7, R8, R11, R12</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-10"></td>
+                                <td><label for="v5-10">Robot does not use VEX products not intended for use as a robot component or any VEX packaging.</label></td>
+                                <td>R6</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-11"></td>
+                                <td><label for="v5-11">ALL Components on the Robot NOT meeting VRC Inspection Criteria are NON-FUNCTIONAL decorations</label></td>
+                                <td>R13</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-12"></td>
+                                <td><label for="v5-12">Any non-shattering plastic on the robot was cut from a single sheet of 0.070" material not larger than 12"x24".</label></td>
+                                <td>R10</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-13"></td>
+                                <td><label for="v5-13">Robot has only (1) VEX V 5 Robot Brain</label></td>
+                                <td>R16</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-14"></td>
+                                <td><label for="v5-14">Robot utilizes the VEXnet wireless communication system.</label></td>
+                                <td>R17</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-15"></td>
+                                <td><label for="v5-15">None of the electronics are from the VEXplorer, VEXpro, VEX-RCR, VEX IQ, or VEX Robotics by Hexbug.</label></td>
+                                <td>R17</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-16"></td>
+                                <td><label for="v5-16">Total number of Smart Motors is not more than eight (8) without use of pneumatics or six (6) with use of pneumatics.</label></td>
+                                <td>R18</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-17"></td>
+                                <td><label for="v5-17">Robot contains no VEX 2-wire Motors.</label></td>
+                                <td>R18</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-18"></td>
+                                <td><label for="v5-18">Robot uses one (1) V5 Robot Battery Li-Ion 1100mAh. </label></td>
+                                <td>R20</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-19"></td>
+                                <td><label for="v5-19">Robot is controlled by no more than (2) V5 Controllers.</label></td>
+                                <td>R21</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-20"></td>
+                                <td><label for="v5-20">NO VEX electrical components have been modified from their original state.</label></td>
+                                <td>R22</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-21"></td>
+                                <td><label for="v5-21">NO Method of attachment NOT provided by the VEX Design System is used. (Welding, Gluing, etc.)</label></td>
+                                <td>R23</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-22"></td>
+                                <td><label for="v5-22">Robot uses a maximum of two (2) VEX pneumatic air reservoirs. (Maximum 100 psi per air reservoir)</label></td>
+                                <td>R26</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-23"></td>
+                                <td><label for="v5-23">Robot contains no Components obtained from the V5 beta program.</label></td>
+                                <td>R6</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-24"></td>
+                                <td><label for="v5-24">If any custom cables are used, they are made only with official V5 Cable Stock.</label></td>
+                                <td>R24</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-25"></td>
+                                <td><label for="v5-25">Any NON-FUNCTIONAL decorations do not imitate Game or Field objects as a distraction for the V5 Vision Sensor. </label></td>
+                                <td>R13</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-26"></td>
+                                <td><label for="v5-26">Robot Brain has the latest firmware listed on VEX.com/firmware </label></td>
+                                <td>R22</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="v5-27">
+                                <td><label for="v5-27">If Vision sensor is used, it has been calibrated &amp; tested on competition fields (this is not required to pass inspection)</label></td>
+                                <td>Optional</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="SCscroll2" class="scrollBox tabContent2">
+                        <table id="cortexChecklist">
+                            <tr>
+                                <th></th>
+                                <th>Description</th>
+                                <th>Rule</th>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-1"></td>
+                                <td><label for="cortex-1">Robot fits within starting size restrictions (18" x 18" x 18"). Team ID Plates must be installed for sizing inspection.</label></td>
+                                <td>R5</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-2"></td>
+                                <td><label for="cortex-2">Team is only competing with ONE robot. They have no spare or replacement robots. Multiples of subsystem 3 is permitted.</label></td>
+                                <td>R1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-3"></td>
+                                <td><label for="cortex-3">Robot displays colored VEX Team Identification plates on at least (2) opposing sides, with only (1) color visible.</label></td>
+                                <td>R27</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-4"></td>
+                                <td><label for="cortex-4">Robot does NOT contain any components which will be intentionally detached on the playing-field.</td>
+                                <td>G5, R5</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-5"></td>
+                                <td><label for="cortex-5">Robot does NOT contain any components that could entangle or damage the playing-field or other robots.</label></td>
+                                <td>R4</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-6"></td>
+                                <td><label for="cortex-6">Robot does NOT contain any sharp edges or corners.</label></td>
+                                <td>R4</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-7"></td>
+                                <td><label for="cortex-7">Robot on/off switch is accessible &amp; Microcontroller lights are visible without moving or lifting the robot.</label></td>
+                                <td>R25</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-8"></td>
+                                <td><label for="cortex-8">Team testifies that the designing, building and programming of the robot was done only by the students on the team.</label></td>
+                                <td>R2, G2, G6</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-9"></td>
+                                <td><label for="cortex-9">ALL Robot components are (or are IDENTICAL to) OFFICIAL VEX Products as sold on VEXrobotics.com or materialsused as color filters, minimal grease or lubricant, minimal anti-static compound, hot glue for cable connections,unlimited 1/8th inch braided nylon rope, cable protection materials and tape for connections and labeling.</label></td>
+                                <td>R6, R7, R8, R11, R12</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-10"></td>
+                                <td><label for="cortex-10">Robot does not use VEX products not intended for use as a robot component or any VEX packaging.</label></td>
+                                <td>R6</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-11"></td>
+                                <td><label for="cortex-11">ALL Components on the Robot NOT meeting VRC Inspection Criteria are NON-FUNCTIONAL decorations</label></td>
+                                <td>R13</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-12"></td>
+                                <td><label for="cortex-12">Any non-shattering plastic on the robot was cut from a single sheet of 0.070" material not larger than 12"x24".</label></td>
+                                <td>R10</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-13"></td>
+                                <td><label for="cortex-13">Robot has only (1) VEX EDR Microcontroller.</label></td>
+                                <td>R16</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-14"></td>
+                                <td><label for="cortex-14">Robot utilizes the VEXnet wireless communication system.</label></td>
+                                <td>R17</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-15"></td>
+                                <td><label for="cortex-15">None of the electronics are from the VEXplorer, VEXpro, VEX-RCR, VEX IQ, or VEX Robotics by Hexbug.</label></td>
+                                <td>R17</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-16"></td>
+                                <td><label for="cortex-16">Total number of Servos and Motors is not more than (12) without use of pneumatics or (10) with use of pneumatics</label></td>
+                                <td>R18</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-17"></td>
+                                <td><label for="cortex-17">Robot uses (1) VEX 7.2V (Robot) Power Pack as the primary power source</label></td>
+                                <td>R20</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-18"></td>
+                                <td><label for="cortex-18">If the Robot has a Power Expander, it has a 2nd 7.2V (Robot) Power Pack</label></td>
+                                <td>R20</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-19"></td>
+                                <td><label for="cortex-19">Robot uses a maximum of (1) VEX Power Expander</label></td>
+                                <td>R20</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-20"></td>
+                                <td><label for="cortex-20">Robot has a charged 9V Backup Battery connected</label></td>
+                                <td>R20</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-21"></td>
+                                <td><label for="cortex-21">Robot is controlled by no more than (2) VEX hand-held transmitters.</label></td>
+                                <td>R21</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-22"></td>
+                                <td><label for="cortex-22">NO VEX electrical components have been modified from their original state.</label></td>
+                                <td>R22</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-23"></td>
+                                <td><label for="cortex-23">NO Method of attachment NOT provided by the VEX Design System is used. (Welding, Gluing, etc.)</label></td>
+                                <td>R23</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-24"></td>
+                                <td><label for="cortex-24">Robot uses a maximum of two (2) VEX pneumatic air reservoirs. (Maximum 100 psi per air reservoir)</label></td>
+                                <td>R26</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" id="cortex-25"></td>
+                                <td><label for="cortex-25">Any NON-FUNCTIONAL decorations do not imitate Game or Field objects as a distraction for the V5 Vision Sensor. </label></td>
+                                <td>R13</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="finishForm" class="buttonRow">
+                    <input type="radio" id="not-started" name="finishFormButtons" checked>
+                    <label for="not-started">Not Started</label>
+                    <input type="radio" id="partial" name="finishFormButtons">
+                    <label for="partial">Partial</label>
+                    <input type="radio" id="pass" name="finishFormButtons">
+                    <label for="pass">Passed</label>
+                    <button onclick="inspectionSave()" class="btn yellow">Save</button>
+                    <button onclick="inspectionClear()" class="btn red">Clear</button>
+                </div>
+            </div>
+        </div> <!-- End of Inspection Control tab -->
+
+        <div id="Skills" class="tabContent h">
+            <div id="skillsActions" class="container v tc">
+                <h2>Skills</h2>
+                <div class="buttonRow">
+                    <button onclick="skillsQueueDriving()" class="btn lavender" id="myBtn">Enter Queue for Driving Skills</button>
+                    <button onclick="skillsQueueProgramming()" class="btn yellow" id="myBtn">Enter Queue for Programming Skills</button>
+                    <button onclick="skillsUnqueue()" class="btn red" id="myBtn">Leave Queue</button>
+                </div>
+                <table class="buttonRow framed" width="80%">
+                    <tr>
+                        <th>Driving attempts completed:</th>
+                        <td id="dAttempts"></td>
+                    </tr>
+                    <tr>
+                        <th>Programming attempts completed:</th>
+                        <td id="pAttempts"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="container v tc">
+                <h2>Queue</h2>
+                <div id="queueList" class="scrollBox">
+                    <table id="skillsQueue">
+                        <tr>
+                            <th>Position</th>
+                            <th>Team</th>
+                            <th>Queued for</th>
+                            <th>Status</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- End of Skills tab -->
+
+        <div id="SkillsControl" class="tabContent h">
+            <div id="left" class="container v tc">
+                <div class="scrollBox stackedScrollBoxes">
+                    <table id="teamsInQueue">
+                        <tr>
+                            <th>Position</th>
+                            <th>Team</th>
+                            <th>Queued for</th>
+                            <th>Queued since</th>
+                            <th>Actions</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="scrollBox stackedScrollBoxes">
+                    <table id="allTeams">
+                        <tr>
+                            <th>Time Scored</th>
+                            <th>Team</th>
+                            <th>Type</th>
+                            <th>Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="right" class="container v tc">
+                <div class="container h">
+                    <h3>
+                        Robot Skills Challenge:
+                        <select name="teams" id="teams" class="teamDropdown" onchange="skillsGetAttempts()">
+                            <option value=""></option>
+                        </select>
+                        <h4 id="skillsLabel1" class="skillsLabel">Completed: <span id="dAttempts">-</span> Driving + <span id="pAttempts">-</span> Programming</h4>
+                    </h3>
+                </div>
+                <div class="buttonRow">
+                    <input type="radio" onchange="skillsCalc('none')" id="driving" name="runToggle">
+                    <label for="driving">Driving Skills</label>
+                    <input type="radio" onchange="skillsCalc('none')" id="programming" name="runToggle">
+                    <label for="programming">Programming Skills</label>
+                </div>
+                <div id="scoringList1" class="tabContent2">
+                    <p>Red balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsRed" value="0" min="0" max="15"></p>
+                    <p>Blue balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsBlue" value="15" min="0" max="15"></p>
+                    <table id="scoringField1" class="scoring">
+                        <tr>
+                            <td onclick="skillsOgToggle('A')" id="ogA" class="blue">A</td>
+                            <td onclick="skillsOgToggle('B')" id="ogB" class="blue">B</td>
+                            <td onclick="skillsOgToggle('C')" id="ogC" class="blue">C</td>
+                        </tr>
+                        <tr>
+                            <td onclick="skillsOgToggle('D')" id="ogD" class="blue">D</td>
+                            <td onclick="skillsOgToggle('E')" id="ogE" class="blue">E</td>
+                            <td onclick="skillsOgToggle('F')" id="ogF" class="blue">F</td>
+                        </tr>
+                        <tr>
+                            <td onclick="skillsOgToggle('G')" id="ogG" class="blue">G</td>
+                            <td onclick="skillsOgToggle('H')" id="ogH" class="blue">H</td>
+                            <td onclick="skillsOgToggle('I')" id="ogI" class="blue">I</td>
+                        </tr>
+                    </table>
+                    <br>
+                    Skills Stop Time: <input type="number" onchange="skillsCalc('none')" id="skillsStopTime" value="0" min="0" max="60">
+                    <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
+                </div>
+                <div class="buttonRow">
+                    <button onclick="skillsCalc('show')" class="btn lavender">Show Team</button>
+                    <button onclick="skillsCalc('save')" class="btn yellow">Save</button>
+                    <button onclick="skillsClear()" class="btn red">Clear</button>
+                    <button id="skillsCancelEdit" onclick="skillsCancelEdit()" class="btn dark hide">Cancel Edit</button>
+                </div>
+            </div>
+        </div> <!-- End of Skills Control tab -->
+
+        <div id="SkillsScores" class="tabContent v">
+            <h2>Recorded Skills Scores</h2>
+            <div id="scoreHistory" class="scrollBox">
+                <table id="scoreHistoryTable">
+                    <tr id="desktop">
+                        <th>Team</th>
+                        <th>Time Scored</th>
+                        <th>Skills Type</th>
+                        <th>Final Score</th>
+                        <th>View Scoresheet</th>
+                    </tr>
+                    <tr id="mobile">
+                        <th>Team</th>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th>Score</th>
+                        <th>Details</th>
+                    </tr>
+                </table>
+            </div>
+        </div> <!-- End of Skills Scores tab -->
+
+        <div id="Rankings" class="tabContent v">
+            <h2>Skills Rankings</h2>
+            <select class="divDropdown" id="divsDropdown" onchange="refreshRanks()">
+                <option value=""></option>
             </select>
-            <h4 id="skillsLabel1" class="skillsLabel">Completed: <span id="dAttempts">-</span> Driving + <span id="pAttempts">-</span> Programming</h4>
-          </h3>
-        </div>
-        <div class="buttonRow">
-          <input type="radio" onchange="skillsCalc('none')" id="driving" name="runToggle">
-          <label for="driving">Driving Skills</label>
-          <input type="radio" onchange="skillsCalc('none')" id="programming" name="runToggle">
-          <label for="programming">Programming Skills</label>
-        </div>
-          <div id="scoringList1" class="tabContent2">
-            <p>Red balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsRed" value="0" min="0" max="15"></p>
-            <p>Blue balls scored: <input type="number" onchange="skillsCalc('none')" id="skillsBlue" value="15" min="0" max="15"></p>
-            <table id="scoringField1" class="scoring">
-              <tr>
-                <td onclick="skillsOgToggle('A')" id="ogA" class="blue">A</td>
-                <td onclick="skillsOgToggle('B')" id="ogB" class="blue">B</td>
-                <td onclick="skillsOgToggle('C')" id="ogC" class="blue">C</td>
-              </tr>
-              <tr>
-                <td onclick="skillsOgToggle('D')" id="ogD" class="blue">D</td>
-                <td onclick="skillsOgToggle('E')" id="ogE" class="blue">E</td>
-                <td onclick="skillsOgToggle('F')" id="ogF" class="blue">F</td>
-              </tr>
-              <tr>
-                <td onclick="skillsOgToggle('G')" id="ogG" class="blue">G</td>
-                <td onclick="skillsOgToggle('H')" id="ogH" class="blue">H</td>
-                <td onclick="skillsOgToggle('I')" id="ogI" class="blue">I</td>
-              </tr>
-            </table>
-            <br>
-            Skills Stop Time: <input type="number" onchange="skillsCalc('none')" id="skillsStopTime" value="0" min="0" max="60">
-            <h3>Final Score: <span id="skillsFinalScore">--</span></h3>
-          </div>
-          <div class="buttonRow">
-            <button onclick="skillsCalc('show')" class="btn lavender">Show Team</button>
-            <button onclick="skillsCalc('save')" class="btn yellow">Save</button>
-            <button onclick="skillsClear()" class="btn red">Clear</button>
-            <button id="skillsCancelEdit" onclick="skillsCancelEdit()" class="btn dark hide">Cancel Edit</button>
-          </div>
-        </div>
-      </div> <!-- End of Skills Control tab -->
-      
-      <div id="SkillsScores" class="tabContent v">
-        <h2>Recorded Skills Scores</h2>
-        <div id="scoreHistory" class="scrollBox">
-          <table id="scoreHistoryTable">
-            <tr id="desktop">
-              <th>Team</th><th>Time Scored</th><th>Skills Type</th><th>Final Score</th><th>View Scoresheet</th>
-            </tr>
-            <tr id="mobile">
-              <th>Team</th><th>Time</th><th>Type</th><th>Score</th><th>Details</th>
-            </tr>
-          </table>
-        </div>
-      </div> <!-- End of Skills Scores tab -->
-      
-      <div id="MeetingControl" class="tabContent v">
-        <input type="radio" id="mcTab1" name="mcTabs" checked>
-        <label for="mcTab1">Room 1</label>
-        <input type="radio" id="mcTab2" name="mcTabs">
-        <label for="mcTab2">Room 2</label>
-        <input type="radio" id="mcTab3" name="mcTabs">
-        <label for="mcTab3">Room 3</label>
-        <input type="radio" id="mcTab4" name="mcTabs">
-        <label for="mcTab4">Room 4</label>
-        <a id="init" class="btn dark" onclick="initMeetings()">Initialize</a>
-        <div id="room1"></div>
-        <div id="room2"></div>
-        <div id="room3"></div>
-        <div id="room4"></div>
-      </div> <!-- End of Meeting Control tab -->
-      
-      <div id="EventControl" class="tabContent v">
-        <div class="container v">
-          <h3>Event Control</h3>
-          <textarea id="typeAnnounce" rows="10"></textarea>
-          <button class="btn gray" onclick="eventAnnouncement()">Send Announcement</button>
-        </div> <br><br>
-        <div class="container h">
-          <table>
-            <tr>
-              <td><button class="btn lavender" onclick="eventCtrl('teamChat', true)">Enable Team Chat</button></td>
-              <td><button class="btn lavender" onclick="eventCtrl('inspection', true)">Open Inspection</button></td>
-              <td><button class="btn lavender" onclick="eventCtrl('skills', true)">Open Skills</button></td>
-            </tr>
-            <tr>
-              <td><button class="btn red" onclick="eventCtrl('teamChat', false)">Disable Team Chat</button></td>
-              <td><button class="btn red" onclick="eventCtrl('inspection', false)">Close Inspection</button><br></td>
-              <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
-            </tr>
-          </table>
-        </div>
-      </div> <!-- End of Event Control tab -->
-      
-      <div id="TechSupport" class="tabContent v">
-        <h2>Tech Support</h2>
-        <div class="container h">
-          <h3>User: <span id="inspTeamNum"><select class="teamDropdown">
-            <option value=""></option>
-          </select></span></h3>
-        </div>
-        <button class="btn red" onclick="techLogoutAll()">Logout All Clients</button><br><br>
-        <input type="text" id="passcode" placeholder="Enter new access code&hellip;" maxlength="13">
-        <button class="btn lavender" onclick="techChangePasscode()">Change Access Code</button>
-      </div> <!-- End of Tech Support tab -->
-      
-      <!-- TODO -->
-      <div id="Chat" class="container tabContent">
-        <div id="messageBoard" class="container v">
-          <div id="messageWindow"></div>
-          <div id="messageAction" class="container v">
-            <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(1)"></textarea>
-            <button class="btn gray" onclick="chatSend(1)">Send Message to Everyone</button>
-          </div>
-        </div>
-      </div> <!-- End of (mobile) Chat tab -->
-      
+            <div id="skillsScores" class="scrollBox">
+                <table id="skillsScoreTable">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Score</th>
+                        <th>Stop Time</th>
+                    </tr>
+                </table>
+            </div>
+        </div> <!-- End of Skills Rankings tab -->
+
+        <div id="MeetingControl" class="tabContent v">
+            <input type="radio" id="mcTab1" name="mcTabs" checked>
+            <label for="mcTab1">Room 1</label>
+            <input type="radio" id="mcTab2" name="mcTabs">
+            <label for="mcTab2">Room 2</label>
+            <input type="radio" id="mcTab3" name="mcTabs">
+            <label for="mcTab3">Room 3</label>
+            <input type="radio" id="mcTab4" name="mcTabs">
+            <label for="mcTab4">Room 4</label>
+            <a id="init" class="btn dark" onclick="initMeetings()">Initialize</a>
+            <div id="room1"></div>
+            <div id="room2"></div>
+            <div id="room3"></div>
+            <div id="room4"></div>
+        </div> <!-- End of Meeting Control tab -->
+
+        <div id="EventControl" class="tabContent v">
+            <div class="container v">
+                <h3>Event Control</h3>
+                <textarea id="typeAnnounce" rows="10"></textarea>
+                <button class="btn gray" onclick="eventAnnouncement()">Send Announcement</button>
+            </div> <br><br>
+            <div class="container h">
+                <table>
+                    <tr>
+                        <td><button class="btn lavender" onclick="eventCtrl('teamChat', true)">Enable Team Chat</button></td>
+                        <td><button class="btn lavender" onclick="eventCtrl('inspection', true)">Open Inspection</button></td>
+                        <td><button class="btn lavender" onclick="eventCtrl('skills', true)">Open Skills</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="btn red" onclick="eventCtrl('teamChat', false)">Disable Team Chat</button></td>
+                        <td><button class="btn red" onclick="eventCtrl('inspection', false)">Close Inspection</button><br></td>
+                        <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div> <!-- End of Event Control tab -->
+
+        <div id="TechSupport" class="tabContent v">
+            <h2>Tech Support</h2>
+            <div class="container h">
+                <h3>
+                    User: <span id="inspTeamNum">
+                        <select class="teamDropdown">
+                            <option value=""></option>
+                        </select>
+                    </span>
+                </h3>
+            </div>
+            <button class="btn red" onclick="techLogoutAll()">Logout All Clients</button><br><br>
+            <input type="text" id="passcode" placeholder="Enter new access code&hellip;" maxlength="13">
+            <button class="btn lavender" onclick="techChangePasscode()">Change Access Code</button>
+        </div> <!-- End of Tech Support tab -->
+        <!-- TODO -->
+        <div id="Chat" class="container tabContent">
+            <div id="messageBoard" class="container v">
+                <div id="messageWindow"></div>
+                <div id="messageAction" class="container v">
+                    <textarea rows="3" id="typeHere" placeholder="Compose message&hellip;" oninput="chatType(1)"></textarea>
+                    <button class="btn gray" onclick="chatSend(1)">Send Message to Everyone</button>
+                </div>
+            </div>
+        </div> <!-- End of (mobile) Chat tab -->
+
     </div>
   </div>
   

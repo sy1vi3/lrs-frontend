@@ -10,6 +10,7 @@ const API_skills_scores = "Skills Scores"
 const API_meeting_ctrl = "Meeting Control"
 const API_event_ctrl = "Event Control"
 const API_tech_support = "Tech Support"
+const API_rankings = "Rankings"
 
 var websocket;
 var plannedClose = false;
@@ -57,7 +58,6 @@ function connect() {
 
   websocket.onmessage = function(event) {
     data = JSON.parse(event.data);
-    console.log(data);
     switch(data.api) {
       case API_login:
         if("failure" in data)
@@ -70,6 +70,9 @@ function connect() {
         break;
       case API_queue:
         handleQueue(data);
+        break;
+      case API_rankings:
+        handleRankings(data);
         break;
       case API_inspection:
         handleInspection(data);
@@ -683,3 +686,43 @@ function techChangePasscode() {
   }
 }
 
+//API: Rankings
+
+function handleRankings(data) {
+    if (data.operation == "return_data") {
+        div_ranks = data.list;
+        div_ranks_len = Object.keys(div_ranks).length;
+        html = '<tbody><tr><th>Rank</th><th>Team</th><th>Score</th><th>Stop Time</th></tr>';
+        if (document.querySelector("#divsDropdown").value == null) {
+            document.querySelector("#divsDropdown").value = "Science";
+        }
+        for (var property in div_ranks) {
+            ranks = div_ranks[property];
+            ranks_len = Object.keys(ranks).length;
+            if (document.querySelector("#divsDropdown").value == property) {
+                for (i = 0; i < ranks_len; i++) {
+                    teaminfo = ranks[i + 1];
+                    html += '<tr><td>' + teaminfo.rank + '</td><td>' + teaminfo.team + '</td><td>' + teaminfo.combined + '</td><td>' + teaminfo.stoptime + '</td></tr>';
+                }
+            }
+        }
+        html += "</tbody>";
+        document.querySelector("#Rankings #skillsScoreTable").innerHTML = html;
+    }
+    else if (data.operation == "div_fill") {
+        old_value = document.querySelector("#divsDropdown").value;
+        divs = data.list;
+        divs_len = Object.keys(divs).length;
+        html = '';
+        for (i = 0; i < divs_len; i++) {
+            div_name = divs[i + 1];
+            html += '<option value="' + div_name + '">' + div_name + '</option>'
+        }
+        document.querySelector("#divsDropdown").innerHTML = html;
+        document.querySelector("#divsDropdown").value = old_value;
+    }
+}
+
+function refreshRanks() {
+    websocket.send(JSON.stringify({ api: API_rankings, operation: "get_rankings"}));
+}
