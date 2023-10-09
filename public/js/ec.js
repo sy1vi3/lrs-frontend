@@ -21,6 +21,7 @@ const API_event_room = "Event Room"
 const API_event_config = "Event Config"
 const API_production = "Production"
 const API_output = "Output"
+const API_home = "Home"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -173,6 +174,9 @@ function connect(tokenLogin = false) {
             case API_output:
                 handleOutput(data);
                 break;
+            case API_home:
+                homeHandler(data);
+                break;
         }
     };
 
@@ -244,6 +248,10 @@ function handleMain(data) {
         }
         if (role == "Event Partner") {
             document.querySelector("#showTeam").classList.add("hide");
+            document.querySelector("#homeActions").innerHTML = '<button class="btn yellow" onclick="homeBoxEdit()">Edit</button>';
+        }
+        if (role == "Staff") {
+            document.querySelector("#homeActions").innerHTML = '<button class="btn yellow" onclick="homeBoxEdit()">Edit</button>';
         }
         tabs = "";
         for (i = 0; i < data["tablist"].length; i++) {
@@ -254,6 +262,9 @@ function handleMain(data) {
         document.querySelector("#header").classList.remove("hide");
         document.querySelector("#mobileHeader").classList.remove("hide");
         document.querySelector("#event-console").classList.remove("hide");
+        if (role == "Team") {
+            document.querySelector("#tabHome").click();
+        }
     } else if ("modal" in data && "room" in data) {
         if (newTabMeets == true) {
             showModal(data.modal);
@@ -1568,6 +1579,7 @@ function handleEventControl(data) {
     if (data.operation == "room_code_update") {
         rooms_codes = data.rooms;
         html = '';
+        console.log(data);
         for (i in Object.keys(rooms_codes)) {
             room = "Room" + (Object.keys(rooms_codes)[i]);
             room_code = rooms_codes[Object.keys(rooms_codes)[i]];
@@ -1677,7 +1689,17 @@ function handleEventConfig(data) {
         document.querySelector("#ECT_body").innerHTML = "";
         html = '';
         for (i in data.config) {
-            html += '<tr id="config_row"><td id="config_code">' + data.config[i]['event-code'] + '</td><td id="config_auth">' + data.config[i]['auth-code'] + '</td><td id="config_actions" class=""><button class="btn yellow" onclick="ECT_edit(this.parentNode.parentNode)">Edit</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button></td></tr>';
+            if (data.config[i]['authorized'] == 200) {
+                html += '<tr id="config_row" class="greenrow"><td id="config_code">' + data.config[i]['event-code'] + '</td><td id="config_auth">' + data.config[i]['auth-code'] + '</td><td id="config_actions" class=""><button class="btn yellow" onclick="ECT_edit(this.parentNode.parentNode)">Edit</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button></td></tr>';
+            }
+            else if (data.config[i]['authorized'] == 403) {
+                html += '<tr id="config_row" class="redrow"><td id="config_code">' + data.config[i]['event-code'] + '</td><td id="config_auth">' + data.config[i]['auth-code'] + '</td><td id="config_actions" class=""><button class="btn yellow" onclick="ECT_edit(this.parentNode.parentNode)">Edit</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button></td></tr>';
+            }
+            else {
+                html += '<tr id="config_row" class="yellowrow"><td id="config_code">' + data.config[i]['event-code'] + '</td><td id="config_auth">' + data.config[i]['auth-code'] + '</td><td id="config_actions" class=""><button class="btn yellow" onclick="ECT_edit(this.parentNode.parentNode)">Edit</button><button class="btn red" onclick="ECT_delete(this.parentNode.parentNode)">Remove</button></td></tr>';
+
+            }
+            
         }
         document.querySelector("#ECT_body").innerHTML = html;
     }
@@ -1790,4 +1812,36 @@ function clearChat() {
     if (confirm("Really delete ALL messages in the chat history?") && confirm("Are you absolutely sure?")) {
         websocket.send(JSON.stringify({ api: API_event_ctrl, operation: "wipe_chat" }));
     }
+}
+
+function homeHandler(data) {
+    if (data.operation == "push_home") {
+        if (role == "Event Partner" || role == "Staff") {
+            document.querySelector("#homeActions").innerHTML = '<button class="btn yellow" onclick="homeBoxEdit()">Edit</button>';
+        }
+        document.querySelector("#homeBox").innerHTML = data.content;
+    }
+}
+
+function homeBoxEdit() {
+    current_contents = document.querySelector("#homeBox").innerHTML;
+    document.querySelector("#homeBox").innerHTML = '<textarea id="editHomeBox"></textarea>';
+    document.querySelector("#editHomeBox").value = current_contents;
+    document.querySelector("#homeActions").innerHTML = '<button class="btn lavender" onclick="homeBoxPreview()">Preview</button><button class="btn green" onclick="homeBoxSave()">Save</button>';
+}
+
+function homeBoxPreview() {
+    edited_contents = document.querySelector("#editHomeBox").value;
+    document.querySelector("#homeBox").innerHTML = edited_contents;
+    document.querySelector("#homeActions").innerHTML = '<button class="btn yellow" onclick="homeBoxEdit()">Edit</button>';
+}
+
+function homeBoxSave() {
+    if (document.querySelector("#editHomeBox")) {
+        edited_contents = document.querySelector("#editHomeBox").value;
+    }
+    else {
+        edited_contents = document.querySelector("#homeBox").innerHTML;
+    }
+    websocket.send(JSON.stringify({ api: API_home, operation: "post", content: edited_contents}));
 }
