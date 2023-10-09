@@ -1466,6 +1466,21 @@ function giftSticker(team) {
 
 var myStickerURL = '';
 
+function stickerImageUpload() {
+    let file = document.querySelector("#StickerFile");
+    let formdata = new FormData();
+    formdata.append("image", file.files[0])
+    fetch("https://api.imgur.com/3/image/", {
+        method: "post",
+        headers: {
+            Authorization: "Client-ID 86fd78e960581e3"
+        },
+        body: formdata
+    }).then(data => data.json()).then(data => {
+        websocket.send(JSON.stringify({ api: "Settings", operation: "set_sticker_url", sticker_url: data.data.link }));
+    })
+}
+
 function settingsHandler(data) {
     if (data.operation == "set_my_sticker") {
         let image = document.createElement("img");
