@@ -29,6 +29,10 @@ var oldProgram;
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
+if (urlParams.get('token') != null) {
+    console.log("loggin in")
+    connect(true);
+}
 
 function showModal(text) {
     document.querySelector("#textModal .modal-text").innerHTML = text;
@@ -61,12 +65,7 @@ function tab(tab) {
     }
 }
 
-function init() {
-    if (urlParams.get('token') != null) {
-        console.log("loggin in")
-        connect(true);
-    }
-    
+function init() {s    
     document.querySelector("#Login #accessCode").addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
             document.querySelector("#Login button").click();
