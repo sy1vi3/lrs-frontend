@@ -23,6 +23,7 @@ const API_production = "Production"
 const API_output = "Output"
 const API_home = "Home"
 const API_settings = "Settings"
+const API_moderaton = "Moderation"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -1320,6 +1321,18 @@ function sendCongrats(team) {
     websocket.send(JSON.stringify({ api: "Settings", operation: "congrats", team: team }));
 }
 
+function resetSticker(team) {
+    if (confirm("Are you sure? Reset " + team + "'s sticker image to the default?")) {
+        websocket.send(JSON.stringify({ api: API_moderaton, operation: "sticker_image_remove", team: team }));
+    }
+}
+
+function removeStickers(team) {
+    if (confirm("Are you sure? Remove all of " + team + "'s stickers?")) {
+        websocket.send(JSON.stringify({ api: API_moderaton, operation: "remove_user_stickers", team: team }));
+    }
+}
+
 function fillStatsTable(data) {
     if (data.operation == "post") {
         teams_data = data.data;
@@ -1335,6 +1348,9 @@ function fillStatsTable(data) {
             value = teams_data[teams[key]];
             if (role == "Head Referee") {
                 html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="queueInvite(`' + teams[key] + '`, `General`)" class="btn lavender">Invite to Event Room</button></td></tr>';
+            }
+            else if (role == "Event Partner" || role == "Staff" || role == "Producer") {
+                html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="resetSticker(`' + teams[key] + '`)" class="btn lightblue">Reset Sticker Image</button><button onclick="removeStickers(`' + teams[key] + '`)" class="btn green">Remove Stickers</button></td></tr>';
             }
             else {
                 html += '<tr><td>' + teams[key] + '</td><td><button onclick="teamCardView(`' + teams[key] + '`)" class="btn dark"><i class="fas fa-search">View Profile</i></button></td><td><button onclick="sendCongrats(`' + teams[key] + '`)" class="btn green">Congratulate</button></td></tr>';
@@ -1403,7 +1419,10 @@ function fillStatsTable(data) {
             html += '<div><img class="teamSticker" src="' + sticker + '" width="75"/></div>';
         }
         if (!html.includes(myStickerURL)) {
-            html += '<div><img onclick="giftSticker(`' + team_info.num + '`)"class="teamSticker" src="img/random/plus_icon.png" width="75" draggable="false"/></div>';
+            document.querySelector("#teamInfoActions").innerHTML = '<img onclick="giftSticker(`' + team_info.num + '`)"class="teamSticker" src="img/random/plus_icon.png" width="50" draggable="false"/>';
+        }
+        else {
+            document.querySelector("#teamInfoActions").innerHTML = '';
         }
         document.querySelector("#teamSharedStickers").innerHTML = html;
 
