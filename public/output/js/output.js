@@ -53,10 +53,16 @@ function connect() {
 function createNewRoom(room) {
     room_obj = document.querySelector('#room' + room) !== null
     if (!room_obj) {
+        
         console.log("creating")
         document.querySelector("#Livestreams").innerHTML = "";
         var ifrm = document.createElement("iframe");
-        ifrm.setAttribute("src", "https://console.liveremoteskills.org/stream/?room=" + room + "&token=" + livestreamPasscode);
+        if (room != 0) {
+            ifrm.setAttribute("src", "https://console.liveremoteskills.org/stream/?room=" + room + "&token=" + livestreamPasscode);
+        }
+        else {
+            ifrm.setAttribute("src", "https://console.liveremoteskills.org/rankings?token=" + livestreamPasscode);
+        }
         ifrm.setAttribute('frameBorder', "0");
         ifrm.setAttribute('id', 'room' + room);
         document.querySelector("#Livestreams").appendChild(ifrm);
