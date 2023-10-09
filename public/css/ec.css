@@ -2003,11 +2003,14 @@ input:checked + .slider:before {
     background-color: yellow;
 }
 
-#homeBox{
-    margin: 50px;
+#homeBox {
+    margin: 20px;
     margin-top: 30px !important;
     text-align: center;
     padding-top: 10px;
+}
+.homePicture {
+    width: 70%;
 }
 #Home{
     text-align: center;
