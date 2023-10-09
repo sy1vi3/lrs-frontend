@@ -87,10 +87,8 @@ function init() {
         document.querySelector("#meetingCheckSetting").checked = false;
     }
     else {
-        console.log("ELSE");
-        console.log(meetCookie);
+        document.querySelector("#meetingCheckSetting").checked = meetCookie;
     }
-    console.log(meetCookie);
 
 }
 
