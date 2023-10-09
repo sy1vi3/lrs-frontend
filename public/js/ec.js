@@ -18,6 +18,7 @@ const API_team_control = "Team Control"
 const API_livestream = "API_livestream"
 const API_event_data = "Event Data"
 const API_event_room = "Event Room"
+const API_event_config = "Event Config"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -39,6 +40,8 @@ var event_teams = {};
 var team_program_type;
 var newTabMeets = false;
 var refJitsi;
+
+const comp_preset = "VIQC";
 
 var chat_sound = new Audio('sounds/messagesound.mp3');
 
@@ -143,18 +146,28 @@ function connect(tokenLogin = false) {
                 break;
             case API_stats:
                 fillStatsTable(data);
+                break;
             case API_sound:
                 playChatSound(data);
+                break;
             case API_volunteers:
                 updateVolunteers(data);
+                break;
             case API_team_control:
                 team_control(data);
+                break;
             case API_event_data:
                 handleEventData(data);
+                break;
             case API_event_ctrl:
                 handleEventControl(data);
+                break;
             case API_event_room:
                 handleRefSetup(data);
+                break;
+            case API_event_config:
+                handleEventConfig(data);
+                break;
         }
     };
 
@@ -215,15 +228,10 @@ function logout() {
 }
 
 // API: Main
-var setupJitsi = false;
 function handleMain(data) {
     if ("name" in data && "role" in data && "tablist" in data) {
         name = data.name;
         role = data.role;
-        if (role == "Team" && setupJitsi == false) {
-            teamInitMeetings();
-            setupJitsi = true;
-        }
         document.querySelector("#username").innerHTML = "Welcome, " + name + "!";
         document.querySelector("#mobileUser").innerHTML = name;
         if (role == "Observer") {
@@ -295,10 +303,10 @@ function handleMain(data) {
                     //HIDE_INVITE_MORE_HEADER: true,
                     //INITIAL_TOOLBAR_TIMEOUT: 1,
                     //JITSI_WATERMARK_LINK: '',
-                    LANG_DETECTION: false
+                    LANG_DETECTION: false,
                     //LOCAL_THUMBNAIL_RATIO: 16 / 9,
                     //MAXIMUM_ZOOMING_COEFFICIENT: 1,
-                    //MOBILE_APP_PROMO: false,
+                    MOBILE_APP_PROMO: false
                     //SETTINGS_SECTIONS: ['profile'],
                     //SHOW_CHROME_EXTENSION_BANNER: false,
                     //SHOW_POWERED_BY: false,
@@ -1044,7 +1052,8 @@ function handleMeetingCtrl(data) {
                         enableNoisyMicDetection: false,
                         startAudioOnly: false,
                         startWithAudioMuted: true,
-                        startSilent: false,
+                        startWithVideoMuted: true,
+                        startSilent: true,
                         maxFullResolutionParticipants: -1,
                         startWithVideoMuted: true,
                         startScreenSharing: false,
@@ -1054,10 +1063,10 @@ function handleMeetingCtrl(data) {
                         enableAutomaticUrlCopy: false,
                         disableDeepLinking: true,
                         disableInviteFunctions: true,
-                        remoteVideoMenu: { disableKick: true },
-                        disableRemoteMute: true,
-                        disableTileView: true,
-                        hideConferenceSubject: true,
+                        remoteVideoMenu: { disableKick: false },
+                        disableRemoteMute: false,
+                        disableTileView: false,
+                        hideConferenceSubject: false,
                         hideConferenceTimer: true,
                         hideParticipantsStats: true
                     },
@@ -1065,8 +1074,8 @@ function handleMeetingCtrl(data) {
                         AUTO_PIN_LATEST_SCREEN_SHARE: false,
                         CONNECTION_INDICATOR_DISABLED: true,
                         DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
-                        DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
-                        DISABLE_FOCUS_INDICATOR: true,
+                        DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
+                        DISABLE_FOCUS_INDICATOR: false,
                         DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
                         DISABLE_PRESENCE_STATUS: true,
                         DISABLE_RINGING: true,
@@ -1081,13 +1090,13 @@ function handleMeetingCtrl(data) {
                         LOCAL_THUMBNAIL_RATIO: 16 / 9,
                         MAXIMUM_ZOOMING_COEFFICIENT: 1,
                         MOBILE_APP_PROMO: false,
-                        SETTINGS_SECTIONS: ['profile'],
+                        //SETTINGS_SECTIONS: ['profile'],
                         SHOW_CHROME_EXTENSION_BANNER: false,
                         SHOW_POWERED_BY: false,
                         SHOW_PROMOTIONAL_CLOSE_PAGE: false,
-                        TOOLBAR_ALWAYS_VISIBLE: false,
-                        TOOLBAR_BUTTONS: ['settings'],
-                        TOOLBAR_TIMEOUT: 1,
+                        TOOLBAR_ALWAYS_VISIBLE: true,
+                        //TOOLBAR_BUTTONS: ['settings'],
+                        //TOOLBAR_TIMEOUT: 1,
                         VIDEO_QUALITY_LABEL_DISABLED: true,
                         ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
                     }
@@ -1101,6 +1110,7 @@ function handleMeetingCtrl(data) {
                 let room_index = a
                 let b = parseInt(room_index) + 1;
                 jitsi[room_index].on('passwordRequired', function () {
+                    console.log("passreq");
                     let room_number = b;
                     let room_passcode = rooms_codes[room_number];
                     console.log("Adding Passcode to room" + room_number + "  " + room_passcode);
@@ -1128,23 +1138,16 @@ function handleMeetingCtrl(data) {
 }
 
 function initMeetings() {
-    document.querySelector("#MeetingControl #init").classList.add("hide");
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-    script.onload = function () {
         websocket.send(JSON.stringify({ api: API_meeting_ctrl, operation: "init" }));
-    };
-    script.src = "https://connect.liveremoteskills.org/external_api.js";
-    document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-function teamInitMeetings(){
-    document.querySelector("#MeetingControl #init").classList.add("hide");
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-    script.src = "https://connect.liveremoteskills.org/external_api.js";
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
+//function teamInitMeetings(){
+//    document.querySelector("#MeetingControl #init").classList.add("hide");
+//    var script = document.createElement("script")
+//    script.type = "text/javascript";
+//    script.src = "https://connect.liveremoteskills.org/external_api.js";
+//    document.getElementsByTagName("head")[0].appendChild(script);
+//}
 
 // API: Event Control
 
@@ -1201,12 +1204,13 @@ function handleRankings(data) {
             ranks = div_ranks[property]; 
             ranks_len = Object.keys(ranks).length;
             if (document.querySelector("#divsDropdown").value == property) {
-                try {
-                    program_type = ranks[1].comp;
+                program_type = ranks[1].comp;
+                console.log(ranks[1]);
+
+                if (program_type != "VRC" && program_type != "VIQC") {
+                    program_type = comp_preset;
                 }
-                catch {
-                    continue;
-                }
+                
                 if (program_type == "VRC") {
                     html = '<tbody><tr><th>Rank</th><th>Team</th><th>Total Score</th><th>Total Stop Time</th><th>Driver</th><th>Driver Time</th><th>Prog</th><th>Prog Time</th><th>2nd Driver</th><th>2nd Prog</th><th>3rd Driver</th><th>3rd Prog</th></tr>';
                     for (i = 0; i < ranks_len; i++) {
@@ -1354,10 +1358,10 @@ function updateVolunteers(data) {
                 role = "Referee";
             }
             if (role == "Livestream") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="event" class="smol">' + event_code + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
             else if (user_name != name && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="event" class="smol">' + event_code + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name" class="smol">' + user_name + '</td><td id="role" class="smol">' + role + '</td><td id="passcode" class="smol">' + passcode + '</td><td class="smol" id="actions"><button class="btn yellow" onclick=edit_code(this.parentNode.parentNode)>Edit</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
             if (role == "Livestream") {
                 streamcode = passcode;
@@ -1406,13 +1410,6 @@ function edit_code(user) {
     user.querySelector("#name").value = existing_name;
     user.querySelector("#edit_name").value = existing_name;
 
-    existing_event = user.querySelector("#event").innerHTML; 
-    event_options = document.querySelector("#volunteerEvent").innerHTML;
-    html = '<select id="edit_event">' + event_options + '</select>';
-    user.querySelector("#event").innerHTML = html;
-    console.log(existing_event);
-    user.querySelector("#edit_event").value = existing_event;
-
     user.querySelector("#actions").innerHTML = '<button class="btn lavender" onclick=save_user(this.parentNode.parentNode)>Save</button><button class="btn red" onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button>';
 }
 
@@ -1422,7 +1419,6 @@ function save_user(user) {
     username = user.querySelector("#edit_name").value;
     passcode = user.querySelector("#edit_code").value;
     userrole = user.querySelector("#edit_role").value;
-    eventcode = user.querySelector("#edit_event").value;
     oldcode = volunteers[oldname].Passcode;
     if (username == "" || /[^a-zA-Z]/.test(username)) {
         showModal("Please enter a valid username");
@@ -1456,7 +1452,7 @@ function save_user(user) {
         delete volunteers[oldname];
     }
 
-    edit_vol = { Name: username, Passcode: passcode, Role: userrole, OldName: oldname, Event: eventcode};
+    edit_vol = { Name: username, Passcode: passcode, Role: userrole, OldName: oldname};
     websocket.send(JSON.stringify({ api: API_volunteers, operation: "edit", user_info: edit_vol }));
 }
 
@@ -1502,8 +1498,8 @@ function team_save_code(user) {
         return;
     }
     teams[username] = { Role: "Team", Passcode: passcode };
-
-    edit_team = { Name: username, Passcode: passcode };
+    edit_event_code = event_teams[username].div
+    edit_team = { Name: username, Passcode: passcode, Event: edit_event_code };
     websocket.send(JSON.stringify({ api: API_team_control, operation: "edit", user_info: edit_team }));
 }
 
@@ -1593,12 +1589,12 @@ function handleEventControl(data) {
         rooms_codes = data.rooms;
         html = '';
         for (i in Object.keys(rooms_codes)) {
-
             room = "Room" + (Object.keys(rooms_codes)[i]);
             room_code = rooms_codes[Object.keys(rooms_codes)[i]];
             html += "<tr><td>" + room + "</td><td>" + room_code + "</td></tr>";
         }
         document.querySelector("#room_code_footer").innerHTML = html;
+        initMeetings();
     }
 }
 
@@ -1688,9 +1684,18 @@ function handleRefSetup(data) {
         script.src = "https://connect.liveremoteskills.org/external_api.js";
         document.getElementsByTagName("head")[0].appendChild(script);
     }
-    else if (data.operation == "room_code_update") {
-        console.log("setting code to" + data.password);
+    else if (data.operation == "ref_room_code_update") {
         refJitsi.executeCommand('password', data.password);
     }
 
+}
+
+
+
+function handleEventConfig(data) {
+    if (data.operation == "push_config") {
+        for (i in data.config) {
+            console.log(data.config[i]['event-code']);
+        }
+    }
 }

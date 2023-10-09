@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/ec.css">
     <script type="text/javascript" src="js/ec.js"></script>
+    <script type="text/javascript" src="https://connect.liveremoteskills.org/external_api.js"></script>
     <link rel="icon" type="image/svg+xml" href="img/recf_circle.svg">
 </head>
 
@@ -641,18 +642,11 @@
             </div> <!-- End of Stats tab -->
 
             <div id="MeetingControl" class="tabContent v">
-                <!--<input type="radio" id="mcTab1" name="mcTabs" checked>
-        <label for="mcTab1">Room 1</label>
-        <input type="radio" id="mcTab2" name="mcTabs">
-        <label for="mcTab2">Room 2</label>
-        <input type="radio" id="mcTab3" name="mcTabs">
-        <label for="mcTab3">Room 3</label>
-        <input type="radio" id="mcTab4" name="mcTabs">
-        <label for="mcTab4">Room 4</label>-->
-                <a id="init" class="btn dark" onclick="initMeetings()">Initialize</a>
-                <div id="jitsiMeetEPBox" class="wrapperJitsi">
+                <!--<a id="init" class="btn dark" onload="initMeetings()">Initialize</a>-->
+                <div id="jitsiMeetEPBox" class="wrapperJitsi"></div>
 
-                </div>
+
+
             </div> <!-- End of Meeting Control tab -->
 
             <div id="EventControl" class="tabContent v">
@@ -703,7 +697,6 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Role</th>
-                                        <th>Event</th>
                                         <th>Access Code</th>
                                         <th id="minusSign">Actions</th>
                                     </tr>
@@ -712,7 +705,6 @@
                                     <tr id="volunteer">
                                         <td id="name">Taran</td>
                                         <td>Admin</td>
-                                        <td>RE-EVENT-CODE</td>
                                         <td id="code">Passcode</td>
                                         <td class="smol"><button onclick='edit_code(this.parentNode.parentNode.querySelector("#code"))'>Change Code</button><button onclick='remove_volunteer(this.parentNode.parentNode.querySelector("#name"))'>Revoke Access</button></td>
                                     </tr>
@@ -725,11 +717,6 @@
                                                 <option value="Staff">Staff</option>
                                                 <option value="Head Referee">Referee</option>
                                                 <option value="Event Partner">Event Partner</option>
-                                            </select>
-                                        </th>
-                                        <th class="bottom">
-                                            <select id="volunteerEvent">
-                                                <option value="ALL">ALL</option>
                                             </select>
                                         </th>
                                         <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
@@ -770,6 +757,31 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                </div>
+            </div> <!-- End of Settings tab -->
+
+            <div id="EventConfig" class="tabContent v">
+                <div id="configBox" class="scrollBox">
+                    <table id="eventConfigTable">
+                        <thead id="ECT_head">
+                            <tr>
+                                <th>Event Code</th>
+                                <th>Event Type</th>
+                                <th>Skills Auth Code</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ECT_body">
+                            
+                        </tbody>
+                        <tfoot id="ECT_foot">
+                            <tr>
+                                <th><input type="text" id="ECT_new_code" placeholder="RE-VRC-21-3385"></th>
+                                <th><input type="text" id="ECT_new_auth" placeholder="AUTH_CODE"></th>
+                                <th colspan="2"><button class="btn green" onclick="ECT_new_event()">New Event</button></th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div> <!-- End of Settings tab -->
 

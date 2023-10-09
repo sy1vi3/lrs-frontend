@@ -1822,3 +1822,7 @@ input:checked + .slider:before {
     height: 100%;
     width: 100%;
 }
+
+#configBox{
+    margin: 60px;
+}
