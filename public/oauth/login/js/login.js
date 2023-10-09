@@ -47,5 +47,5 @@ function handleLogin(data) {
 
 function teamLogin(code) {
     console.log(code)
-    window.location.replace("file:///C:/Users/cicad/Desktop/LRS Frontend/public/index.html?token=" + code + "");
+    window.location.replace("console.liveremoteskills.org?token=" + code + "");
 }
