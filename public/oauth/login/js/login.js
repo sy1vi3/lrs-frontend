@@ -47,5 +47,5 @@ function handleLogin(data) {
 
 function teamLogin(code) {
     console.log(code)
-    window.location.replace("console.liveremoteskills.org?token=" + code + "");
+    window.location.href("console.liveremoteskills.org?token=" + code + "");
 }
