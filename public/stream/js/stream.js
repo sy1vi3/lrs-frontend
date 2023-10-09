@@ -139,6 +139,7 @@ function connect() {
 
     websocket.onclose = function (event) {
         console.log("Lost connection to server");
+        connect();
     };
 }
 
