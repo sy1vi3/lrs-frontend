@@ -2007,6 +2007,7 @@ input:checked + .slider:before {
     max-height: calc(100% - 120px);
     margin: 20px;
     margin-top: 30px !important;
+    margin-bottom: 0px;
     text-align: center;
     padding-top: 10px;
 }
