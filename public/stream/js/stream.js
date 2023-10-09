@@ -23,6 +23,8 @@ const roomnum = urlParams.get('room');
 const token = urlParams.get('token');
 const silent = urlParams.get('silent');
 const recorderName = urlParams.get('name');
+const alert = urlParams.get('alert');
+
 var jitsi;
 console.log(recorderName);
 function load(roomcode, data) {
@@ -163,7 +165,7 @@ function livestream(data) {
         else {
             myName = recorderName;
         }
-        websocket.send(JSON.stringify({ api: API_jwt, operation: "get_jwt_from_livestream", room: "room" + roomnum, name: myName }));
+        websocket.send(JSON.stringify({ api: API_jwt, operation: "get_jwt_from_livestream", room: "room" + roomnum, name: myName, alert: alert }));
         document.querySelector("#teamNum").innerHTML = team_info.team;
         document.querySelector("#teamName").innerHTML = team_info.name;
         document.querySelector("#teamLoc").innerHTML = team_info.location;
