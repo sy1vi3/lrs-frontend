@@ -104,13 +104,13 @@ function init() {
     });
     meetCookie = getCookie("tabMeets");
     if (meetCookie == "") {
-        document.querySelector("#meetingCheckSetting").checked = false;
+        document.querySelector("#meetingCheckSetting").checked = true;
     }
     else if (meetCookie == "true") {
         document.querySelector("#meetingCheckSetting").checked = true;
     }
     else {
-        document.querySelector("#meetingCheckSetting").checked = false;
+        document.querySelector("#meetingCheckSetting").checked = true;
     }
     
 
