@@ -164,13 +164,11 @@ function connect(tokenLogin = false) {
 }
 
 function login() {
-    accessCode = document.querySelector("#Login #accessCode").value;
-    if (accessCode.length == 13) {
-        connect();
-    } else if (accessCode == "UUDDLRLRBA") {
+    accessCode = document.querySelector("#Login #accessCode").value;  
+    if (accessCode == "UUDDLRLRBA") {
         window.location.replace("https://discord.com/invite/vrc");
     } else {
-        showModal("Invalid access code");
+        connect();
     }
     console.log("button2")
 }
@@ -1040,11 +1038,39 @@ function RE_login() {
 function volunteer_table_add_row() {
     vol_name = document.querySelector("#volunteerName").value;
     vol_role = document.querySelector("#volunteerRole").value;
-    vol_code = "changeme"
+    vol_code = document.querySelector("#volunteerCode").value;
+
+    all_codes = []
+    for (u in volunteers) {
+        all_codes.push(Object.values(volunteers[u])[1])
+    }
+
+
+    if (vol_name == "" || /[^a-zA-Z]/.test(vol_name)) {
+        showModal("Please enter a valid username");
+        return;
+    }
+    else if (vol_name in volunteers) {
+        showModal("Please enter a unique username");
+        return;
+    }
+    if (vol_code == "") {
+        vol_code = "changeme";
+    }
+    else if (vol_code.length < 10) {
+        showModal("Please enter a stronger access code");
+        return;
+    }
+    else if (all_codes.includes(vol_code)) {
+        showModal("Please enter a unique access code");
+        return;
+    }
     volunteers[vol_name] = { Role: vol_role, Passcode: vol_code }
-    websocket.send(JSON.stringify({ api: API_volunteers, operation: "add_del", user_info: volunteers }));
+    volunteer_to_add = { Role: vol_role, Passcode: vol_code, Name: vol_name }
+    websocket.send(JSON.stringify({ api: API_volunteers, operation: "add", user_info: volunteer_to_add }));
     document.querySelector("#volunteerName").value = ""
     document.querySelector("#volunteerRole").value = "Staff"
+    document.querySelector("#volunteerCode").value = ""
 }
 
 function updateVolunteers(data) {
@@ -1060,7 +1086,7 @@ function updateVolunteers(data) {
                 role = "Referee";
             }
             if (user_name != name && user_name != "Livestream" && user_name != "Guest") {
-                html += '<tr id="volunteer"><td id="name">' + user_name + '</td><td id="role">' + role + '</td><td id="passcode">' + passcode + '</td><td><button onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>-</button></td></tr>'
+                html += '<tr id="volunteer"><td id="name">' + user_name + '</td><td id="role">' + role + '</td><td id="passcode">' + passcode + '</td><td class="smol" id="actions"><button onclick=edit_code(this.parentNode.parentNode)>Edit</button><button onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button></td></tr>'
             }
         }
         document.querySelector("#vol_table").innerHTML = html;
@@ -1071,6 +1097,80 @@ function remove_volunteer(user) {
     if (confirm("Are you sure? Remove " + user.innerHTML + " as a volunteer?") == true) {
         delete volunteers[user.innerHTML];
         user.parentNode.remove();
-        websocket.send(JSON.stringify({ api: API_volunteers, operation: "add_del", user_info: volunteers }));
+        websocket.send(JSON.stringify({ api: API_volunteers, operation: "delete", user_info: user.innerHTML }));
     }
+}
+
+function handleClickAway(event) {
+
+}
+
+function edit_code(user) {
+    all_current_edits = document.querySelectorAll(".editing");
+    for (i = 0; i < all_current_edits.length; i++) {
+        save_user(all_current_edits[i]);
+    }
+
+    user.classList.add("editing")
+
+    existing_code = user.querySelector("#passcode").innerHTML;
+    html = '<input type="text" id="edit_code" placeholder="' + existing_code + '">';
+    user.querySelector("#passcode").innerHTML = html;
+    user.querySelector("#edit_code").value = existing_code;
+
+    existing_role = user.querySelector("#role").innerHTML;
+    html = '<select id="edit_role"><option value="Staff">Staff</option><option value="Head Referee">Referee</option><option value="Event Partner">Event Partner</option></select>';
+    user.querySelector("#role").innerHTML = html;
+    if (existing_role == "Referee") {
+        existing_role = "Head Referee";
+    }
+    user.querySelector("#edit_role").value = existing_role;
+
+    existing_name = user.querySelector("#name").innerHTML;
+    html = '<input type="text" id="edit_name" placeholder="' + existing_name + '">';
+    user.querySelector("#name").innerHTML = html;
+    user.querySelector("#name").value = existing_name;
+    user.querySelector("#edit_name").value = existing_name;
+
+    user.querySelector("#actions").innerHTML = '<button onclick=save_user(this.parentNode.parentNode)>Save</button><button onclick=remove_volunteer(this.parentNode.parentNode.querySelector("#name"))>Revoke</button>';
+}
+
+function save_user(user) {
+    user.classList.remove("editing");
+    oldname = user.querySelector("#name").value;
+    username = user.querySelector("#edit_name").value;
+    passcode = user.querySelector("#edit_code").value;
+    userrole = user.querySelector("#edit_role").value;
+    oldcode = volunteers[oldname].Passcode;
+    if (username == "" || /[^a-zA-Z]/.test(username)) {
+        showModal("Please enter a valid username");
+        return;
+    }
+    else if (username in volunteers && username != oldname) {
+        showModal("Please enter a unique username");
+        return;
+    }
+    all_codes = []
+    for (u in volunteers) {
+        all_codes.push(Object.values(volunteers[u])[1]);
+    }
+    if (passcode == "") {
+        vol_code = "changeme";
+    }
+    else if (passcode.length < 10) {
+        showModal("Please enter a stronger access code");
+        return;
+    }
+    else if (all_codes.includes(passcode) && passcode != oldcode) {
+        showModal("Please enter a unique access code");
+        return;
+    }
+    volunteers[oldname] = { Role: userrole, Passcode: passcode };
+    if (oldname != username) {
+        volunteers[username] = volunteers[oldname];
+        delete volunteers[oldname];
+    }
+
+    edit_vol = { Name: username, Passcode: passcode, Role: userrole, OldName: oldname };
+    websocket.send(JSON.stringify({ api: API_volunteers, operation: "edit", user_info: edit_vol }));
 }

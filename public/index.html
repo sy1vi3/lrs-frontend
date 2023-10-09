@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Event Console</title>
@@ -647,54 +647,65 @@
             </div> <!-- End of Meeting Control tab -->
 
             <div id="EventControl" class="tabContent v">
-                <div class="container v">
-                    <h3>Event Control</h3>
-                    <textarea id="typeAnnounce" rows="10"></textarea>
-                    <button class="btn gray" onclick="eventAnnouncement()">Send Announcement</button>
-                </div> <br><br>
-                <div class="container h">
-                    <table>
-                        <tr>
-                            <td><button class="btn lavender" onclick="eventCtrl('teamChat', true)">Enable Team Chat</button></td>
-                            <td><button class="btn lavender" onclick="eventCtrl('inspection', true)">Open Inspection</button></td>
-                            <td><button class="btn lavender" onclick="eventCtrl('skills', true)">Open Skills</button></td>
-                        </tr>
-                        <tr>
-                            <td><button class="btn red" onclick="eventCtrl('teamChat', false)">Disable Team Chat</button></td>
-                            <td><button class="btn red" onclick="eventCtrl('inspection', false)">Close Inspection</button><br></td>
-                            <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
-                        </tr>
-                    </table>
-                    <table id="volunteers_table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Access Code</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vol_table">
-                            <tr id="volunteer">
-                                <td id="name">Taran</td>
-                                <td>Admin</td>
-                                <td>Passcode</td>
-                                <td><button onclick='remove_volunteer(this.parentNode.parentNode.querySelector("#name"))'>-</button></td>
-                            </tr>
-                        </tbody>
-                        <tr id="volunteer_1">
-                            <td><input type="text" id="volunteerName" placeholder="Volunteer Name"></td>
-                            <td>
-                                <select id="volunteerRole">
-                                    <option value="Staff">Staff</option>
-                                    <option value="Head Referee">Referee</option>
-                                    <option value="Event Partner">Event Partner</option>
-                                </select>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr id="deleteme"><td colspan="3"><button onclick="volunteer_table_add_row()">Add Volunteer</button></td></tr>
-                    </table>
-                   
+                <div id="controlBox" class="scrollBox">
+                    <div id="left" class="container v tc">
+                        <h3>Event Control</h3>
+                        <div id="announceBox" class="scrollBox container h">
+                            <div id="announcement">
+                                <textarea id="typeAnnounce" rows="10"></textarea>
+                                <button class="btn gray" id="fullwidthbutton" onclick="eventAnnouncement()">Send Announcement</button>
+                            </div>
+                            <div id="buttonPanel">
+                                <table>
+                                    <tr>
+                                        <td><button class="btn lavender" onclick="eventCtrl('teamChat', true)">Enable Team Chat</button></td>
+                                        <td><button class="btn lavender" onclick="eventCtrl('inspection', true)">Open Inspection</button></td>
+                                        <td><button class="btn lavender" onclick="eventCtrl('skills', true)">Open Skills</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button class="btn red" onclick="eventCtrl('teamChat', false)">Disable Team Chat</button></td>
+                                        <td><button class="btn red" onclick="eventCtrl('inspection', false)">Close Inspection</button><br></td>
+                                        <td><button class="btn red" onclick="eventCtrl('skills', false)">Close Skills</button></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="right" class="container v tc">
+                        <h3>Volunteer Roles</h3>
+                        <div class="scrollBox stackedScrollBoxes">
+                            <table id="volunteers_table" class="table sticky">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Access Code</th>
+                                        <th id="minusSign">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vol_table">
+                                    <tr id="volunteer">
+                                        <td id="name">Taran</td>
+                                        <td>Admin</td>
+                                        <td id="code">Passcode</td>
+                                        <td class="smol"><button onclick='edit_code(this.parentNode.parentNode.querySelector("#code"))'>Change Code</button><button onclick='remove_volunteer(this.parentNode.parentNode.querySelector("#name"))'>Revoke Access</button></td>
+                                    </tr>
+                                </tbody>
+                                <tr id="volunteer_1">
+                                    <th class="bottom"><input type="text" id="volunteerName" placeholder="Volunteer Name"></th>
+                                    <th class="bottom">
+                                        <select id="volunteerRole">
+                                            <option value="Staff">Staff</option>
+                                            <option value="Head Referee">Referee</option>
+                                            <option value="Event Partner">Event Partner</option>
+                                        </select>
+                                    </th>
+                                    <th class="bottom"><input type="text" id="volunteerCode" placeholder="Access Code"></th>
+                                    <th class ="bottom"><button onclick="volunteer_table_add_row()">Add Volunteer</button></th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div> <!-- End of Event Control tab -->
 
@@ -741,7 +752,7 @@
             </noscript>
             <div id="form">
                 <span>Access Code:</span>
-                <input type="text" id="accessCode" autofocus maxlength="13" placeholder="3384-T-xxxxxx">
+                <input type="text" id="accessCode" autofocus placeholder="3384-T-xxxxxx">
                 <button class="btn lavender" onclick="login()">Login</button>
                 <button class="btn red" onclick="RE_login()">Login with Robot&nbsp;Events</button>
             </div>
