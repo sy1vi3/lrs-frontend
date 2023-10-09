@@ -634,11 +634,15 @@ function handleInspectionCtrl(data) {
     if (data.operation == "post") {
         inspHtml = "<tbody><tr><th>Team</th><th>Inspection Status</th><th>Actions</th></tr>";
         
-
+        not_done = 0;
         for (i = 0; i < data.inspections.length; i++) {
             row = data.inspections[i];
+            if (row.result != "Passed") {
+                not_done++;
+            }
             inspHtml += "<tr><td>" + row.teamNum + "</td><td>" + row.result + "</td><td>" + '<button onclick="inspect(\'' + row.teamNum + '\')" class="btn gray">Inspect</button>' + "</td></tr>";
         }
+        console.log("Not done: ", not_done);
         inspHtml += "</tbody>";
         document.querySelector("#InspectionControl #allTeams").innerHTML = inspHtml;
 
