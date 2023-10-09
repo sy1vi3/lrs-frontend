@@ -1,0 +1,1534 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,600;1,300;1,600&family=Oxygen:wght@700&family=Roboto+Slab:wght@300;600&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
+
+body {
+    font-family: "Open Sans",sans-serif;
+    font-weight: 300;
+    color: #F0F0F0;
+    background: #363639;
+    margin: 0
+}
+
+b, strong {
+    font-weight: 600
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: "Oxygen",sans-serif
+}
+
+roman {
+    font-family: "Roboto Slab",serif
+}
+
+a[href] {
+    color: #C3DFFF
+}
+
+    a[href]:hover, a[href]:focus, a[href]:active {
+        color: #E6F6FF
+    }
+
+    a[href].inv {
+        color: #F0F0F0;
+        text-decoration: none
+    }
+
+        a[href].inv:hover, a[href].inv:focus, a[href].inv:active {
+            color: #E6F6FF;
+            text-decoration: underline
+        }
+
+.btn {
+    color: #1C1C1C !important;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 8px;
+    display: inline-block;
+    margin: 2px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 4px
+}
+
+    .btn.dark {
+        background: #26272A;
+        border: 1px solid #808080;
+        color: #F0F0F0 !important
+    }
+
+        .btn.dark:hover, .btn.dark:focus, .btn.dark:active {
+            background: #000;
+            text-decoration: underline
+        }
+
+    .btn.gray {
+        background: #9E9FAD
+    }
+
+        .btn.gray:hover, .btn.gray:focus {
+            background: #CBCBD6
+        }
+
+        .btn.gray:active {
+            background: #E4E5F1
+        }
+
+    .btn.lavender {
+        background: #AA8AF1
+    }
+
+        .btn.lavender:hover, .btn.lavender:focus {
+            background: #C6AFF9
+        }
+
+        .btn.lavender:active {
+            background: #DDCEFF
+        }
+
+    .btn.red {
+        background: #E45656
+    }
+
+        .btn.red:hover, .btn.red:focus {
+            background: #EC7C7C
+        }
+
+        .btn.red:active {
+            background: #F9A2A2
+        }
+
+    .btn.yellow {
+        background: #FDD835
+    }
+
+        .btn.yellow:hover, .btn.yellow:focus {
+            background: #FDE57F
+        }
+
+        .btn.yellow:active {
+            background: #FDF1C2
+        }
+
+hr {
+    border-color: #808080;
+    margin: 32px 0
+}
+
+div.table {
+    max-width: 100%;
+    overflow: auto
+}
+
+table:not(.framed) {
+    border-collapse: collapse
+}
+
+    table:not(.framed, .sticky) th, table:not(.framed) td {
+        border: 1px solid #808080;
+        padding: 10px 16px;
+        text-align: center;
+        white-space: nowrap
+    }
+
+    table:not(.framed).sticky th {
+        border-left: 1px solid #808080;
+        border-right: 1px solid #808080;
+        padding: 10px 16px;
+        text-align: center;
+        white-space: nowrap
+    }
+
+    table:not(.framed) tr:hover {
+        background: #000
+    }
+
+    table:not(.framed, .sticky) th {
+        border-bottom-width: 4px;
+    }
+
+    table:not(.framed).hoverable tr:not(:hover) th {
+        background: #26272A
+    }
+
+    table:not(.framed):not(.hoverable) th {
+        background: #26272A
+    }
+
+table.framed {
+    border: 2px solid #808080;
+    background: #26272A;
+    padding: 20px;
+    margin: 30px 0
+}
+
+.table.sticky th{
+    position: sticky;
+    top: 0;
+}
+
+    .table.sticky th::after {
+        content: '';
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #808080;
+    }
+
+    .table.sticky th::before {
+        content: '';
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #808080;
+    }
+
+.table.sticky {
+
+}
+
+@media (max-width: 1000px) {
+    table.framed {
+        width: 100%
+    }
+}
+
+@media (max-width: 500px) {
+    table.framed {
+        margin: 8px 0
+    }
+}
+
+table.framed th, table.framed td {
+    padding: 4px;
+    text-align: left
+}
+
+body {
+    min-height: 100vh;
+    align-items: stretch;
+    overscroll-behavior: contain
+}
+
+#header {
+    border-bottom: 2px solid #808080;
+    max-height: 80px;
+    max-width: 100%
+}
+
+    #header > * {
+        flex-grow: 1;
+        width: 100px;
+        justify-content: center
+    }
+
+@media (max-width: 800px) {
+    #header > * {
+        width: auto
+    }
+}
+
+#header #time {
+    padding: 20px 0
+}
+
+#header #logout {
+    height: 30px;
+    padding: 4px;
+    font-size: 12pt;
+    margin: auto 0 auto 10px
+}
+
+@media (max-width: 800px) {
+    #header {
+        display: none
+    }
+}
+
+@media (max-width: 1350px) {
+    #header #rightSplit > h1 {
+        font-size: 16pt
+    }
+
+    #header #eventConsole{
+        display: none;
+    }
+
+    #header #rightSplit {
+        align-items: center
+    }
+
+    #header #logout {
+        padding: 4px
+    }
+    #header #logo{
+        #logo
+    }
+}
+
+#mobileHeader {
+    display: none
+}
+
+    #mobileHeader .far.fa-comment-dots {
+        font-size: 30px
+    }
+
+    #mobileHeader .fas.fa-asterisk {
+        font-size: 8px;
+        padding: 0;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        color: white
+    }
+
+    #mobileHeader .badge {
+        display: block;
+        background: #E45656;
+        border-radius: 10px;
+        border: 2px solid black;
+        width: 18px;
+        height: 18px;
+        position: relative;
+        top: -15px;
+        left: 12px;
+        padding: 0 !important
+    }
+
+@media (max-width: 800px) {
+    #mobileHeader {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 2px solid #808080;
+        width: 100%;
+        background: #26272A
+    }
+}
+
+#mobileHeader #left, #mobileHeader #right {
+    flex-grow: 1
+}
+
+#mobileHeader #middle {
+    flex-grow: 2
+}
+
+#mobileHeader > * {
+    align-items: center;
+    align-self: center;
+    margin: 10px
+}
+
+#mobileHeader #messagesbutton {
+    margin: auto;
+    height: 50px
+}
+
+#logo {
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 50px;
+}
+
+@media (max-width: 1000px) {
+    #logo {
+        display: none
+    }
+}
+
+h1 {
+    margin: 0;
+    padding: 20px 0
+}
+
+@media (max-width: 800px) {
+    h1 {
+        font-size: 20px;
+        padding: 0
+    }
+}
+
+#event-console {
+    align-items: stretch;
+    flex-grow: 1
+}
+
+.tabContent {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    display: none;
+    float: right;
+    flex-grow: 1
+}
+
+    .tabContent.h {
+        flex-direction: row
+    }
+
+@media (max-width: 1000px) {
+    .tabContent > #Inspection:nth-child(2) {
+        flex-direction: column
+    }
+
+        .tabContent > #Inspection:nth-child(2) > .v.tc {
+            width: auto
+        }
+}
+
+.tabContent.v {
+    flex-direction: column
+}
+
+    .tabContent.v.tc {
+        padding: 0 20px;
+        width: 50%;
+        box-sizing: border-box
+    }
+
+        .tabContent.v.tc:not(:last-child) {
+            border-right: 2px dotted #808080
+        }
+
+@media (max-width: 1200px) {
+    .tabContent.v.tc:not(:last-child) {
+        border: none
+    }
+}
+
+.tabContent.show {
+    display: flex
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    float: left
+}
+
+    ul.scroll {
+        overflow-y: auto;
+        overflow: hidden
+    }
+
+#Chat.show {
+    border-top: 4px solid #808080
+}
+
+    #Chat.show #messageBoard {
+        display: flex;
+        width: 100%;
+        border: none;
+        height: calc(100% - 89px - 60px);
+        position: fixed;
+        z-index: 1
+    }
+
+        #Chat.show #messageBoard > #messageWindow {
+            width: 100%;
+            position: absolute;
+            height: calc(100% - 135px - 20px)
+        }
+
+        #Chat.show #messageBoard > #messageAction {
+            width: 98%;
+            bottom: 20px
+        }
+
+@media (max-width: 800px) {
+    #Chat.show {
+        display: block
+    }
+}
+
+#Chat:not(.show), #Chat:not(.show) * {
+    display: none !important
+}
+
+#messageBoard {
+    background: #26272A;
+    border-right: 2px solid #808080;
+    width: fit-content;
+    max-height: calc(100vh - 82px);
+    box-sizing: content-box
+}
+
+    #messageBoard #messageWindow {
+        overflow-y: auto;
+        height: calc(100% - 135px);
+        box-sizing: border-box;
+        width: 280px
+    }
+
+        #messageBoard #messageWindow .messageLine {
+            padding: 4px 8px;
+            margin-bottom: 4px
+        }
+
+            #messageBoard #messageWindow .messageLine .messageAuthor {
+                font-weight: bold
+            }
+
+            #messageBoard #messageWindow .messageLine::before {
+                margin-right: 8px;
+                font-family: "Font Awesome 5 Free";
+                font-weight: 900;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                display: inline-block;
+                font-style: normal;
+                font-variant: normal;
+                text-rendering: auto;
+                line-height: 1
+            }
+
+        #messageBoard #messageWindow .referee::before {
+            content: "\f11e";
+            color: #E45656
+        }
+
+        #messageBoard #messageWindow .referee > .messageAuthor {
+            color: #E45656
+        }
+
+        #messageBoard #messageWindow .staff::before {
+            content: "\f007";
+            color: #AA8AF1
+        }
+
+        #messageBoard #messageWindow .staff > .messageAuthor {
+            color: #AA8AF1
+        }
+
+        #messageBoard #messageWindow .announcement::before {
+            content: "\f0a1";
+            color: #FDD835
+        }
+
+        #messageBoard #messageWindow .announcement > .messageAuthor {
+            display: none
+        }
+
+        #messageBoard #messageWindow .announcement > .messageText {
+            color: #FDD835;
+            font-weight: bold;
+            font-size: 13pt
+        }
+
+    #messageBoard #messageAction {
+        border-top: 2px solid #808080;
+        align-items: stretch;
+        background: #26272A;
+        padding: 4px;
+        width: 271px;
+        bottom: 0;
+        position: absolute
+    }
+
+        #messageBoard #messageAction #typeHere {
+            font-family: inherit;
+            font-size: inherit;
+            color: #F0F0F0;
+            margin: 4px 4px 6px 4px;
+            background: #363639;
+            border: none;
+            resize: none
+        }
+
+@media (max-width: 800px) {
+    #messageBoard {
+        display: none
+    }
+}
+
+#tabsAndContent {
+    width: 100%
+}
+
+#ecHeader {
+    background: #26272A;
+    padding: 0 10px;
+    overflow-x: auto
+}
+
+.ecTab {
+    padding: 10px;
+    margin-top: 4px;
+    background: #26272A;
+    border-style: none;
+    font-size: 12pt;
+    color: #F0F0F0;
+    border-radius: 6px 6px 0 0;
+    border-bottom: none
+}
+
+    .ecTab:hover, .ecTab:active {
+        background: #363639;
+        text-decoration: underline;
+        cursor: pointer
+    }
+
+    .ecTab.sel {
+        background: #363639;
+        font-weight: bold
+    }
+
+    .ecTab:focus {
+        outline: 0
+    }
+
+th {
+    text-align: left;
+    padding-right: 4px
+}
+
+th, td {
+    padding: 4px
+}
+
+.modal {
+    display: none;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    overflow: auto;
+    background: rgba(0,0,0,0.7)
+}
+
+    .modal.show {
+        display: block
+    }
+
+.modal-content {
+    display: block;
+    background-color: #363639;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 7px;
+    border: 2px solid #808080;
+    max-width: 30em;
+    max-height: 16em
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        box-sizing: border-box;
+        width: 100vw
+    }
+}
+
+.modal-text {
+    padding: 20px;
+    text-align: center
+}
+
+.modal-scoresheet {
+    display: block;
+    border: 2px solid #808080;
+    max-width: 28em;
+    max-height: 38em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10pt 15pt 10pt 20pt;
+    background: #26272A;
+    text-align: center
+}
+
+@media (max-width: 500px) {
+    .modal-scoresheet {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none
+    }
+}
+
+@media (max-height: 610px) and (min-width:501px) {
+    .modal-scoresheet {
+        position: relative;
+        box-sizing: border-box;
+        top: 0;
+        left: calc(50vw - 10em);
+        transform: none;
+        width: 20em
+    }
+}
+
+.close {
+    color: #E45656;
+    float: right;
+    font-size: 20px;
+    font-weight: bold
+}
+
+    .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer
+    }
+
+#myBtn {
+    color: #1C1C1C !important;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 8px;
+    display: inline-block;
+    margin: 2px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 4px;
+    border: none;
+    margin: 0
+}
+
+    #myBtn.dark {
+        background: #26272A;
+        border: 1px solid #808080;
+        color: #F0F0F0 !important
+    }
+
+        #myBtn.dark:hover, #myBtn.dark:focus, #myBtn.dark:active {
+            background: #000;
+            text-decoration: underline
+        }
+
+    #myBtn.gray {
+        background: #9E9FAD
+    }
+
+        #myBtn.gray:hover, #myBtn.gray:focus {
+            background: #CBCBD6
+        }
+
+        #myBtn.gray:active {
+            background: #E4E5F1
+        }
+
+    #myBtn.lavender {
+        background: #AA8AF1
+    }
+
+        #myBtn.lavender:hover, #myBtn.lavender:focus {
+            background: #C6AFF9
+        }
+
+        #myBtn.lavender:active {
+            background: #DDCEFF
+        }
+
+    #myBtn.red {
+        background: #E45656
+    }
+
+        #myBtn.red:hover, #myBtn.red:focus {
+            background: #EC7C7C
+        }
+
+        #myBtn.red:active {
+            background: #F9A2A2
+        }
+
+    #myBtn.yellow {
+        background: #FDD835
+    }
+
+        #myBtn.yellow:hover, #myBtn.yellow:focus {
+            background: #FDE57F
+        }
+
+        #myBtn.yellow:active {
+            background: #FDF1C2
+        }
+
+#bulleted {
+    display: contents
+}
+
+.icons {
+    display: inline;
+    color: #808080
+}
+
+    .icons:hover, .icons:focus {
+        color: #F0F0F0
+    }
+
+.container {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    width: auto
+}
+
+    .container.h {
+        flex-direction: row
+    }
+
+@media (max-width: 1000px) {
+    .container > #Inspection:nth-child(2) {
+        flex-direction: column
+    }
+
+        .container > #Inspection:nth-child(2) > .v.tc {
+            width: auto
+        }
+}
+
+.container.v {
+    flex-direction: column
+}
+
+    .container.v.tc {
+        padding: 0 20px;
+        width: 50%;
+        box-sizing: border-box
+    }
+
+        .container.v.tc:not(:last-child) {
+            border-right: 2px dotted #808080
+        }
+
+@media (max-width: 1200px) {
+    .container.v.tc:not(:last-child) {
+        border: none
+    }
+}
+
+.buttonRow {
+    align-self: center
+}
+
+@media (max-width: 600px) {
+    .buttonRow > * {
+        width: 100%;
+        margin: 3px !important
+    }
+}
+
+.btn {
+    border: none
+}
+
+.scrollBox {
+    background: #26272A;
+    position: relative;
+    overflow-y: auto;
+    flex-grow: 1
+}
+
+@media (max-width: 1000px) {
+    .scrollBox {
+        max-height: 100vh;
+        overflow-y: auto
+    }
+}
+
+.scrollBox > * {
+    position: absolute
+}
+
+@media (max-width: 1000px) {
+    .scrollBox > * {
+        position: relative
+    }
+}
+
+.scoring {
+    margin: 15pt auto;
+    border-spacing: 20px;
+    border-collapse: separate !important
+}
+
+    .scoring td {
+        font-size: 16pt;
+        font-weight: bold
+    }
+
+    .scoring :hover {
+        background: inherit
+    }
+
+    .scoring .red {
+        background: red
+    }
+
+    .scoring .blue {
+        background: blue
+    }
+
+    .scoring .none {
+        background: #363639
+    }
+
+.stackedScrollBoxes {
+    background: #26272A;
+    position: relative;
+    overflow-y: auto;
+    flex-grow: 1;
+    margin: 10px 0;
+    border-bottom: 1px solid #808080
+}
+
+@media (max-width: 1000px) {
+    .stackedScrollBoxes {
+        max-height: 100vh;
+        overflow-y: auto
+    }
+}
+
+.stackedScrollBoxes > * {
+    position: absolute
+}
+
+@media (max-width: 1000px) {
+    .stackedScrollBoxes > * {
+        position: relative
+    }
+}
+
+.stackedScrollBoxes > * {
+    width: 100%
+}
+
+    .stackedScrollBoxes > * .btn {
+        padding: 4pt 8pt
+    }
+
+.boxed {
+    border: 1pt solid #808080;
+    padding: 2pt 8pt;
+    background: #000
+}
+
+.tabContent2 {
+    width: auto;
+    margin: 20px auto;
+    padding: 10pt 20pt 10pt 20pt;
+    border: 2px solid #808080;
+    background: #26272A;
+    text-align: center
+}
+
+.hide {
+    display: none !important
+}
+
+#loginTab {
+    align-items: stretch;
+    flex-grow: 1
+}
+
+#login {
+    padding: 0 20px;
+    float: right;
+    flex-grow: 1
+}
+
+    #login #logo {
+        margin: 64px auto 24px;
+        display: block;
+        height: 80px;
+        text-align: center
+    }
+
+        #login #logo > * {
+            display: inline-block;
+            vertical-align: middle
+        }
+
+        #login #logo img {
+            height: 80px
+        }
+
+    #login .error {
+        text-align: center;
+        font-weight: 600;
+        visibility: hidden
+    }
+
+        #login .error.show {
+            visibility: visible
+        }
+
+    #login #form {
+        max-width: 256px;
+        background: #26272A;
+        padding: 20px;
+        margin: 16px auto 0
+    }
+
+        #login #form > * {
+            display: block;
+            width: 100%;
+            box-sizing: border-box
+        }
+
+        #login #form input[type="text"] {
+            border: none;
+            background: #363639;
+            color: #F0F0F0;
+            padding: 8px;
+            margin-top: 6px
+        }
+
+        #login #form button {
+            max-width: 128px;
+            margin: 32px auto 0
+        }
+
+#Inspection {
+    overflow-y: auto
+}
+
+    #Inspection #queueList {
+        margin-bottom: 15pt
+    }
+
+        #Inspection #queueList > #skillsQueue {
+            width: 100%
+        }
+
+@media (max-width: 1000px) {
+    #Inspection > #windowInspection {
+        order: 1
+    }
+
+    #Inspection > #windowQueue {
+        order: 2;
+        padding-bottom: 20px
+    }
+}
+
+#InspectionControl #left #teamsInQueue tr > :last-child {
+    padding: 0
+}
+
+#InspectionControl #left #allTeams {
+    table-layout: fixed
+}
+
+    #InspectionControl #left #allTeams tr > :last-child {
+        padding: 0
+    }
+
+#InspectionControl #right #V5Toggle:checked ~ #SCscroll1, #InspectionControl #right #cortexToggle:checked ~ #SCscroll2, #InspectionControl #right #iqToggle:checked ~ #SCscroll3 {
+    display: block
+}
+
+#InspectionControl #right #V5Toggle:not(:checked) ~ #SCscroll1, #InspectionControl #right #cortexToggle:not(:checked) ~ #SCscroll2, #InspectionControl #right #iqToggle:not(:checked) ~ #SCscroll3 {
+    display: none
+}
+
+
+#InspectionControl #right input:hover, #InspectionControl #right label:hover {
+    cursor: pointer
+}
+
+#InspectionControl #right .tabContent2 {
+    height: 480px;
+    padding: 0
+}
+
+#InspectionControl #right #systemChecklists {
+    text-align: center
+}
+
+#InspectionControl #right table {
+    cursor: default;
+    width: 100%;
+    font-size: 10pt
+}
+
+    #InspectionControl #right table td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        padding: 2pt;
+        text-align: left
+    }
+
+#InspectionControl #right #V5Checklist, #InspectionControl #right #cortexChecklist {
+    left: 0
+}
+
+#SkillsControl input [type=number] {
+    width: 64px
+}
+
+#SkillsControl #left #teamsInQueue tr > :last-child {
+    padding: 0
+}
+
+#SkillsControl #left #allTeams tr > :last-child {
+    padding: 0
+}
+
+#SkillsControl #right > .tabContent2 {
+    width: 350px
+}
+
+#SkillsControl #right #scoringBox {
+    text-align: center
+}
+
+#SkillsControl #right .skillsLabel {
+    padding: 0 10px
+}
+
+#SkillsControl #right #skillsLabel1 {
+    margin-left: 50px
+}
+
+#SkillsRankings {
+    text-align: center
+}
+
+    #SkillsRankings #skillsRankingsBox {
+        margin: 0 auto;
+        max-height: 70vh;
+        overflow-y: auto;
+        border: 2px solid #808080;
+        border-top: 0
+    }
+
+        #SkillsRankings #skillsRankingsBox #abbrevRow {
+            display: none
+        }
+
+        #SkillsRankings #skillsRankingsBox #skillsRankingsTable td {
+            border-left: 0px none;
+            border-right: 0px none
+        }
+
+@media (max-width: 1400px) {
+    #SkillsRankings #skillsRankingsBox #skillsRankingsTable {
+        table-layout: fixed
+    }
+
+        #SkillsRankings #skillsRankingsBox #skillsRankingsTable tr > :nth-child(3), #SkillsRankings #skillsRankingsBox #skillsRankingsTable tr > :nth-child(4) {
+            display: none
+        }
+
+        #SkillsRankings #skillsRankingsBox #skillsRankingsTable tr > * {
+            white-space: normal;
+            word-wrap: break-word
+        }
+}
+
+@media (max-width: 800px) {
+    #SkillsRankings #skillsRankingsBox #headerRow {
+        display: none
+    }
+
+    #SkillsRankings #skillsRankingsBox #abbrevRow {
+        display: table-row
+    }
+}
+
+#in-session > * {
+    background: #26272A;
+    margin: 10pt;
+    border: 2pt solid #808080
+}
+
+#in-session #emptyBox {
+    width: 100%;
+    height: auto
+}
+
+    #in-session #emptyBox #infoBox {
+        display: none;
+        text-align: center;
+        line-height: 2;
+        margin: auto;
+        height: 120px;
+        padding: 10pt 20pt 20pt 20pt
+    }
+
+        #in-session #emptyBox #infoBox.show {
+            display: block
+        }
+
+@media (max-width: 500px) {
+    #in-session #emptyBox #infoBox {
+        height: auto
+    }
+}
+
+#in-session #emptyBox #infoBox #join {
+    display: block;
+    margin: 0 auto
+}
+
+@media (max-width: 1000px) {
+    #in-session #emptyBox {
+        margin: 10pt 10pt 0 10pt;
+        width: auto
+    }
+}
+
+#in-session #scoreSheet.show {
+    display: flex
+}
+
+#in-session #scoreSheet {
+    justify-content: center;
+    display: flex;
+    margin-right: 0;
+    width: 400pt;
+    text-align: center
+}
+
+    #in-session #scoreSheet > * {
+        margin: auto;
+        padding: 0 40pt 20pt 40pt;
+        align-self: center
+    }
+
+@media (max-height: 700px) {
+    #in-session #scoreSheet > * {
+        align-self: auto
+    }
+}
+
+@media (max-width: 1000px) {
+    #in-session #scoreSheet > * {
+        align-self: auto
+    }
+}
+
+#in-session #scoreSheet .scoring {
+    margin-top: 0
+}
+
+@media (max-width: 1000px) {
+    #in-session #scoreSheet {
+        order: 2;
+        margin: 10pt;
+        width: auto;
+        height: 100%;
+        padding: 5pt
+    }
+}
+
+@media (max-width: 1000px) {
+    #Skills {
+        flex-direction: column
+    }
+
+        #Skills > * {
+            width: 100%
+        }
+
+        #Skills > .buttonRow {
+            text-align: center
+        }
+
+            #Skills > .buttonRow > * {
+                width: 80%
+            }
+}
+
+#Skills #queueList {
+    margin-bottom: 15pt
+}
+
+    #Skills #queueList > #skillsQueue {
+        width: 100%
+    }
+
+.teamDropdown {
+    background: #26272A;
+    font: inherit;
+    color: #F0F0F0
+}
+
+    .teamDropdown :hover, .teamDropdown :active {
+        background: #000
+    }
+
+label:hover, label:active {
+    cursor: pointer
+}
+
+.videoLabel {
+    position: fixed;
+    background: #363639;
+    font-size: 40px;
+    font-weight: bold;
+    height: 80px;
+    width: 400px;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 15px 15px 0 0
+}
+
+#oneVideoLabel1 {
+    top: 100px;
+    left: 1080px
+}
+
+#twoVideoLabel1 {
+    top: 280px;
+    left: 440px
+}
+
+#twoVideoLabel2 {
+    top: 280px;
+    left: 1720px
+}
+
+.nextTeamDisplay {
+    position: fixed;
+    background: #363639;
+    font-size: 40px;
+    font-weight: bold;
+    height: 80px;
+    width: 400px;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 15px 15px 0 0;
+    width: 900px;
+    border-radius: 15px;
+    left: 830px
+}
+
+#nextTeamDisplay1 {
+    top: 1300px
+}
+
+#nextTeamDisplay2 {
+    top: 1180px
+}
+
+#test {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 1080px;
+    width: 1920px;
+    border: 2px solid #808080;
+    margin: -540px -960px
+}
+
+#MeetingControl.show {
+    display: block
+}
+
+#MeetingControl #mcTab1:checked ~ #room1, #MeetingControl #mcTab2:checked ~ #room2, #MeetingControl #mcTab3:checked ~ #room3, #MeetingControl #mcTab4:checked ~ #room4 {
+    display: block
+}
+
+#MeetingControl [id^=room] {
+    display: none;
+    height: 100%
+}
+
+#EventControl > * {
+    margin: 30px
+}
+
+#EventControl textarea {
+    padding: 12px
+}
+
+#TechSupport {
+    padding: 20px;
+    width: 256px
+}
+
+    #TechSupport input {
+        padding: 12px
+    }
+
+#SkillsScores {
+    padding: 0 20px 20px 20px;
+    text-align: center
+}
+
+
+    #SkillsScores #scoreHistory {
+        text-align: initial;
+        margin: 0 50px;
+        height: 100%;
+        flex-grow: 0
+    }
+
+@media (max-width: 1020px) {
+    #SkillsScores #scoreHistory {
+        margin: 0 10px
+    }
+}
+
+#SkillsScores #scoreHistory #scoreHistoryTable {
+    width: 100%
+}
+
+@media (max-width: 700px) {
+    #SkillsScores #scoreHistory #scoreHistoryTable tr {
+        padding: 2px
+    }
+
+        #SkillsScores #scoreHistory #scoreHistoryTable tr > :nth-child(2) {
+            display: none
+        }
+
+    #SkillsScores #scoreHistory #scoreHistoryTable #mobile {
+        display: contents !important;
+        text-align: center
+    }
+
+    #SkillsScores #scoreHistory #scoreHistoryTable #desktop {
+        display: none
+    }
+}
+
+#SkillsScores #scoreHistory #scoreHistoryTable .btn.dark {
+    padding: 6px;
+    width: 40px
+}
+
+#SkillsScores #scoreHistory #scoreHistoryTable #mobile {
+    display: none
+}
+
+#SkillsScores #scoreHistory #scoreHistoryTable tr > :last-child {
+    padding: 6px
+}
+
+#Rankings {
+    padding: 0 20px 20px 20px;
+    text-align: center
+}
+
+
+    #Rankings #skillsScores {
+        text-align: initial;
+        margin: 0 50px;
+        height: 100%;
+        flex-grow: 0
+    }
+
+@media (max-width: 1020px) {
+    #Rankings #skillsScores {
+        margin: 0 10px
+    }
+}
+
+#Rankings #skillsScores #skillsScoreTable {
+    width: 100%
+}
+
+@media (max-width: 700px) {
+    #Rankings #skillsScores #skillsScoreTable tr {
+        padding: 2px
+    }
+
+        #Rankings #skillsScores #skillsScoreTable tr > :nth-child(2) {
+            display: none
+        }
+
+    #Rankings #skillsScores #skillsScoreTable #mobile {
+        display: contents !important;
+        text-align: center
+    }
+
+    #Rankings #skillsScores #skillsScoreTable #desktop {
+        display: none
+    }
+}
+
+#Rankings #skillsScores #skillsScoreTable .btn.dark {
+    padding: 6px;
+    width: 40px
+}
+
+#Rankings #skillsScores #skillsScoreTable #mobile {
+    display: none
+}
+
+#SkillsScores #skillsScores #skillsScoreTable tr > :last-child {
+    padding: 6px
+}
+
+
+
+#Stats {
+    padding: 10px 10px 50px 50px;
+    text-align: center
+}
+
+
+    #Stats #tableBox {
+        text-align: initial;
+        height: 100%;
+        width: 100%;
+        flex-grow: 0;
+        margin-bottom: 20px;
+    }
+        
+    #Stats #statsBox {
+        text-align: initial;
+        margin: 0 20px;
+        height: 200%;
+        flex-grow: 0
+    }
+
+    #Stats #left{
+        float: left;
+        height: 100%;
+        text-align: center;
+    }
+
+    #Stats #right {
+        float: right;
+        height: 100%;
+        text-align: center;
+        margin-left: 50%;
+    }
+
+    #Stats #teamsTableStats{
+        
+    }
+#teamsTableStats{
+    width: 100%;
+}
+
+@media (max-width: 1020px) {
+    #Stats #statsBox {
+        margin: 0 10px
+    }
+}
+
+::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+#leftSplit{
+    text-align: left;
+}
+#sponsors{
+   margin-left: 0px;
+   margin-right: 50px;
+}
