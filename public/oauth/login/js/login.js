@@ -24,7 +24,7 @@ function init() {
     };
 
     websocket.onclose = function (event) {
-        
+        document.querySelector("#info").innerHTML = "An error has occured. Call 903-401-8088 for assitance logging in.";
     };
 }
 
