@@ -1816,3 +1816,9 @@ input:checked + .slider:before {
     height: 80vh !important;
     width: 80vw !important;
 }
+
+
+#RefjitsiBox {
+    height: 100%;
+    width: 100%;
+}

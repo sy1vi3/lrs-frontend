@@ -17,6 +17,7 @@ const API_sound = "Sound"
 const API_team_control = "Team Control"
 const API_livestream = "API_livestream"
 const API_event_data = "Event Data"
+const API_event_room = "Event Room"
 
 const urlParams = new URLSearchParams(window.location.search);
 var websocket;
@@ -151,6 +152,8 @@ function connect(tokenLogin = false) {
                 handleEventData(data);
             case API_event_ctrl:
                 handleEventControl(data);
+            case API_event_room:
+                handleRefSetup(data);
         }
     };
 
@@ -1596,4 +1599,95 @@ function handleEventControl(data) {
         }
         document.querySelector("#room_code_footer").innerHTML = html;
     }
+}
+
+function handleRefSetup(data) {
+    if (data.operation == "give_ref_login") {
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+        script.onload = function () {
+            ref_room_number = data.room;
+            ref_pass = data.pass;
+            document.querySelector("#RefjitsiBox").innerHTML = "";
+            domain = "connect.liveremoteskills.org";
+            var refOptions;
+            var refJitsi;
+            refOptions = {
+                roomName: "room" + ref_room_number,
+                parentNode: document.querySelector("#RefjitsiBox"),
+                //width: "100%",
+                //height: "500%",
+                userInfo: { email: "team", displayName: name + " - Ref" },
+                configOverwrite: {
+                    //disableAudioLevels: true,
+                    //enableNoAudioDetection: false,
+                    //enableNoisyMicDetection: false,
+                    //startAudioOnly: false,
+                    //startWithAudioMuted: true,
+                    //startSilent: false,
+                    //maxFullResolutionParticipants: -1,
+                    //startWithVideoMuted: true,
+                    //startScreenSharing: false,
+                    //hideLobbyButton: true,
+                    //disableProfile: true,
+                    prejoinPageEnabled: false
+                    //enableAutomaticUrlCopy: false,
+                    //disableDeepLinking: true,
+                    //disableInviteFunctions: true,
+                    //remoteVideoMenu: { disableKick: true },
+                    //disableRemoteMute: true,
+                    //disableTileView: true,
+                    //hideConferenceSubject: true,
+                    //hideConferenceTimer: true,
+                    //hideParticipantsStats: true
+                },
+                interfaceConfigOverwrite: {
+                    //AUTO_PIN_LATEST_SCREEN_SHARE: false,
+                    //CONNECTION_INDICATOR_DISABLED: true,
+                    //DEFAULT_LOCAL_DISPLAY_NAME: name + " - EP",
+                    DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
+                    //DISABLE_FOCUS_INDICATOR: true,
+                    DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                    //DISABLE_PRESENCE_STATUS: true,
+                    //DISABLE_RINGING: true,
+                    //DISABLE_TRANSCRIPTION_SUBTITLES: true,
+                    //DISABLE_VIDEO_BACKGROUND: true,
+                    //ENABLE_DIAL_OUT: false,
+                    //ENABLE_FEEDBACK_ANIMATION: false,
+                    //HIDE_INVITE_MORE_HEADER: true,
+                    //INITIAL_TOOLBAR_TIMEOUT: 1,
+                    //JITSI_WATERMARK_LINK: '',
+                    LANG_DETECTION: false
+                    //LOCAL_THUMBNAIL_RATIO: 16 / 9,
+                    //MAXIMUM_ZOOMING_COEFFICIENT: 1,
+                    //MOBILE_APP_PROMO: false,
+                    //SETTINGS_SECTIONS: ['profile'],
+                    //SHOW_CHROME_EXTENSION_BANNER: false,
+                    //SHOW_POWERED_BY: false,
+                    //SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+                    //TOOLBAR_ALWAYS_VISIBLE: false,
+                    //TOOLBAR_BUTTONS: ['settings'],
+                    //TOOLBAR_TIMEOUT: 1,
+                    //VIDEO_QUALITY_LABEL_DISABLED: true,
+                    //ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT: 1
+                }
+            }
+            refJitsi = new JitsiMeetExternalAPI(domain, refOptions);
+
+            refJitsi.on('passwordRequired', function () {
+                refJitsi.executeCommand('password', ref_pass);
+            });
+
+            refJitsi.on('filmstripDisplayChanged', function (data) {
+                if (data.visible == true) {
+                    refJitsi.executeCommand('toggleFilmStrip');
+                }
+            });
+            refJitsi.executeCommand('toggleFilmStrip');
+        }
+        };
+        script.src = "https://connect.liveremoteskills.org/external_api.js";
+        document.getElementsByTagName("head")[0].appendChild(script);
+        
+
 }
